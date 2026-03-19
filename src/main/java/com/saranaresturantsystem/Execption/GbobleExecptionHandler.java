@@ -15,7 +15,7 @@ public class GbobleExecptionHandler {
     public ResponseEntity<?> handleApiExecption(ApiExecption e){
         ErrorResponse errorResponse = new ErrorResponse(e.getStatus() , e.getMessage());
 //        ErrorResponse errorResponse = new ErrorResponse(e.getStatus(),e.getMessage());
-        return  ResponseEntity.status(e.).body(errorResponse);
+        return  ResponseEntity.status(e.getStatus()).body(errorResponse);
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
