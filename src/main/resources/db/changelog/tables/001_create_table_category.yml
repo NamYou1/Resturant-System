@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet: 
+        id: 001-create-table-category
+        author:  namyou
+        changes:
+          - createTable:
+              tableName: categories
+              columns:
+                - column:
+                    name: category_id
+                    type: BIGSERIAL
+                    autoIncrement: true
+                    constraints:
+                      primaryKey: true
+                      nullable: false
+                - column:
+                    name: category_code
+                    type: varchar(50)
+                    constraints:
+                      nullable: false
+                      unique: true
+                - column:
+                    name: category_name
+                    type: varchar(100)
+                    constraints:
+                      nullable: false
+                      unique: true
+                - column:
+                    name: category_display
+                    type: varchar(50)
+                - column:
+                    name: image_url
+                    type: varchar(500)
+                - column:
+                    name: from_time
+                    type: timestamp
+                - column:
+                    name: to_time
+                    type: timestamp
+
+
+

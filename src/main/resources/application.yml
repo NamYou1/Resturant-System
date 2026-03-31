@@ -4,7 +4,14 @@ spring:
     username: postgres
     password: 123
     driver-class-name: org.postgresql.Driver
+    Jackson:
+      date-format: yyyy-MM-dd HH:mm:ss
+      time-zone: Asia/Phnom_Penh
 
+#    liquibase: i will implement it later, for now i will migration from code   in the database
+#  liquibase:
+#    change-log: classpath:db/changelog/db.changelog-master.yml
+#    enabled: true
   jpa:
     hibernate:
       ddl-auto: update
@@ -15,3 +22,7 @@ spring:
 springdoc:
   api-docs:
     enabled: true
+Cloudinary:
+  cloud_name: "df5hvjteu"
+  api_key: "336348351514853"
+  api_secret: "N7PJTOGS1zg7R_-JyeLHm8752rI"
