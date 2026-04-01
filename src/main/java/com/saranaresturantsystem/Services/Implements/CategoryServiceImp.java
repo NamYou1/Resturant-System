@@ -6,11 +6,12 @@ import com.saranaresturantsystem.Enities.Category;
 import com.saranaresturantsystem.Execption.ResourceNotFoundExecption;
 import com.saranaresturantsystem.Mappers.CategoryMapper;
 import com.saranaresturantsystem.Repositories.CategoryRepository;
-import com.saranaresturantsystem.Services.ImageService;
+import com.saranaresturantsystem.Common.FileHandler;
 import com.saranaresturantsystem.Services.Interfaces.CategoryService;
 import com.saranaresturantsystem.Specification.Category.CategoryFilter;
 import com.saranaresturantsystem.Specification.Category.CategorySpec;
 import com.saranaresturantsystem.Utils.GloblePagination;
+import com.saranaresturantsystem.Common.UniqueChecker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,8 +28,9 @@ public class CategoryServiceImp implements CategoryService {
     private  final CategoryRepository categoryRepository ;
     private  final ObjectMapper objectMapper ;
     private  final  CategoryMapper categoryMapper ;
-    private  final ImageService imageService;
+    private  final FileHandler fileHandler ;
 
+private  final UniqueChecker uniqueChecker ;
 // Service implementation Getlist Category with filter and pagination
     @Override
     public Page<CategoryResponse> getListCategory(Map<String, String> params) {
@@ -52,10 +54,13 @@ public class CategoryServiceImp implements CategoryService {
     public CategoryResponse createCategory(CategoryRequest categoryRequest) {
             Category category = categoryMapper.toCategory(categoryRequest);
              if (categoryRequest.getImagePath() != null && !categoryRequest.getImagePath().isEmpty()) {                // store image on cloud and we need to add 2 params imagefile , folder for like category
-                category.setImageUrl(imageService.uploadImage(categoryRequest.getImagePath() , "category"));
+                category.setImageUrl(fileHandler.uploadImage(categoryRequest.getImagePath() , "category"));
             }else {
                  category.setImageUrl("");
             }
+             // check duplicated
+        uniqueChecker.verify(categoryRepository, category, "code", category.getCode());
+        uniqueChecker.verify(categoryRepository, category, "name", category.getName());
             Category savedCategory = categoryRepository.save(category);
 
             return categoryMapper.toCategoryResponse(savedCategory);
@@ -67,8 +72,10 @@ public class CategoryServiceImp implements CategoryService {
         categoryMapper.updateEntityFromRequest(categoryRequest, category);
         if (categoryRequest.getImagePath() != null) {
             // store image on cloud and we need to add 2 params imagefile , folder for like category
-            category.setImageUrl(imageService.uploadImage(categoryRequest.getImagePath() , "category"));
+            category.setImageUrl(fileHandler.uploadImage(categoryRequest.getImagePath() , "category"));
         }
+        uniqueChecker.verify(categoryRepository, category, "code", category.getCode());
+        uniqueChecker.verify(categoryRepository, category, "name", category.getName());
         Category updatedCategory = categoryRepository.save(category);
         return categoryMapper.toCategoryResponse(updatedCategory);
     }
