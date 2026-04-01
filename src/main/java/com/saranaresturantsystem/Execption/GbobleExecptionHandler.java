@@ -6,17 +6,22 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @ControllerAdvice
 public class GbobleExecptionHandler {
+    // check api response
     @ExceptionHandler(value =  ApiExecption.class)
     public ResponseEntity<?> handleApiExecption(ApiExecption e){
         ErrorResponse errorResponse = new ErrorResponse(e.getStatus() , e.getMessage());
 //        ErrorResponse errorResponse = new ErrorResponse(e.getStatus(),e.getMessage());
         return  ResponseEntity.status(e.getStatus()).body(errorResponse);
     }
+
+    // validation method or field not null
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
@@ -24,4 +29,16 @@ public class GbobleExecptionHandler {
                 errors.put(error.getField(), error.getDefaultMessage()));
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+
+    // check duplication or unuiqe field
+    @ExceptionHandler(DuplicateResourceException.class)
+    public ResponseEntity<Object> handleDuplicateException(DuplicateResourceException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", ex.getMessage());
+        body.put("status", HttpStatus.CONFLICT.value());
+
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+
 }
