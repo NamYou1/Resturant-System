@@ -1,6 +1,5 @@
 package com.saranaresturantsystem.DTO.Response;
 
-import com.saranaresturantsystem.Enities.Store;
 import lombok.*;
 
 @Getter

@@ -1,4 +1,4 @@
-package com.saranaresturantsystem.Services.Interfaces;
+package com.saranaresturantsystem.Services;
 
 import com.saranaresturantsystem.DTO.Request.StoreRequest;
 import com.saranaresturantsystem.DTO.Response.StoreResponse;

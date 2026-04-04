@@ -1,18 +1,17 @@
 package com.saranaresturantsystem.DTO.Response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+//@Builder
 public class CategoryResponse {
     private Long id;
     private String code;
@@ -21,5 +20,7 @@ public class CategoryResponse {
     private String imageUrl;
     private LocalDateTime fromTime;
     private LocalDateTime toTime;
+
+
 }
 

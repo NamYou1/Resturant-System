@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Component
 public class UniqueChecker {
 
-    public <T> void verify(JpaRepository<T, ?> repo, T entity, String fieldName, Object value) {
+    public   <T> void verify(JpaRepository<T, ?> repo, T entity, String fieldName, Object value) {
 
         List<String> allFields = Arrays.stream(entity.getClass().getDeclaredFields())
                 .map(Field::getName)

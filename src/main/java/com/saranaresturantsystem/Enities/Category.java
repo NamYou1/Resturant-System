@@ -1,11 +1,12 @@
 package com.saranaresturantsystem.Enities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.Instant;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -13,23 +14,29 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "table_categories")
+@Table(name = "tbl_categories")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "category_id")
     private Long id;
-    @Column(length = 50, nullable = false, unique = true)
+    @Column( name = "category_code", length = 50, nullable = false, unique = true)
     private String code;
-    @Column(length = 100, nullable = false, unique = true)
+    @Column( name = "category_name",length = 100, nullable = false, unique = true)
     private String name;
-    @Column(length = 50, nullable = true)
+    @Column(name = "category_display",length = 50, nullable = true)
     private String display;
-    @Column(length = 500, nullable = true)
+    @Column( name =  "category_image", length = 500, nullable = true)
     private String imageUrl;
+    @Column(name = "category_from_time")
     private LocalDate fromTime;
+    @Column(name = "category_to_time")
     private LocalDate toTime;
-    @Column(length = 5 , nullable = false)
+    @Column( name = "category_status",length = 5 , nullable = false)
     private  String status ;
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+   @JsonManagedReference
+    private List<SubCategory> subcategories = new ArrayList<>();
 
 
 }

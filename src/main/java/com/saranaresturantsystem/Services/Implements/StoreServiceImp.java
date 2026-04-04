@@ -5,7 +5,7 @@ import com.saranaresturantsystem.DTO.Response.StoreResponse;
 import com.saranaresturantsystem.Enities.Store;
 import com.saranaresturantsystem.Mappers.StoreMapper;
 import com.saranaresturantsystem.Repositories.StoreRepository;
-import com.saranaresturantsystem.Services.Interfaces.StoreService;
+import com.saranaresturantsystem.Services.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

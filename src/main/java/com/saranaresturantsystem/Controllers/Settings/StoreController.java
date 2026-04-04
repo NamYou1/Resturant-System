@@ -1,8 +1,8 @@
-package com.saranaresturantsystem.Controllers.Store;
+package com.saranaresturantsystem.Controllers.Settings;
 
 import com.saranaresturantsystem.DTO.Request.StoreRequest;
 import com.saranaresturantsystem.DTO.Response.StoreResponse;
-import com.saranaresturantsystem.Services.Interfaces.StoreService;
+import com.saranaresturantsystem.Services.StoreService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
