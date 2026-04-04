@@ -1,4 +1,4 @@
-package com.saranaresturantsystem.Services.Interfaces;
+package com.saranaresturantsystem.Services;
 
 import com.saranaresturantsystem.DTO.Request.CategoryRequest;
 import com.saranaresturantsystem.DTO.Response.CategoryResponse;
@@ -9,12 +9,9 @@ import java.util.Map;
 
 public interface CategoryService {
     Page<CategoryResponse> getListCategory(Map<String , String> params);
-    
-    Category getCategoryById(Long id);
-    
     CategoryResponse createCategory(CategoryRequest categoryRequest);
-    
     CategoryResponse updateCategory(Long id, CategoryRequest categoryRequest);
-    
+    Category findCategoryById (Long Id );
     void deleteCategory(Long id);
+    CategoryResponse getCategoryById(Long id );
 }
