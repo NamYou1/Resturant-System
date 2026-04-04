@@ -11,7 +11,10 @@ public interface CategoryService {
     Page<CategoryResponse> getListCategory(Map<String , String> params);
     CategoryResponse createCategory(CategoryRequest categoryRequest);
     CategoryResponse updateCategory(Long id, CategoryRequest categoryRequest);
+
     Category findCategoryById (Long Id );
+
     void deleteCategory(Long id);
+
     CategoryResponse getCategoryById(Long id );
 }

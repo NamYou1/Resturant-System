@@ -3,10 +3,11 @@ package com.saranaresturantsystem.Specification.Category;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
+//@RequiredArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CategoryFilter {
     private Long id;

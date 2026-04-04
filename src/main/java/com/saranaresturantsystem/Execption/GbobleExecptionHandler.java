@@ -17,7 +17,6 @@ public class GbobleExecptionHandler {
     @ExceptionHandler(value =  ApiExecption.class)
     public ResponseEntity<?> handleApiExecption(ApiExecption e){
         ErrorResponse errorResponse = new ErrorResponse(e.getStatus() , e.getMessage());
-//        ErrorResponse errorResponse = new ErrorResponse(e.getStatus(),e.getMessage());
         return  ResponseEntity.status(e.getStatus()).body(errorResponse);
     }
 
