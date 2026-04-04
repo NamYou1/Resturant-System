@@ -1,7 +1,5 @@
 package com.saranaresturantsystem.Execption;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 
