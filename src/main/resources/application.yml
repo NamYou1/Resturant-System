@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/resturatn_db
     username: postgres
-    password: 123
+    password: admin123
     driver-class-name: org.postgresql.Driver
     Jackson:
       date-format: yyyy-MM-dd HH:mm:ss
