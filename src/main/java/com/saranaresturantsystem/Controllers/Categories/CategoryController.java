@@ -5,7 +5,7 @@ import com.saranaresturantsystem.DTO.Request.CategoryRequest;
 import com.saranaresturantsystem.DTO.Response.ApiResponse;
 import com.saranaresturantsystem.DTO.Response.CategoryResponse;
 import com.saranaresturantsystem.Enities.Category;
-import com.saranaresturantsystem.Services.Interfaces.CategoryService;
+import com.saranaresturantsystem.Services.CategoryService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -73,9 +73,9 @@ public class CategoryController {
      * Get category by ID
      */
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Category>> getCategoryById(@PathVariable Long id) {
-        Category categoryResponse = categoryService.getCategoryById(id);
-        ApiResponse<Category> response = ApiResponse.<Category>builder()
+    public ResponseEntity<ApiResponse<CategoryResponse>> getCategoryById(@PathVariable Long id) {
+        CategoryResponse categoryResponse = categoryService.getCategoryById(id);
+        ApiResponse<CategoryResponse> response = ApiResponse.<CategoryResponse>builder()
                 .succeess(true)
                 .status(HttpStatus.OK)
                 .message("Category retrieved successfully")

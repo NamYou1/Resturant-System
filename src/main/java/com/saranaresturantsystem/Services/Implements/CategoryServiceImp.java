@@ -7,7 +7,7 @@ import com.saranaresturantsystem.Execption.ResourceNotFoundExecption;
 import com.saranaresturantsystem.Mappers.CategoryMapper;
 import com.saranaresturantsystem.Repositories.CategoryRepository;
 import com.saranaresturantsystem.Common.FileHandler;
-import com.saranaresturantsystem.Services.Interfaces.CategoryService;
+import com.saranaresturantsystem.Services.CategoryService;
 import com.saranaresturantsystem.Specification.Category.CategoryFilter;
 import com.saranaresturantsystem.Specification.Category.CategorySpec;
 import com.saranaresturantsystem.Utils.GloblePagination;
@@ -29,8 +29,7 @@ public class CategoryServiceImp implements CategoryService {
     private  final ObjectMapper objectMapper ;
     private  final  CategoryMapper categoryMapper ;
     private  final FileHandler fileHandler ;
-
-private  final UniqueChecker uniqueChecker ;
+    private  final  UniqueChecker uniqueChecker;
 // Service implementation Getlist Category with filter and pagination
     @Override
     public Page<CategoryResponse> getListCategory(Map<String, String> params) {
@@ -42,10 +41,15 @@ private  final UniqueChecker uniqueChecker ;
         return  categoryRepository.findAll(spec, pageable).map(categoryMapper::toCategoryResponse);
     }
 
-    // GetCategoryById
-    @Override
-    public Category getCategoryById(Long id) {
+    // get by from table category we need to add private coz we don't wanna response enity to user
+    public Category findCategoryById(Long id) {
         return categoryRepository.findById(id).orElseThrow(()->new ResourceNotFoundExecption("Category" ,id));
+    }
+
+    // return categoryResponse to users
+    @Override
+    public CategoryResponse getCategoryById(Long id) {
+        return categoryMapper.toCategoryResponse(findCategoryById(id));
     }
 
 
@@ -68,13 +72,13 @@ private  final UniqueChecker uniqueChecker ;
 
     @Override
     public CategoryResponse updateCategory(Long id, CategoryRequest categoryRequest) {
-        Category category = getCategoryById(id);
+        Category category = findCategoryById(id);
         categoryMapper.updateEntityFromRequest(categoryRequest, category);
         if (categoryRequest.getImagePath() != null) {
             // store image on cloud and we need to add 2 params imagefile , folder for like category
             category.setImageUrl(fileHandler.uploadImage(categoryRequest.getImagePath() , "category"));
         }
-        uniqueChecker.verify(categoryRepository, category, "code", category.getCode());
+        uniqueChecker.verify(categoryRepository, category, "code",  category.getCode());
         uniqueChecker.verify(categoryRepository, category, "name", category.getName());
         Category updatedCategory = categoryRepository.save(category);
         return categoryMapper.toCategoryResponse(updatedCategory);
@@ -82,7 +86,7 @@ private  final UniqueChecker uniqueChecker ;
 
     @Override
     public void deleteCategory(Long id) {
-        Category findCategory = getCategoryById(id);
+        Category findCategory = findCategoryById(id);
         findCategory.setStatus("ina");
         categoryRepository.save(findCategory);
     }

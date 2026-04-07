@@ -14,8 +14,12 @@ public interface CategoryMapper {
         CategoryResponse toCategoryResponse(Category category);
         @Mapping(target = "id", ignore = true)
         @Mapping(target = "imageUrl"  , ignore = true)
+        @Mapping(target = "subcategories" , ignore = true)
+        // target is field in category
         Category toCategory(CategoryRequest request);
+
         @Mapping(target = "id", ignore = true)
         @Mapping(target = "imageUrl"  , ignore = true)
+        @Mapping(target = "subcategories" , ignore = true)
         void updateEntityFromRequest(CategoryRequest request, @MappingTarget Category entity);
 }
