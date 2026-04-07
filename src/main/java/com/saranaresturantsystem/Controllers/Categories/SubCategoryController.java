@@ -46,7 +46,7 @@ public class SubCategoryController {
     public  ResponseEntity<ApiResponse<SubCategoryResponse>> getById(@PathVariable Long id ){
         SubCategoryResponse categoryResponse =subCategoryService.findById(id);
         ApiResponse<SubCategoryResponse> response = ApiResponse.<SubCategoryResponse>builder().succeess(true)
-                .message("find subCategory By Id").payload(categoryResponse).timestamp(Instant.now()).build();
+                .message("findSupplierById subCategory By Id").payload(categoryResponse).timestamp(Instant.now()).build();
         return  ResponseEntity.ok(response);
     }
 

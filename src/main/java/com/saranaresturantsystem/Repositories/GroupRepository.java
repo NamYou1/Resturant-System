@@ -1,0 +1,12 @@
+package com.saranaresturantsystem.Repositories;
+
+import com.saranaresturantsystem.Enities.Group;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+import java.util.Optional;
+
+public interface GroupRepository extends JpaRepository<Group, Long>, JpaSpecificationExecutor<Group> {
+    boolean existsByName(String name);
+    Optional<Group> findByName(String name);
+}

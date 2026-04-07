@@ -1,5 +1,6 @@
 package com.saranaresturantsystem.Execption;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -17,7 +18,6 @@ public class GbobleExecptionHandler {
     @ExceptionHandler(value =  ApiExecption.class)
     public ResponseEntity<?> handleApiExecption(ApiExecption e){
         ErrorResponse errorResponse = new ErrorResponse(e.getStatus() , e.getMessage());
-//        ErrorResponse errorResponse = new ErrorResponse(e.getStatus(),e.getMessage());
         return  ResponseEntity.status(e.getStatus()).body(errorResponse);
     }
 
@@ -39,6 +39,20 @@ public class GbobleExecptionHandler {
         body.put("status", HttpStatus.CONFLICT.value());
 
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+    // Foreign Key Constraint / Integrity Violation
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Object> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+        String msg = "Cannot delete or modify this resource because it is still referenced by other data.";
+        return buildErrorResponse(HttpStatus.CONFLICT, msg);
+    }
+    private ResponseEntity<Object> buildErrorResponse(HttpStatus status, String message) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", status.value());
+        body.put("message", message);
+
+        return new ResponseEntity<>(body, status);
     }
 
 }

@@ -4,7 +4,6 @@ import com.saranaresturantsystem.DTO.PageDTO;
 import com.saranaresturantsystem.DTO.Request.CategoryRequest;
 import com.saranaresturantsystem.DTO.Response.ApiResponse;
 import com.saranaresturantsystem.DTO.Response.CategoryResponse;
-import com.saranaresturantsystem.Enities.Category;
 import com.saranaresturantsystem.Services.CategoryService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

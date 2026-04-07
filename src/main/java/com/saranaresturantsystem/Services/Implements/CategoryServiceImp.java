@@ -30,6 +30,10 @@ public class CategoryServiceImp implements CategoryService {
     private  final  CategoryMapper categoryMapper ;
     private  final FileHandler fileHandler ;
     private  final  UniqueChecker uniqueChecker;
+
+
+
+
 // Service implementation Getlist Category with filter and pagination
     @Override
     public Page<CategoryResponse> getListCategory(Map<String, String> params) {
@@ -40,6 +44,7 @@ public class CategoryServiceImp implements CategoryService {
         Specification<Category> spec = CategorySpec.filterBy(filter);
         return  categoryRepository.findAll(spec, pageable).map(categoryMapper::toCategoryResponse);
     }
+
 
     // get by from table category we need to add private coz we don't wanna response enity to user
     public Category findCategoryById(Long id) {
