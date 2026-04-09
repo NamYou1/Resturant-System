@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5434/posarana
+    url: jdbc:postgresql://localhost:5432/resturatn_db
     username: postgres
-    password: 123456
+    password: admin123
     driver-class-name: org.postgresql.Driver
     Jackson:
       date-format: yyyy-MM-dd HH:mm:ss
