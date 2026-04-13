@@ -1,24 +1,23 @@
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/resturatn_db
-    username: postgres
-    password: admin123
-    driver-class-name: org.postgresql.Driver
-    Jackson:
-      date-format: yyyy-MM-dd HH:mm:ss
-      time-zone: Asia/Phnom_Penh
-
-#    liquibase: i will implement it later, for now i will migration from code   in the database
-#  liquibase:
-#    change-log: classpath:db/changelog/db.changelog-master.yml
-#    enabled: true
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-      show-sql: true
+    config:
+        import: optional:file:.env[.properties]
+    application:
+        name: sarana-resturant-system
+    datasource:
+      url:  jdbc:postgresql://localhost:5432/db-resturant
+      username: ${DB_USERNAME}
+      password: ${DB_PASSWORD}
+      driver-class-name: org.postgresql.Driver
+      Jackson:
+        date-format: yyyy-MM-dd HH:mm:ss
+        time-zone: Asia/Phnom_Penh
+    jpa:
+        hibernate:
+          ddl-auto: update
+        properties:
+          hibernate:
+            dialect: org.hibernate.dialect.PostgreSQLDialect
+          show-sql: true
 springdoc:
   api-docs:
     enabled: true
