@@ -3,7 +3,6 @@ package com.saranaresturantsystem.controllers.Products;
 import com.saranaresturantsystem.dto.PageDTO;
 import com.saranaresturantsystem.dto.request.ProductRequest;
 import com.saranaresturantsystem.dto.response.ApiResponse;
-
 import com.saranaresturantsystem.dto.response.ProductResponse;
 import com.saranaresturantsystem.services.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,7 +30,6 @@ public class ProductController {
     @GetMapping
     @Operation(summary = "Get all products with pagination and filters")
     public ResponseEntity<ApiResponse<PageDTO>> getList(@RequestParam Map<String, String> params) {
-
         Page<ProductResponse> productPage = productService.getAllProducts(params);
         PageDTO pageDTO = new PageDTO(productPage);
 
