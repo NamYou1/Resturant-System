@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.ObjectMapper;
 
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -91,7 +92,6 @@ public class SellerServiceImp implements SellerService {
         sellerRepository.save(seller);
     }
 
-    @Override
     public Seller getById(Long id) {
         return  sellerRepository.findById(id).orElseThrow(()->new ResourceNotFoundExecption("Seller",id));
     }

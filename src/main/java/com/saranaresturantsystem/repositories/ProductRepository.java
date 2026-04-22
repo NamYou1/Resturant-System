@@ -12,6 +12,8 @@ import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
+    Optional<Product> findByCode(String code);
+    boolean existsByCode(String code);
     List<Product> findByCategoryId(Long categoryId);
     @Query("SELECT p FROM Product p JOIN ProductStoreQty q ON q.product.id = p.id " +
             "WHERE q.storeId = :storeId AND q.quantity <= p.alertQuantity")

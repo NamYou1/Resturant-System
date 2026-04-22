@@ -34,6 +34,7 @@ public class ProductRequest {
     private String image;
 
     @Size(max = 20, message = "Type must be at most 20 characters")
+    private String type;
 
     private String details;
 
@@ -46,7 +47,6 @@ public class ProductRequest {
     private Long categoryId;
 
     private Long sectionId;
-
 
     @NotNull(message = "Base unit is required")
     private Long unitId;

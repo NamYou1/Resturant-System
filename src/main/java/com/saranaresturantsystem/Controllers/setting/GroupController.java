@@ -1,4 +1,4 @@
-package com.saranaresturantsystem.controllers.Settings;
+package com.saranaresturantsystem.controllers.setting;
 
 
 import com.saranaresturantsystem.dto.PageDTO;
@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.Map;
 
 @RestController

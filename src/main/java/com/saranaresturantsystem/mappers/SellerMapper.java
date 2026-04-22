@@ -1,6 +1,5 @@
 package com.saranaresturantsystem.mappers;
 
-
 import com.saranaresturantsystem.dto.request.SellerRequest;
 import com.saranaresturantsystem.dto.response.SellerResponse;
 import com.saranaresturantsystem.entities.Seller;

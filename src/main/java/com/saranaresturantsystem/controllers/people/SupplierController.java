@@ -1,4 +1,4 @@
-package com.saranaresturantsystem.controllers.People;
+package com.saranaresturantsystem.controllers.people;
 
 import com.saranaresturantsystem.dto.PageDTO;
 import com.saranaresturantsystem.dto.request.SupplierRequest;

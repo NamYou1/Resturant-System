@@ -1,4 +1,4 @@
-package com.saranaresturantsystem.controllers.Categories;
+package com.saranaresturantsystem.controllers.categories;
 
 import com.saranaresturantsystem.dto.PageDTO;
 import com.saranaresturantsystem.dto.request.SubCategoryRequest;

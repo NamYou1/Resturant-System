@@ -1,11 +1,9 @@
-package com.saranaresturantsystem.controllers.Settings;
+package com.saranaresturantsystem.controllers.setting;
 
 import com.saranaresturantsystem.dto.PageDTO;
 import com.saranaresturantsystem.dto.request.StoreRequest;
-import com.saranaresturantsystem.dto.request.TableRequest;
 import com.saranaresturantsystem.dto.response.ApiResponse;
 import com.saranaresturantsystem.dto.response.StoreResponse;
-import com.saranaresturantsystem.dto.response.TableResponse;
 import com.saranaresturantsystem.services.StoreService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -17,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.Map;
 
 @RestController

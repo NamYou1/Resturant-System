@@ -1,9 +1,7 @@
 package com.saranaresturantsystem.services;
 
-
 import com.saranaresturantsystem.dto.request.SellerRequest;
 import com.saranaresturantsystem.dto.response.SellerResponse;
-import com.saranaresturantsystem.entities.Seller;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -16,5 +14,4 @@ public interface SellerService {
     SellerResponse findById(Long id);
     List<SellerResponse> findAll();
     void delete(Long id);
-    Seller getById(Long id);
 }

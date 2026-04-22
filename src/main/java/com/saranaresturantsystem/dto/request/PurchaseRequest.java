@@ -11,6 +11,6 @@ public class PurchaseRequest {
     private Long sellerId;
     private Long storeId;
     private Double orderDiscount;
-    private List<com.saranaresturantsystem.dto.request.PurchaseItemRequest> items;
+    private List<PurchaseItemRequest> items;
 
 }

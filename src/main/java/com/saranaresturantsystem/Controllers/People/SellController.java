@@ -1,10 +1,10 @@
-package com.saranaresturantsystem.controllers.Settings;
+package com.saranaresturantsystem.controllers.people;
 
 import com.saranaresturantsystem.dto.PageDTO;
-import com.saranaresturantsystem.dto.request.TableRequest;
+import com.saranaresturantsystem.dto.request.SellerRequest;
 import com.saranaresturantsystem.dto.response.ApiResponse;
-import com.saranaresturantsystem.dto.response.TableResponse;
-import com.saranaresturantsystem.services.TableService;
+import com.saranaresturantsystem.dto.response.SellerResponse;
+import com.saranaresturantsystem.services.SellerService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
@@ -15,27 +15,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.Map;
 
-
 @RestController
-@RequestMapping("/api/v1/table")
 @RequiredArgsConstructor
-@Tag(name = "Table", description = "Endpoints for managing tables")
-public class TableController {
-    private final TableService tableService;
+@RequestMapping("/api/v1/sellers")
+@Tag(name = "Seller", description = "Endpoints for managing sellers")
+public class SellController {
+    private final SellerService sellerService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<PageDTO>> getTables(
+    public ResponseEntity<ApiResponse<PageDTO>> getAllSeller(
             @RequestParam Map<String , String> params
-            ) {
-        Page<TableResponse> tablePage = tableService.getAllTables(params);
-        PageDTO pageDTO = new PageDTO(tablePage);
+    ) {
+        Page<SellerResponse> sellerPage = sellerService.getList(params);
+        PageDTO pageDTO = new PageDTO(sellerPage);
         ApiResponse<PageDTO> response = ApiResponse.<PageDTO>builder()
                 .succeess(true)
                 .status(HttpStatus.OK)
-                .message("Tables retrieved successfully")
+                .message("Seller retrieved successfully")
                 .timestamp(Instant.now())
                 .payload(pageDTO)
                 .build();
@@ -43,38 +41,38 @@ public class TableController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<TableResponse>> getTableById(@Positive @PathVariable Long id) {
-        return ResponseEntity.ok(ApiResponse.<TableResponse>builder()
+    public ResponseEntity<ApiResponse<SellerResponse>> getSellerById(@Positive @PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.<SellerResponse>builder()
                 .succeess(true)
                 .message("Table retrieved successfully")
-                .payload(tableService.getTableById(id))
+                .payload(sellerService.findById(id))
                 .timestamp(Instant.now())
                 .build());
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<TableResponse>> createTable(@Valid @RequestBody TableRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.<TableResponse>builder()
+    public ResponseEntity<ApiResponse<SellerResponse>> createTable(@Valid @RequestBody SellerRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.<SellerResponse>builder()
                 .succeess(true)
                 .message("Table created successfully")
-                .payload(tableService.createTable(request))
+                .payload(sellerService.create(request))
                 .timestamp(Instant.now())
                 .build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<TableResponse>> updateTable(@PathVariable Long id, @Valid @RequestBody TableRequest request) {
-        return ResponseEntity.ok(ApiResponse.<TableResponse>builder()
+    public ResponseEntity<ApiResponse<SellerResponse>> updateSeller(@PathVariable Long id, @Valid @RequestBody SellerRequest request) {
+        return ResponseEntity.ok(ApiResponse.<SellerResponse>builder()
                 .succeess(true)
                 .message("Table updated successfully")
-                .payload(tableService.updateTable(id, request))
+                .payload(sellerService.update(id, request))
                 .timestamp(Instant.now())
                 .build());
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteTable(@PathVariable Long id) {
-        tableService.deleteTable(id);
+    public ResponseEntity<ApiResponse<Void>> deleteSeller(@PathVariable Long id) {
+        sellerService.delete(id);
         return ResponseEntity.ok(ApiResponse.<Void>builder()
                 .succeess(true)
                 .message("Table deleted successfully")

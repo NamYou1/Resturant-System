@@ -1,6 +1,6 @@
-package com.saranaresturantsystem.Specification.Seller;
+package com.saranaresturantsystem.specification.seller;
 
-import com.saranaresturantsystem.Enities.Seller;
+import com.saranaresturantsystem.entities.Seller;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 import java.util.ArrayList;

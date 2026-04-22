@@ -1,4 +1,4 @@
-package com.saranaresturantsystem.controllers.Settings;
+package com.saranaresturantsystem.controllers.setting;
 
 import com.saranaresturantsystem.dto.PageDTO;
 import com.saranaresturantsystem.dto.request.BankRequest;

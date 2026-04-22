@@ -1,4 +1,4 @@
-package com.saranaresturantsystem.Specification.Seller;
+package com.saranaresturantsystem.specification.seller;
 
 import lombok.Data;
 

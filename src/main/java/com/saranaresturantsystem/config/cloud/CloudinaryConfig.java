@@ -1,4 +1,4 @@
-package com.saranaresturantsystem.config.Cloud;
+package com.saranaresturantsystem.config.cloud;
 
 import com.cloudinary.Cloudinary;
 import org.springframework.beans.factory.annotation.Value;
