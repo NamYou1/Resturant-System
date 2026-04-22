@@ -1,6 +1,9 @@
 package com.saranaresturantsystem.specification.purchase;
 
 import com.saranaresturantsystem.entities.Purchase;
+package com.saranaresturantsystem.Specification.Purchase;
+
+import com.saranaresturantsystem.Enities.Purchase;
 import org.springframework.data.jpa.domain.Specification;
 import jakarta.persistence.criteria.Predicate;
 import java.util.ArrayList;

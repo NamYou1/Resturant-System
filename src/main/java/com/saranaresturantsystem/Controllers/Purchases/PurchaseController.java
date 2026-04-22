@@ -6,6 +6,13 @@ import com.saranaresturantsystem.dto.request.PurchaseRequest;
 import com.saranaresturantsystem.dto.response.ApiResponse;
 import com.saranaresturantsystem.dto.response.PurchaseResponse;
 import com.saranaresturantsystem.services.PurchasesService;
+package com.saranaresturantsystem.Controllers.Purchases;
+
+import com.saranaresturantsystem.DTO.PageDTO;
+import com.saranaresturantsystem.DTO.Request.PurchaseRequest;
+import com.saranaresturantsystem.DTO.Response.ApiResponse;
+import com.saranaresturantsystem.DTO.Response.PurchaseResponse;
+import com.saranaresturantsystem.Services.PurchasesService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
