@@ -30,9 +30,10 @@ public class Category {
     private LocalDate fromTime;
     @Column(name = "c_to_time")
     private LocalDate toTime;
-    @Column( name = "c_status",length = 5 )
+    @Enumerated(EnumType.STRING)
+    @Column( name = "c_status", length = 10 )
     private GeneralStatus status = GeneralStatus.ACTIVE;
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "category")
     private List<SubCategory> subcategories ;
 
 

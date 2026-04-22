@@ -30,6 +30,7 @@ public class Bank {
     private LocalDate fromTime;
     @Column(name = "b_to_time")
     private LocalDate toTime;
-    @Column(name = "b_status", length = 5 )
+    @Enumerated(EnumType.STRING)
+    @Column(name = "b_status", length = 10 )
     private GeneralStatus status = GeneralStatus.ACTIVE;
 }

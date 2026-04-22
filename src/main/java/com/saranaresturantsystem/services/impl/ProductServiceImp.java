@@ -5,12 +5,12 @@ import com.saranaresturantsystem.dto.request.ProductRequest;
 import com.saranaresturantsystem.dto.response.ProductResponse;
 import com.saranaresturantsystem.entities.Product;
 import com.saranaresturantsystem.entities.ProductStoreQty;
-import com.saranaresturantsystem.entities.status.GeneralStatus;
 import com.saranaresturantsystem.execption.ResourceNotFoundExecption;
 import com.saranaresturantsystem.mappers.ProductMapper;
 import com.saranaresturantsystem.repositories.ProductRepository;
 import com.saranaresturantsystem.repositories.ProductStoreQtyRepository;
 import com.saranaresturantsystem.services.ProductService;
+
 import com.saranaresturantsystem.specification.products.ProductFilter;
 import com.saranaresturantsystem.specification.products.ProductSpec;
 import com.saranaresturantsystem.utils.GloblePagination;
@@ -92,7 +92,7 @@ public class ProductServiceImp implements ProductService {
     @Override
     public void deleteProduct(Long id) {
         Product product = getProductById(id);
-        product.setShowFlag(1);product.setStatus(GeneralStatus.INACTIVE);
+        product.setShowFlag(1);
         productRepository.save(product);
     }
 

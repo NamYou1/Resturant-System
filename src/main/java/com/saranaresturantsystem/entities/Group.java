@@ -22,7 +22,8 @@ public class Group {
     private String name;
     @Column(name = "g_description" )
     private String description;
-    @Column(name = "g_status", length = 5)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "g_status", length = 10)
     private GeneralStatus status = GeneralStatus.ACTIVE;
 //    @OneToMany(mappedBy = "tableGroup", cascade = CascadeType.ALL, orphanRemoval = true)
     @OneToMany(mappedBy = "tableGroup")

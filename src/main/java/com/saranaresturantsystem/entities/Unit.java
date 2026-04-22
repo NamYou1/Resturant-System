@@ -3,7 +3,6 @@ package com.saranaresturantsystem.entities;
 import com.saranaresturantsystem.entities.status.GeneralStatus;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import java.math.BigDecimal;
 
 @Getter
@@ -36,8 +35,8 @@ public class Unit {
     private BigDecimal operationValue;
 
     @Column(name = "un_delete_flag", nullable = false)
-    @ColumnDefault("0")
     private Short deleteFlag = 0;
-    @Column(name = "un_status", length = 5)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "un_status", length = 10)
     private GeneralStatus status = GeneralStatus.ACTIVE ;
 }

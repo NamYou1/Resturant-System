@@ -3,7 +3,7 @@ package com.saranaresturantsystem.dto.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
@@ -16,8 +16,8 @@ public class CategoryResponse {
     private String name;
     private String display;
     private String imageUrl;
-    private LocalDateTime fromTime;
-    private LocalDateTime toTime;
+    private LocalDate fromTime;
+    private LocalDate toTime;
     private  String status ;
 
 

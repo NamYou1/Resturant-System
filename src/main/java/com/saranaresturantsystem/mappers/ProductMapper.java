@@ -28,7 +28,6 @@ public interface ProductMapper {
     @Mapping(target = "section", source = "sectionId")
     @Mapping(target = "unit", source = "unitId")
     @Mapping(target = "image", defaultValue = "no_image.png")
-
     Product toProduct(ProductRequest request);
 
     // Update existing Entity from Request

@@ -28,6 +28,7 @@ public class Supplier {
     private  String email ;
     @Column(name = "sup_address" )
     private String address ;
-    @Column(name = "sup_status" , length = 5 , nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "sup_status" , length = 10 , nullable = false)
     private GeneralStatus status = GeneralStatus.ACTIVE;
 }

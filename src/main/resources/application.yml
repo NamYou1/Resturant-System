@@ -4,13 +4,17 @@ spring:
     application:
         name: sarana-resturant-system
     datasource:
-      url:  jdbc:postgresql://localhost:5432/db-resturant
-      username: ${DB_USERNAME}
-      password: ${DB_PASSWORD}
+      url: ${DB_URL:jdbc:postgresql://localhost:5432/resturatn_db}
+      username: ${DB_USERNAME:postgres}
+      password: ${DB_PASSWORD:123}
       driver-class-name: org.postgresql.Driver
-      Jackson:
-        date-format: yyyy-MM-dd HH:mm:ss
-        time-zone: Asia/Phnom_Penh
+#    sql:
+#      init:
+#        mode: always
+#        separator: @@
+    jackson:
+      date-format: yyyy-MM-dd HH:mm:ss
+      time-zone: Asia/Phnom_Penh
     jpa:
         hibernate:
           ddl-auto: update
@@ -18,10 +22,14 @@ spring:
           hibernate:
             dialect: org.hibernate.dialect.PostgreSQLDialect
           show-sql: true
+
+
+server:
+  port: 8081
 springdoc:
   api-docs:
     enabled: true
 Cloudinary:
-  cloud_name: "df5hvjteu"
-  api_key: "336348351514853"
-  api_secret: "N7PJTOGS1zg7R_-JyeLHm8752rI"
+  cloud_name: ${CLOUDINARY_CLOUD_NAME:}
+  api_key: ${CLOUDINARY_API_KEY:}
+  api_secret: ${CLOUDINARY_API_SECRET:}
