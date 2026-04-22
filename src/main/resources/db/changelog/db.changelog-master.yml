@@ -1,3 +1,0 @@
-#databaseChangeLog:
-#    - include:
-#      file: db/changelog/tables/001_create_table_category.yml

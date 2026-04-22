@@ -1,3 +1,6 @@
+package com.saranaresturantsystem.specification.purchase;
+
+import com.saranaresturantsystem.entities.Purchase;
 package com.saranaresturantsystem.Specification.Purchase;
 
 import com.saranaresturantsystem.Enities.Purchase;
