@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
@@ -29,10 +30,33 @@ public class UniqueChecker {
                 .withIgnorePaths(ignoredFields.toArray(new String[0]))
                 .withMatcher(fieldName, ExampleMatcher.GenericPropertyMatchers.exact());
 
-        if (repo.exists(Example.of(entity, matcher))) {
+        Object entityId = getEntityId(entity);
+        boolean duplicated = repo.findAll(Example.of(entity, matcher)).stream()
+                .anyMatch(found -> !Objects.equals(getEntityId(found), entityId));
+
+        if (duplicated) {
             throw new DuplicateResourceException(
                     fieldName + " '" + value + "' is already in use."
             );
         }
+    }
+
+    private Object getEntityId(Object target) {
+        if (target == null) {
+            return null;
+        }
+        Class<?> current = target.getClass();
+        while (current != null) {
+            try {
+                Field idField = current.getDeclaredField("id");
+                idField.setAccessible(true);
+                return idField.get(target);
+            } catch (NoSuchFieldException ignored) {
+                current = current.getSuperclass();
+            } catch (IllegalAccessException ignored) {
+                return null;
+            }
+        }
+        return null;
     }
 }

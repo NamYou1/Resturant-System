@@ -21,7 +21,8 @@ public class Tables {
     private String name;
     @Column(length = 150 , nullable = false ,unique = true , name = "tbl_order_number")
     private String orderNumber;
-    @Column(name = "tbl_status", length = 5)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tbl_status", length = 10)
     private GeneralStatus status = GeneralStatus.ACTIVE;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id") // The FK in the database

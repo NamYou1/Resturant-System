@@ -16,8 +16,9 @@ public class SubCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sub_category_id")
     private  long id ;
-    @Column(name = "sub_section" , length = 50 , unique = true)
+    @Column(name = "sub_section" , length = 50 , unique = true , nullable = false)
     private  String section ;
+    @Enumerated(EnumType.STRING)
     @Column(name = "sub_status" , length = 10)
     private GeneralStatus status = GeneralStatus.ACTIVE;
     @ManyToOne(fetch = FetchType.LAZY)

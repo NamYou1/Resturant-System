@@ -57,6 +57,7 @@ public class Store {
 
     @Column(name = "st_receipt_footer", columnDefinition = "TEXT")
     private String receiptFooter;
-    @Column(name = "st_status" , length = 5)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "st_status" , length = 10)
     private GeneralStatus status = GeneralStatus.ACTIVE;
 }

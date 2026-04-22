@@ -1,11 +1,10 @@
-package com.saranaresturantsystem.controllers.Products;
+package com.saranaresturantsystem.Controllers.Products;
 
-import com.saranaresturantsystem.dto.PageDTO;
-import com.saranaresturantsystem.dto.request.ProductRequest;
-import com.saranaresturantsystem.dto.response.ApiResponse;
-
-import com.saranaresturantsystem.dto.response.ProductResponse;
-import com.saranaresturantsystem.services.ProductService;
+import com.saranaresturantsystem.DTO.PageDTO;
+import com.saranaresturantsystem.DTO.Request.ProductRequest;
+import com.saranaresturantsystem.DTO.Response.ApiResponse;
+import com.saranaresturantsystem.DTO.Response.ProductResponse;
+import com.saranaresturantsystem.Services.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -31,7 +30,6 @@ public class ProductController {
     @GetMapping
     @Operation(summary = "Get all products with pagination and filters")
     public ResponseEntity<ApiResponse<PageDTO>> getList(@RequestParam Map<String, String> params) {
-
         Page<ProductResponse> productPage = productService.getAllProducts(params);
         PageDTO pageDTO = new PageDTO(productPage);
 
