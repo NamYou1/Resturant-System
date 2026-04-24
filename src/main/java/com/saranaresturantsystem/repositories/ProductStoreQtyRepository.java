@@ -1,6 +1,6 @@
-package com.saranaresturantsystem.repositories;
+package com.saranaresturantsystem.Repositories;
 
-import com.saranaresturantsystem.entities.ProductStoreQty;
+import com.saranaresturantsystem.Enities.ProductStoreQty;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

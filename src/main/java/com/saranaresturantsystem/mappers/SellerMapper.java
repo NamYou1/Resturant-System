@@ -1,8 +1,8 @@
-package com.saranaresturantsystem.mappers;
+package com.saranaresturantsystem.Mappers;
 
-import com.saranaresturantsystem.dto.request.SellerRequest;
-import com.saranaresturantsystem.dto.response.SellerResponse;
-import com.saranaresturantsystem.entities.Seller;
+import com.saranaresturantsystem.DTO.Request.SellerRequest;
+import com.saranaresturantsystem.DTO.Response.SellerResponse;
+import com.saranaresturantsystem.Enities.Seller;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

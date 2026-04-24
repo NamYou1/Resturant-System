@@ -1,7 +1,7 @@
-package com.saranaresturantsystem.services;
+package com.saranaresturantsystem.Services;
 
-import com.saranaresturantsystem.dto.request.SellerRequest;
-import com.saranaresturantsystem.dto.response.SellerResponse;
+import com.saranaresturantsystem.DTO.Request.SellerRequest;
+import com.saranaresturantsystem.DTO.Response.SellerResponse;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

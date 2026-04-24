@@ -1,11 +1,11 @@
-package com.saranaresturantsystem.mappers;
+package com.saranaresturantsystem.Mappers;
 
-import com.saranaresturantsystem.dto.request.ProductRequest;
-import com.saranaresturantsystem.dto.response.ProductResponse;
-import com.saranaresturantsystem.entities.Product;
-import com.saranaresturantsystem.services.CategoryService;
-import com.saranaresturantsystem.services.SubCategoryService;
-import com.saranaresturantsystem.services.UnitServices;
+import com.saranaresturantsystem.DTO.Request.ProductRequest;
+import com.saranaresturantsystem.DTO.Response.ProductResponse;
+import com.saranaresturantsystem.Enities.Product;
+import com.saranaresturantsystem.Services.CategoryService;
+import com.saranaresturantsystem.Services.SubCategoryService;
+import com.saranaresturantsystem.Services.UnitServices;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
