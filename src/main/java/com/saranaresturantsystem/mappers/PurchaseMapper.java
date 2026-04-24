@@ -1,11 +1,11 @@
-package com.saranaresturantsystem.Mappers;
+package com.saranaresturantsystem.mappers;
 
-import com.saranaresturantsystem.DTO.Request.PurchaseItemRequest;
-import com.saranaresturantsystem.DTO.Request.PurchaseRequest;
-import com.saranaresturantsystem.DTO.Response.PurchaseItemResponse;
-import com.saranaresturantsystem.DTO.Response.PurchaseResponse;
-import com.saranaresturantsystem.Enities.Purchase;
-import com.saranaresturantsystem.Enities.PurchaseItem;
+import com.saranaresturantsystem.dto.request.PurchaseItemRequest;
+import com.saranaresturantsystem.dto.request.PurchaseRequest;
+import com.saranaresturantsystem.dto.response.PurchaseItemResponse;
+import com.saranaresturantsystem.dto.response.PurchaseResponse;
+import com.saranaresturantsystem.entities.Purchase;
+import com.saranaresturantsystem.entities.PurchaseItem;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

@@ -1,8 +1,8 @@
-package com.saranaresturantsystem.Services;
+package com.saranaresturantsystem.services;
 
-import com.saranaresturantsystem.DTO.Request.ProductRequest;
-import com.saranaresturantsystem.DTO.Response.ProductResponse;
-import com.saranaresturantsystem.Enities.Product;
+import com.saranaresturantsystem.dto.request.ProductRequest;
+import com.saranaresturantsystem.dto.response.ProductResponse;
+import com.saranaresturantsystem.entities.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 

@@ -1,6 +1,6 @@
-package com.saranaresturantsystem.Repositories;
+package com.saranaresturantsystem.repositories;
 
-import com.saranaresturantsystem.Enities.Product;
+import com.saranaresturantsystem.entities.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;

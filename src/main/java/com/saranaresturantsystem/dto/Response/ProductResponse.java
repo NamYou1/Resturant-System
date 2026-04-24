@@ -1,4 +1,4 @@
-package com.saranaresturantsystem.DTO.Response;
+package com.saranaresturantsystem.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

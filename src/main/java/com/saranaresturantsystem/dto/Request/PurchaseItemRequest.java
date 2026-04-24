@@ -1,4 +1,4 @@
-package com.saranaresturantsystem.DTO.Request;
+package com.saranaresturantsystem.dto.request;
 
 import lombok.Data;
 @Data

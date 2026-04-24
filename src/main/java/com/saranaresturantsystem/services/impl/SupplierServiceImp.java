@@ -22,7 +22,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class SupplierService implements com.saranaresturantsystem.services.SupplierService {
+public class SupplierServiceImp implements com.saranaresturantsystem.services.SupplierService {
     private  final SupplierRepository supplierRepository;
     private  final SupplerMapper supplerMapper ;
     private  final ObjectMapper objectMapper ;
