@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.saranaresturantsystem.mappers.ProductMapper;
 import com.saranaresturantsystem.repositories.ProductRepository;
 import com.saranaresturantsystem.repositories.ProductStoreQtyRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.math.BigDecimal;

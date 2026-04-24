@@ -38,3 +38,37 @@ out/
 
 
 .env
+
+git config core.ignorecase false
+
+# 1) remove the invalid line from .gitignore manually:
+#    git config core.ignorecase false
+
+# 2) ensure repo tracks case
+git config --local core.ignorecase false
+
+# 3) check what HEAD currently tracks (look for uppercase package dirs)
+git ls-tree -r --name-only HEAD | Select-String "src/main/java/com/saranaresturantsystem/(Controllers|DTO|Mappers|Repositories|Services|Specification)"
+
+# 4) force rename through temp names
+git mv src/main/java/com/saranaresturantsystem/Controllers src/main/java/com/saranaresturantsystem/_tmp_Controllers
+git mv src/main/java/com/saranaresturantsystem/_tmp_Controllers src/main/java/com/saranaresturantsystem/controllers
+
+git mv src/main/java/com/saranaresturantsystem/DTO src/main/java/com/saranaresturantsystem/_tmp_DTO
+git mv src/main/java/com/saranaresturantsystem/_tmp_DTO src/main/java/com/saranaresturantsystem/dto
+
+git mv src/main/java/com/saranaresturantsystem/Mappers src/main/java/com/saranaresturantsystem/_tmp_Mappers
+git mv src/main/java/com/saranaresturantsystem/_tmp_Mappers src/main/java/com/saranaresturantsystem/mappers
+
+git mv src/main/java/com/saranaresturantsystem/Repositories src/main/java/com/saranaresturantsystem/_tmp_Repositories
+git mv src/main/java/com/saranaresturantsystem/_tmp_Repositories src/main/java/com/saranaresturantsystem/repositories
+
+git mv src/main/java/com/saranaresturantsystem/Services src/main/java/com/saranaresturantsystem/_tmp_Services
+git mv src/main/java/com/saranaresturantsystem/_tmp_Services src/main/java/com/saranaresturantsystem/services
+
+git mv src/main/java/com/saranaresturantsystem/Specification src/main/java/com/saranaresturantsystem/_tmp_Specification
+git mv src/main/java/com/saranaresturantsystem/_tmp_Specification src/main/java/com/saranaresturantsystem/specification
+
+
+git ls-tree -r --namegit --no-pager diff --name-status --cached
+git ls-tree -r --name-only HEAD | Select-String "src/main/java/com/saranaresturantsystem/(Controllers|DTO|Mappers|Repositories|Services|Specification)"
