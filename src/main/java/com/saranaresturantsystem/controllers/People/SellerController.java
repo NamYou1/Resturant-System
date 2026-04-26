@@ -21,7 +21,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/sellers")
 @Tag(name = "Seller", description = "Endpoints for managing sellers")
-public class SellController {
+public class SellerController {
     private final SellerService sellerService;
 
     @GetMapping
