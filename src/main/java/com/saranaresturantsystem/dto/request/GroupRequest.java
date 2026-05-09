@@ -1,5 +1,6 @@
 package com.saranaresturantsystem.dto.request;
 
+import com.saranaresturantsystem.entities.status.StatusType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -16,4 +17,6 @@ public class GroupRequest {
     @Size(max = 50,message = "Group name must be at most 50 characters")
     private String name;
     private String description;
+
+    private StatusType status = StatusType.ACTIVE;
 }

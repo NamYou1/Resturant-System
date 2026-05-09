@@ -1,10 +1,11 @@
 package com.saranaresturantsystem.entities;
 
-import com.saranaresturantsystem.entities.status.GeneralStatus;
+import com.saranaresturantsystem.entities.status.StatusType;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -31,6 +32,6 @@ public class Bank {
     @Column(name = "b_to_time")
     private LocalDate toTime;
     @Enumerated(EnumType.STRING)
-    @Column(name = "b_status", length = 10 )
-    private GeneralStatus status = GeneralStatus.ACTIVE;
+    @Column( length = 10 )
+    private StatusType status ;
 }

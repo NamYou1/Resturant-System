@@ -1,4 +1,4 @@
-package com.saranaresturantsystem.controllers.purchases;
+package com.saranaresturantsystem.controllers.Purchases;
 
 import com.saranaresturantsystem.dto.PageDTO;
 import com.saranaresturantsystem.dto.request.PurchaseRequest;

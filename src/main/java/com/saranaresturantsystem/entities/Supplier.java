@@ -1,6 +1,6 @@
 package com.saranaresturantsystem.entities;
 
-import com.saranaresturantsystem.entities.status.GeneralStatus;
+import com.saranaresturantsystem.entities.status.StatusType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +29,6 @@ public class Supplier {
     @Column(name = "sup_address" )
     private String address ;
     @Enumerated(EnumType.STRING)
-    @Column(name = "sup_status" , length = 10 , nullable = false)
-    private GeneralStatus status = GeneralStatus.ACTIVE;
+    @Column( length = 10 )
+    private StatusType status ;
 }

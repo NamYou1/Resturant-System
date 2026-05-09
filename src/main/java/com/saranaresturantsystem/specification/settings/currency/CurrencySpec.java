@@ -1,9 +1,6 @@
 package com.saranaresturantsystem.specification.settings.currency;
 
 import com.saranaresturantsystem.entities.Currency;
-import com.saranaresturantsystem.entities.Group;
-import com.saranaresturantsystem.entities.status.GeneralStatus;
-import com.saranaresturantsystem.specification.settings.groups.GroupFilter;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 

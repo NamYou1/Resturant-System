@@ -4,14 +4,14 @@ import com.saranaresturantsystem.common.UniqueChecker;
 import com.saranaresturantsystem.dto.request.GroupRequest;
 import com.saranaresturantsystem.dto.response.GroupResponse;
 import com.saranaresturantsystem.entities.Group;
-import com.saranaresturantsystem.entities.status.GeneralStatus;
-import com.saranaresturantsystem.execption.ResourceNotFoundExecption;
+import com.saranaresturantsystem.entities.status.StatusType;
+import com.saranaresturantsystem.execption.ResourceNotFoundException;
 import com.saranaresturantsystem.mappers.GroupMapper;
 import com.saranaresturantsystem.repositories.GroupRepository;
 import com.saranaresturantsystem.services.GroupService;
 import com.saranaresturantsystem.specification.settings.groups.GroupFilter;
 import com.saranaresturantsystem.specification.settings.groups.GroupSpec;
-import com.saranaresturantsystem.utils.GloblePagination;
+import com.saranaresturantsystem.utils.PageUtil;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
@@ -37,12 +37,12 @@ public class GroupServiceImp implements GroupService {
     @Override
     public Page<GroupResponse> getAllGroups(Map<String, String> params) {
         GroupFilter filter = objectMapper.convertValue(params, GroupFilter.class);
-        int pageNumber = params.containsKey(GloblePagination.PAGE_NUMBER)
-                ? Integer.parseInt(params.get(GloblePagination.PAGE_NUMBER))
-                : GloblePagination.DEFAULT_PAGE_NUMBER;
-        int pageSize = params.containsKey(GloblePagination.PAGE_LIMIT)
-                ? Integer.parseInt(params.get(GloblePagination.PAGE_LIMIT))
-                : GloblePagination.DEFAULT_PAGE_LIMIT;
+        int pageNumber = params.containsKey(PageUtil.PAGE_NUMBER)
+                ? Integer.parseInt(params.get(PageUtil.PAGE_NUMBER))
+                : PageUtil.DEFAULT_PAGE_SIZE;
+        int pageSize = params.containsKey(PageUtil.PAGE_LIMIT)
+                ? Integer.parseInt(params.get(PageUtil.PAGE_LIMIT))
+                : PageUtil.DEFAULT_PAGE;
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Specification<Group> spec = GroupSpec.filterBy(filter);
         return  groupRepository.findAll(spec, pageable).map(groupMapper::toResponse);
@@ -80,13 +80,13 @@ public class GroupServiceImp implements GroupService {
     @Transactional
     public void deleteGroup(@Positive Long id) {
         Group exitstingGroup = findById(id);
-        exitstingGroup.setStatus(GeneralStatus.INACTIVE);
+        exitstingGroup.setStatus(StatusType.INACTIVE);
         groupRepository.save(exitstingGroup);
     }
 
     @Override
     public Group findById(@Positive Long id) {
         return  groupRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundExecption("Group", id));
+                .orElseThrow(() -> new ResourceNotFoundException("Group", id));
     }
 }

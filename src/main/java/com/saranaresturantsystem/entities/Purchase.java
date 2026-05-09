@@ -1,5 +1,8 @@
 package com.saranaresturantsystem.entities;
 
+import com.saranaresturantsystem.entities.status.PaymentStatus;
+import com.saranaresturantsystem.entities.status.PurchaseStatus;
+import com.saranaresturantsystem.entities.status.StatusType;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
@@ -22,7 +25,6 @@ public class Purchase {
     private String reference;
 
     private LocalDateTime date = LocalDateTime.now();
-
     @Column(length = 1000)
     private String note;
 
@@ -49,18 +51,22 @@ public class Purchase {
 
     @Column(name = "total_discount")
     private BigDecimal totalDiscount = BigDecimal.ZERO;
-
-    @Column(name = "delete_flag")
-    private Integer deleteFlag = 0;
-
-    @Column(name = "purchases_status", length = 20)
-    private String purchasesStatus;
-
     @Column(name = "grand_total", precision = 14, scale = 4)
     private BigDecimal grandTotal = BigDecimal.ZERO;
 
-    @Column(name = "payment_status", length = 20)
-    private String paymentStatus;
+
+    @Enumerated(EnumType.STRING)
+    @Column( length = 20)
+    private PurchaseStatus purchasesStatus;
+
+
+    @Enumerated(EnumType.STRING)
+    @Column( length = 20)
+    private PaymentStatus paymentStatus;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 10)
+    private StatusType status ;
 
     @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PurchaseItem> items = new ArrayList<>();

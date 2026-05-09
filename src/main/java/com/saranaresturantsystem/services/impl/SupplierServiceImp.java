@@ -4,13 +4,13 @@ import com.saranaresturantsystem.common.UniqueChecker;
 import com.saranaresturantsystem.dto.request.SupplierRequest;
 import com.saranaresturantsystem.dto.response.SupplierResponse;
 import com.saranaresturantsystem.entities.Supplier;
-import com.saranaresturantsystem.entities.status.GeneralStatus;
-import com.saranaresturantsystem.execption.ResourceNotFoundExecption;
+import com.saranaresturantsystem.entities.status.StatusType;
+import com.saranaresturantsystem.execption.ResourceNotFoundException;
 import com.saranaresturantsystem.mappers.SupplerMapper;
 import com.saranaresturantsystem.repositories.SupplierRepository;
 import com.saranaresturantsystem.specification.peoples.suppliers.SupplerFilter;
 import com.saranaresturantsystem.specification.peoples.suppliers.SupplerSpec;
-import com.saranaresturantsystem.utils.GloblePagination;
+import com.saranaresturantsystem.utils.PageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,12 +32,12 @@ public class SupplierServiceImp implements com.saranaresturantsystem.services.Su
     @Override
     public Page<SupplierResponse> getListSupplier(Map<String, String> params) {
         SupplerFilter filter = objectMapper.convertValue(params, SupplerFilter.class);
-        int pageNumber = params.containsKey(GloblePagination.PAGE_NUMBER)
-                ? Integer.parseInt(params.get(GloblePagination.PAGE_NUMBER))
-                : GloblePagination.DEFAULT_PAGE_NUMBER;
-        int pageSize = params.containsKey(GloblePagination.PAGE_LIMIT)
-                ? Integer.parseInt(params.get(GloblePagination.PAGE_LIMIT))
-                : GloblePagination.DEFAULT_PAGE_LIMIT;
+        int pageNumber = params.containsKey(PageUtil.PAGE_NUMBER)
+                ? Integer.parseInt(params.get(PageUtil.PAGE_NUMBER))
+                : PageUtil.DEFAULT_PAGE_SIZE;
+        int pageSize = params.containsKey(PageUtil.PAGE_LIMIT)
+                ? Integer.parseInt(params.get(PageUtil.PAGE_LIMIT))
+                : PageUtil.DEFAULT_PAGE;
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Specification<Supplier> spec = SupplerSpec.filterBy(filter);
         return  supplierRepository.findAll(spec, pageable).map(supplerMapper::toSupplierResponse);
@@ -56,7 +56,7 @@ public class SupplierServiceImp implements com.saranaresturantsystem.services.Su
     @Override
     public SupplierResponse updateSupplier(Long id, SupplierRequest request) {
         Supplier supplier = findSupplierById(id);
-        supplerMapper.updateEnityFromRequest(request, supplier);
+        supplerMapper.updateEntityFromRequest(request, supplier);
         uniqueChecker.verify(supplierRepository , supplier , "name" , supplier.getName());
         uniqueChecker.verify(supplierRepository , supplier , "phone" , supplier.getPhone());
         uniqueChecker.verify(supplierRepository , supplier , "email" , supplier.getEmail());
@@ -66,13 +66,13 @@ public class SupplierServiceImp implements com.saranaresturantsystem.services.Su
 
     @Override
     public Supplier findSupplierById(Long Id) {
-        return supplierRepository.findById(Id).orElseThrow(()->new ResourceNotFoundExecption("Supplier " , Id));
+        return supplierRepository.findById(Id).orElseThrow(()->new ResourceNotFoundException("Supplier " , Id));
     }
 
     @Override
     public void deleteSupplier(Long id) {
         Supplier supplier = findSupplierById(id);
-        supplier.setStatus(GeneralStatus.INACTIVE);
+        supplier.setStatus(StatusType.INACTIVE);
         supplierRepository.save(supplier);
     }
 

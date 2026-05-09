@@ -19,9 +19,12 @@ public interface GroupMapper {
 
     // 3. Convert Request DTO to Entity (for creation)
     @Mapping(target = "id", ignore = true) // ID is auto-generated
+    @Mapping(target = "tables" , ignore = true)
     Group toEntity(GroupRequest request);
 
     // 4. Update existing Entity from Request DTO
     @Mapping(target = "id", ignore = true) // Don't change the ID during update
+    @Mapping(target = "tables" , ignore = true)
+
     void updateEntityFromRequest(GroupRequest request, @MappingTarget Group entity);
 }

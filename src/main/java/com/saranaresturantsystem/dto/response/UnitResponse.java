@@ -17,5 +17,5 @@ public class UnitResponse {
     private String name;
     private String operation;
     private BigDecimal operationValue;
-    private int deleteFlag;
+    private  String status ;
 }

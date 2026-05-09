@@ -10,7 +10,8 @@ public class PurchaseItemResponse {
     private String productName;
     private String productCode;
     private BigDecimal quantity;
-    private BigDecimal cost;
+
+    private BigDecimal costPrice;
     private BigDecimal totalDiscount;
     private BigDecimal subtotal;
     private String unitName;

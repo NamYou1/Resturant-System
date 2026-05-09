@@ -25,12 +25,12 @@ public interface TableMapper {
     // Request DTO -> Entity (For Creation)
     @Mapping(target = "tableId", ignore = true)
     @Mapping(target = "tableGroup", source = "groupId") // Handled in Service
-    @Mapping(target = "status" , ignore = true)
+//    @Mapping(target = "status" , ignore = true)
     Tables toEntity(TableRequest request);
 
     // Update existing Entity from Request DTO
     @Mapping(target = "tableId", ignore = true)
     @Mapping(target = "tableGroup", source = "groupId") // Handled in Service
-    @Mapping(target = "status" , ignore = true)
+//    @Mapping(target = "status" , ignore = true)
     void updateEntityFromRequest(TableRequest request, @MappingTarget Tables entity);
 }

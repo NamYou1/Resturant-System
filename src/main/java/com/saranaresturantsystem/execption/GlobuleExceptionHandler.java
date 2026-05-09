@@ -13,10 +13,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @ControllerAdvice
-public class GbobleExecptionHandler {
+public class GlobuleExceptionHandler {
     // check api response
-    @ExceptionHandler(value =  ApiExecption.class)
-    public ResponseEntity<?> handleApiExecption(ApiExecption e){
+    @ExceptionHandler(value =  ApiException.class)
+    public ResponseEntity<?> handleApiExecption(ApiException e){
         ErrorResponse errorResponse = new ErrorResponse(e.getStatus() , e.getMessage());
         return  ResponseEntity.status(e.getStatus()).body(errorResponse);
     }

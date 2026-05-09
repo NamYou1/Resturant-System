@@ -1,5 +1,6 @@
 package com.saranaresturantsystem.dto.request;
 
+import com.saranaresturantsystem.entities.status.StatusType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -15,7 +16,7 @@ public class TableRequest {
     @NotNull(message = "Name can't null")
     @Size(max = 25,message = "Table name must be at most 25 characters")
     private String name;
-
+    private StatusType status = StatusType.ACTIVE;
     @NotBlank(message = "Order Number is required")
     private String orderNumber;
     @NotNull(message = "Group ID is required")

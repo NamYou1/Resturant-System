@@ -11,7 +11,6 @@ import org.mapstruct.MappingTarget;
 public interface UnitMapper {
     UnitResponse toUnitResponse(Unit unit);
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "deleteFlag", constant = "0")
     Unit toUnit(UnitRequest request);
     @Mapping(target = "id", ignore = true)
     void updateUnitFromRequest(UnitRequest request, @MappingTarget Unit unit);

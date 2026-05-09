@@ -1,4 +1,4 @@
-package com.saranaresturantsystem.controllers.products;
+package com.saranaresturantsystem.controllers.Products;
 
 import com.saranaresturantsystem.dto.PageDTO;
 import com.saranaresturantsystem.dto.request.ProductRequest;
@@ -13,9 +13,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.beans.PropertyEditorSupport;
 import java.time.Instant;
 import java.util.Map;
 
@@ -26,7 +28,24 @@ import java.util.Map;
 public class ProductController {
 
     private final ProductService productService;
+    @InitBinder
+    public  void initBinder(WebDataBinder binder){
+        binder.registerCustomEditor(MultipartFile.class, new PropertyEditorSupport(){;
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                // No need to implement this method for MultipartFile
+            }
 
+            @Override
+            public void setValue(Object value) {
+                if (value instanceof MultipartFile) {
+                    super.setValue(value);
+                } else {
+                    super.setValue(null);
+                }
+            }
+        });
+    }
     @GetMapping
     @Operation(summary = "Get all products with pagination and filters")
     public ResponseEntity<ApiResponse<PageDTO>> getList(@RequestParam Map<String, String> params) {
@@ -61,10 +80,10 @@ public class ProductController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Create a new product with an optional image")
     public ResponseEntity<ApiResponse<ProductResponse>> create(
-            @Valid @ModelAttribute ProductRequest request, // Use @ModelAttribute instead of @RequestPart
-            @RequestParam(value = "file", required = false) MultipartFile file) {
+            @Valid @ModelAttribute ProductRequest request // Use @ModelAttribute instead of @RequestPart
+          ) {
 
-        ProductResponse productResponse = productService.createProduct(request, file);
+        ProductResponse productResponse = productService.createProduct(request);
 
         ApiResponse<ProductResponse> response = ApiResponse.<ProductResponse>builder()
                 .succeess(true)
@@ -81,10 +100,9 @@ public class ProductController {
     @Operation(summary = "Update product details and image")
     public ResponseEntity<ApiResponse<ProductResponse>> update(
             @PathVariable Long id,
-            @Valid @ModelAttribute ProductRequest request,
-            @RequestParam(value = "file", required = false) MultipartFile file) {
+            @Valid @ModelAttribute ProductRequest request) {
 
-        ProductResponse productResponse = productService.updateProduct(id, request, file);
+        ProductResponse productResponse = productService.updateProduct(id, request);
 
         ApiResponse<ProductResponse> response = ApiResponse.<ProductResponse>builder()
                 .succeess(true)
@@ -97,18 +115,17 @@ public class ProductController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/{id}")
+
+    @PostMapping("/{id}")
     @Operation(summary = "Soft delete a product by changing its visibility")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         productService.deleteProduct(id);
-
         ApiResponse<Void> response = ApiResponse.<Void>builder()
                 .succeess(true)
                 .status(HttpStatus.OK)
                 .message("Product deleted successfully")
                 .timestamp(Instant.now())
                 .build();
-
         return ResponseEntity.ok(response);
     }
 }

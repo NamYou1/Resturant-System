@@ -1,7 +1,7 @@
 package com.saranaresturantsystem.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.saranaresturantsystem.entities.status.GeneralStatus;
+import com.saranaresturantsystem.entities.status.StatusType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,8 +19,8 @@ public class SubCategory {
     @Column(name = "sub_section" , length = 50 , unique = true , nullable = false)
     private  String section ;
     @Enumerated(EnumType.STRING)
-    @Column(name = "sub_status" , length = 10)
-    private GeneralStatus status = GeneralStatus.ACTIVE;
+    @Column( length = 10 )
+    private StatusType status ;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

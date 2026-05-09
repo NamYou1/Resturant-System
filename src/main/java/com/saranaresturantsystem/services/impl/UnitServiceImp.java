@@ -4,14 +4,14 @@ import com.saranaresturantsystem.common.UniqueChecker;
 import com.saranaresturantsystem.dto.request.UnitRequest;
 import com.saranaresturantsystem.dto.response.UnitResponse;
 import com.saranaresturantsystem.entities.Unit;
-import com.saranaresturantsystem.entities.status.GeneralStatus;
-import com.saranaresturantsystem.execption.ResourceNotFoundExecption;
+import com.saranaresturantsystem.entities.status.StatusType;
+import com.saranaresturantsystem.execption.ResourceNotFoundException;
 import com.saranaresturantsystem.mappers.UnitMapper;
 import com.saranaresturantsystem.repositories.UnitRepository;
 import com.saranaresturantsystem.services.UnitServices;
 import com.saranaresturantsystem.specification.settings.units.UnitFilter; // You'll need to create this
 import com.saranaresturantsystem.specification.settings.units.UnitSpec;     // You'll need to create this
-import com.saranaresturantsystem.utils.GloblePagination;
+import com.saranaresturantsystem.utils.PageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,13 +33,13 @@ public class UnitServiceImp implements UnitServices {
     @Override
     public Page<UnitResponse> getAllUnits(Map<String, String> params) {
         UnitFilter filter = objectMapper.convertValue(params, UnitFilter.class);
-        int pageLimit = params.containsKey(GloblePagination.DEFAULT_PAGE_LIMIT)
-                ? Integer.parseInt(params.get(GloblePagination.DEFAULT_PAGE_LIMIT))
-                : GloblePagination.DEFAULT_PAGE_LIMIT;
-        int pageNumber = params.containsKey(GloblePagination.DEFAULT_PAGE_NUMBER)
-                ? Integer.parseInt(params.get(GloblePagination.DEFAULT_PAGE_NUMBER))
-                : 0;
-        Pageable pageable = PageRequest.of(pageNumber, pageLimit);
+        int pageNumber = params.containsKey(PageUtil.PAGE_NUMBER)
+                ? Integer.parseInt(params.get(PageUtil.PAGE_NUMBER))
+                : PageUtil.DEFAULT_PAGE_SIZE;
+        int pageSize = params.containsKey(PageUtil.PAGE_LIMIT)
+                ? Integer.parseInt(params.get(PageUtil.PAGE_LIMIT))
+                : PageUtil.DEFAULT_PAGE;
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Specification<Unit> spec = UnitSpec.filterBy(filter);
         return unitRepository.findAll(spec, pageable)
                 .map(unitMapper::toUnitResponse);
@@ -47,7 +47,7 @@ public class UnitServiceImp implements UnitServices {
     @Override
     public Unit getUnitById(Long id) {
         return unitRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundExecption("Unit", id));
+                .orElseThrow(() -> new ResourceNotFoundException("Unit", id));
     }
     @Override
     public UnitResponse findById(Long id) {
@@ -72,7 +72,7 @@ public class UnitServiceImp implements UnitServices {
     public void deleteUnit(Long id) {
         Unit unit = getUnitById(id);
 //        unit.setDeleteFlag(1);
-        unit.setStatus(GeneralStatus.INACTIVE);
+        unit.setStatus(StatusType.INACTIVE);
         unitRepository.save(unit);
     }
 }

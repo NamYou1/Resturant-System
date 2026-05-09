@@ -16,7 +16,7 @@ public class PurchaseItem {
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "purchase_id", nullable = false)
-    private Purchase purchase;
+        private Purchase purchase;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
@@ -25,7 +25,7 @@ public class PurchaseItem {
     @Column(name = "total_discount")
     private BigDecimal totalDiscount;
     @Column(nullable = false, precision = 25, scale = 4)
-    private BigDecimal cost;
+    private BigDecimal costPrice;
     @Column(nullable = false, precision = 25, scale = 4)
     private BigDecimal subtotal; // (cost * quantity) - item_discount
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,5 +34,5 @@ public class PurchaseItem {
     @Column(name = "real_unit_cost")
     private BigDecimal realUnitCost;
     @Column(name = "store_id")
-    private Integer storeId;
+    private Long storeId;
 }

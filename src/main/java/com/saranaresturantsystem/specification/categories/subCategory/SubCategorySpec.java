@@ -1,7 +1,7 @@
 package com.saranaresturantsystem.specification.categories.subCategory;
 
 import com.saranaresturantsystem.entities.SubCategory;
-import com.saranaresturantsystem.entities.status.GeneralStatus;
+import com.saranaresturantsystem.entities.status.StatusType;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -13,7 +13,7 @@ public class SubCategorySpec {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             // Always filter by ACTIVE status (soft delete)
-            predicates.add(cb.equal(root.get("status"), GeneralStatus.ACTIVE));
+            predicates.add(cb.equal(root.get("status"), StatusType.ACTIVE));
 
             if (filter.getCategoryId() != null) {
                 predicates.add(cb.equal(root.get("categoryId"), filter.getCategoryId()));

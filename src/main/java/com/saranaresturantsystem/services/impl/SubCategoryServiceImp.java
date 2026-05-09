@@ -4,14 +4,14 @@ import com.saranaresturantsystem.common.UniqueChecker;
 import com.saranaresturantsystem.dto.request.SubCategoryRequest;
 import com.saranaresturantsystem.dto.response.SubCategoryResponse;
 import com.saranaresturantsystem.entities.SubCategory;
-import com.saranaresturantsystem.entities.status.GeneralStatus;
-import com.saranaresturantsystem.execption.ResourceNotFoundExecption;
+import com.saranaresturantsystem.entities.status.StatusType;
+import com.saranaresturantsystem.execption.ResourceNotFoundException;
 import com.saranaresturantsystem.mappers.SubCategoryMapper;
 import com.saranaresturantsystem.repositories.SubCategoryRepository;
 import com.saranaresturantsystem.services.SubCategoryService;
 import com.saranaresturantsystem.specification.categories.subCategory.SubCategoryFilter;
 import com.saranaresturantsystem.specification.categories.subCategory.SubCategorySpec;
-import com.saranaresturantsystem.utils.GloblePagination;
+import com.saranaresturantsystem.utils.PageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,12 +33,12 @@ public class SubCategoryServiceImp implements SubCategoryService {
     @Override
     public Page<SubCategoryResponse> getAllSubCategory(Map<String, String> params) {
         SubCategoryFilter filter = objectMapper.convertValue(params, SubCategoryFilter.class);
-        int pageNumber = params.containsKey(GloblePagination.PAGE_NUMBER)
-                ? Integer.parseInt(params.get(GloblePagination.PAGE_NUMBER))
-                : GloblePagination.DEFAULT_PAGE_NUMBER;
-        int pageSize = params.containsKey(GloblePagination.PAGE_LIMIT)
-                ? Integer.parseInt(params.get(GloblePagination.PAGE_LIMIT))
-                : GloblePagination.DEFAULT_PAGE_LIMIT;
+        int pageNumber = params.containsKey(PageUtil.PAGE_NUMBER)
+                ? Integer.parseInt(params.get(PageUtil.PAGE_NUMBER))
+                : PageUtil.DEFAULT_PAGE_SIZE;
+        int pageSize = params.containsKey(PageUtil.PAGE_LIMIT)
+                ? Integer.parseInt(params.get(PageUtil.PAGE_LIMIT))
+                : PageUtil.DEFAULT_PAGE;
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Specification<SubCategory> spec = SubCategorySpec.filterBy(filter);
         return subCategoryRepository.findAll(spec  , pageable).map(subCategoryMapper::toSubCategoryResponse);
@@ -46,7 +46,7 @@ public class SubCategoryServiceImp implements SubCategoryService {
 
     @Override
     public SubCategory getSubCategoryById(Long id) {
-        return subCategoryRepository.findById(id).orElseThrow(()->new ResourceNotFoundExecption("SubCategory" , id));
+        return subCategoryRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("SubCategory" , id));
     }
 
     @Override
@@ -61,7 +61,7 @@ public class SubCategoryServiceImp implements SubCategoryService {
     @Override
     public void deleteSubCategory(Long id) {
         SubCategory exitId = getSubCategoryById(id);
-        exitId.setStatus(GeneralStatus.INACTIVE);
+        exitId.setStatus(StatusType.INACTIVE);
        subCategoryRepository.save(exitId);
     }
 

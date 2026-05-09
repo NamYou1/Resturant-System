@@ -27,7 +27,7 @@ public interface ProductMapper {
     @Mapping(target = "category", source = "categoryId")
     @Mapping(target = "section", source = "sectionId")
     @Mapping(target = "unit", source = "unitId")
-    @Mapping(target = "image", defaultValue = "no_image.png")
+    @Mapping(target = "image", ignore = true)
     Product toProduct(ProductRequest request);
 
     // Update existing Entity from Request
@@ -35,5 +35,6 @@ public interface ProductMapper {
     @Mapping(target = "category", source = "categoryId")
     @Mapping(target = "section", source = "sectionId")
     @Mapping(target = "unit", source = "unitId")
+    @Mapping(target = "image", ignore = true)
     void updateProductFromRequest(ProductRequest request, @MappingTarget Product product);
 }

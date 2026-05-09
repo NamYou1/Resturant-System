@@ -16,4 +16,5 @@ public class CurrencyResponse {
     private  String operation ;
     private  double rate ;
     private  String symbol ;
+    private  String status ;
 }

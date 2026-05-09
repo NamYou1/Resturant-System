@@ -16,13 +16,13 @@ public class ProductResponse {
     private Long id;
     private String code;
     private String name;
-    private BigDecimal price;
-    private BigDecimal cost;
+    private BigDecimal salePrice;
+    private BigDecimal costPrice;
     private String image;
     private String type;
     private String details;
     private BigDecimal alertQuantity;
-    private Integer showFlag;
+
     private Long categoryId;
     private String categoryName;
     private Long sectionId;
@@ -32,4 +32,5 @@ public class ProductResponse {
     private Integer defaultSaleUnit;
     private Integer defaultPurchaseUnit;
     private Integer printer;
+    private  String status ;
 }

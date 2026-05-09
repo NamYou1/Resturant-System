@@ -1,6 +1,6 @@
 package com.saranaresturantsystem.entities;
 
-import com.saranaresturantsystem.entities.status.GeneralStatus;
+import com.saranaresturantsystem.entities.status.StatusType;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
@@ -34,9 +34,7 @@ public class Unit {
     @Column(name = "un_operation_value", precision = 10, scale = 2)
     private BigDecimal operationValue;
 
-    @Column(name = "un_delete_flag", nullable = false)
-    private Short deleteFlag = 0;
     @Enumerated(EnumType.STRING)
-    @Column(name = "un_status", length = 10)
-    private GeneralStatus status = GeneralStatus.ACTIVE ;
+    @Column( length = 10 )
+    private StatusType status ;
 }

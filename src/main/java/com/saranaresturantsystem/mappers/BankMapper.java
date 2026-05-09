@@ -11,9 +11,7 @@ import org.mapstruct.MappingTarget;
 public interface BankMapper {
     BankResponse toBankResponse (Bank bank);
     @Mapping(target = "id",ignore = true)
-    @Mapping(target = "status" , ignore = true)
     Bank toBank(BankRequest request);
     @Mapping(target = "id",ignore = true)
-//    @Mapping(target = "status" , ignore = true)
     void updateEntityFromRequest(BankRequest request, @MappingTarget Bank entity);
 }

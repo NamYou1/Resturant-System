@@ -1,8 +1,10 @@
 package com.saranaresturantsystem.entities;
 
-import com.saranaresturantsystem.entities.status.GeneralStatus;
+import com.saranaresturantsystem.entities.status.StatusType;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -58,6 +60,7 @@ public class Store {
     @Column(name = "st_receipt_footer", columnDefinition = "TEXT")
     private String receiptFooter;
     @Enumerated(EnumType.STRING)
-    @Column(name = "st_status" , length = 10)
-    private GeneralStatus status = GeneralStatus.ACTIVE;
+    @Column( length = 10 )
+    private StatusType status ;
+
 }

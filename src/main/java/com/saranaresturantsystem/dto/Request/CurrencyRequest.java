@@ -1,5 +1,6 @@
 package com.saranaresturantsystem.dto.request;
 
+import com.saranaresturantsystem.entities.status.StatusType;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class CurrencyRequest {
     @NotNull(message = "Currency code is required")
     private  String code ;
@@ -18,4 +18,6 @@ public class CurrencyRequest {
     private String operation ;
     private  double rate ;
     private  String symbol ;
+
+    private StatusType status = StatusType.ACTIVE;
 }

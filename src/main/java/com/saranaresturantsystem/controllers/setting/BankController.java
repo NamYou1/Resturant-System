@@ -41,9 +41,9 @@ public class BankController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Bank>> getBankById(@PathVariable Long id) {
-        Bank banResponse = bankService.getBankById(id);
-        ApiResponse<Bank> response = ApiResponse.<Bank>builder()
+    public ResponseEntity<ApiResponse<BankResponse>> getBankById(@PathVariable Long id) {
+        BankResponse banResponse = bankService.getBankResponseById(id);
+        ApiResponse<BankResponse> response = ApiResponse.<BankResponse>builder()
                 .succeess(true)
                 .status(HttpStatus.OK)
                 .message("Bank retrieved successfully")

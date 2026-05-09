@@ -17,5 +17,5 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     List<Product> findByCategoryId(Long categoryId);
     @Query("SELECT p FROM Product p JOIN ProductStoreQty q ON q.product.id = p.id " +
             "WHERE q.storeId = :storeId AND q.quantity <= p.alertQuantity")
-    List<Product> findLowStockProducts(@Param("storeId") Integer storeId);
+    List<Product> findLowStockProducts(@Param("storeId") Long storeId);
 }

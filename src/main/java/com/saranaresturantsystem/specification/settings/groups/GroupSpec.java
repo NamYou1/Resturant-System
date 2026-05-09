@@ -1,10 +1,9 @@
 package com.saranaresturantsystem.specification.settings.groups;
 
 import com.saranaresturantsystem.entities.Group;
-import com.saranaresturantsystem.entities.status.GeneralStatus;
+import com.saranaresturantsystem.entities.status.StatusType;
 import org.springframework.data.jpa.domain.Specification;
 import jakarta.persistence.criteria.Predicate;
-import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,7 @@ public class GroupSpec {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             // Always filter by ACTIVE status (soft delete)
-            predicates.add(cb.equal(root.get("status"), GeneralStatus.ACTIVE));
+            predicates.add(cb.equal(root.get("status"), StatusType.ACTIVE));
 
             if (filter.getName() != null && !filter.getName().isEmpty()) {
                 predicates.add(cb.like(root.get("name"), "%" + filter.getName() + "%"));

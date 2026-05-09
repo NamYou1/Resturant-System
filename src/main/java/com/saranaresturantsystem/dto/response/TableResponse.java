@@ -14,6 +14,7 @@ public class TableResponse {
     private Long id;
     private String name;
     private String orderNumber;
+    private  String status ;
 //    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Long  groupId;
     private  String groupName;

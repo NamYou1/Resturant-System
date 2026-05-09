@@ -21,11 +21,12 @@ public class ProductStoreQty {
     private Product product;
 
     @Column(name = "store_id", nullable = false)
-    private Integer storeId;
+    private Long storeId;
 
     @Column(precision = 15, scale = 4, columnDefinition = "NUMERIC(15,4) DEFAULT 0")
     private BigDecimal quantity = BigDecimal.ZERO;
 
     @Column(precision = 25, scale = 4)
     private BigDecimal price;
+
 }

@@ -4,14 +4,14 @@ import com.saranaresturantsystem.common.UniqueChecker;
 import com.saranaresturantsystem.dto.request.TableRequest;
 import com.saranaresturantsystem.dto.response.TableResponse;
 import com.saranaresturantsystem.entities.Tables;
-import com.saranaresturantsystem.entities.status.GeneralStatus;
-import com.saranaresturantsystem.execption.ResourceNotFoundExecption;
+import com.saranaresturantsystem.entities.status.StatusType;
+import com.saranaresturantsystem.execption.ResourceNotFoundException;
 import com.saranaresturantsystem.mappers.TableMapper;
 import com.saranaresturantsystem.repositories.TableRepository;
 import com.saranaresturantsystem.services.TableService;
 import com.saranaresturantsystem.specification.settings.tables.TableFilter;
 import com.saranaresturantsystem.specification.settings.tables.TableSpec;
-import com.saranaresturantsystem.utils.GloblePagination;
+import com.saranaresturantsystem.utils.PageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,12 +35,12 @@ public class TableServiceImp implements TableService {
     @Override
     public Page<TableResponse> getAllTables(Map<String, String> params) {
         TableFilter filter =  objectMapper.convertValue(params, TableFilter.class);
-        int pageNumber = params.containsKey(GloblePagination.PAGE_NUMBER)
-                ? Integer.parseInt(params.get(GloblePagination.PAGE_NUMBER))
-                : GloblePagination.DEFAULT_PAGE_NUMBER;
-        int pageSize = params.containsKey(GloblePagination.PAGE_LIMIT)
-                ? Integer.parseInt(params.get(GloblePagination.PAGE_LIMIT))
-                : GloblePagination.DEFAULT_PAGE_LIMIT;
+        int pageNumber = params.containsKey(PageUtil.PAGE_NUMBER)
+                ? Integer.parseInt(params.get(PageUtil.PAGE_NUMBER))
+                : PageUtil.DEFAULT_PAGE_SIZE;
+        int pageSize = params.containsKey(PageUtil.PAGE_LIMIT)
+                ? Integer.parseInt(params.get(PageUtil.PAGE_LIMIT))
+                : PageUtil.DEFAULT_PAGE;
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Specification<Tables> spec = TableSpec.filterBy(filter);
         return  tableRepository.findAll(spec, pageable).map(tableMapper::toResponse);
@@ -76,12 +76,12 @@ public class TableServiceImp implements TableService {
     @Transactional
     public void deleteTable(Long id) {
         Tables tables = findById(id);
-        tables.setStatus(GeneralStatus.INACTIVE);
+        tables.setStatus(StatusType.INACTIVE);
         tableRepository.save(tables);
     }
 
     @Override
     public Tables findById(Long id) {
-        return  tableRepository.findById(id).orElseThrow(() -> new ResourceNotFoundExecption("Table", id));
+        return  tableRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Table", id));
     }
 }

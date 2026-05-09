@@ -1,6 +1,6 @@
 package com.saranaresturantsystem.entities.status;
 
-public enum GeneralStatus {
+public enum StatusType {
     ACTIVE ,
     INACTIVE
 

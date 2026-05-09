@@ -1,5 +1,7 @@
 package com.saranaresturantsystem.dto.request;
 
+import com.saranaresturantsystem.entities.status.StatusType;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -18,6 +20,8 @@ public class SupplierRequest {
     @NotNull(message = "Phone is required ")
     @Size(max = 15, message = "Phone number must be at most 15 characters")
     private  String phone ;
+    @Email(message = "Invalid email format")
     private  String email ;
     private String address ;
+    private StatusType status = StatusType.ACTIVE;
 }

@@ -14,6 +14,6 @@ public interface   SupplerMapper {
     @Mapping(target = "id", ignore = true)
     Supplier toSuppler(SupplierRequest request);
     @Mapping(target = "id", ignore = true)
-    void updateEnityFromRequest(SupplierRequest request, @MappingTarget Supplier supplier);
+    void updateEntityFromRequest(SupplierRequest request, @MappingTarget Supplier supplier);
 
 }

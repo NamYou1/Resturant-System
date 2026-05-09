@@ -1,6 +1,6 @@
 package com.saranaresturantsystem.entities;
 
-import com.saranaresturantsystem.entities.status.GeneralStatus;
+import com.saranaresturantsystem.entities.status.StatusType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,5 +24,8 @@ public class Currency {
     private  double rate ;
     @Column(length = 50)
     private  String symbol ;
+    @Enumerated(EnumType.STRING)
+    @Column( length = 10 )
+    private StatusType status ;
 
 }

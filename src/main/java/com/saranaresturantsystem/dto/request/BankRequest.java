@@ -1,7 +1,7 @@
 package com.saranaresturantsystem.dto.request;
 
+import com.saranaresturantsystem.entities.status.StatusType;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,14 +13,12 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class BankRequest {
     @NotBlank(message = "Bank name is required")
     @Size(max = 100,message = "Name must be between 3 and 100 characters")
     private String name;
     @Size(max = 50,message = "Number must be between 50")
     private  String number;
-//    @NotNull(message = "amount is reques")
     private String amount;
     @Size(max = 50,message = "isDefault must be between")
     private String isDefault;
@@ -28,4 +26,5 @@ public class BankRequest {
     private String statement;
     private LocalDate fromTime;
     private LocalDate toTime;
+    private StatusType status = StatusType.ACTIVE;
 }

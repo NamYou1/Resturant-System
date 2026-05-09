@@ -12,5 +12,6 @@ public interface BankService {
     Bank getBankById(long id);
     BankResponse createBank(BankRequest bankRequest);
     BankResponse updateBank(Long id,BankRequest bankRequest);
+    BankResponse getBankResponseById(Long id);
     void deleteBank(Long id);
 }

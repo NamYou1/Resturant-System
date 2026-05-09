@@ -3,14 +3,14 @@ package com.saranaresturantsystem.services.impl;
 import com.saranaresturantsystem.dto.request.SellerRequest;
 import com.saranaresturantsystem.dto.response.SellerResponse;
 import com.saranaresturantsystem.entities.Seller;
-import com.saranaresturantsystem.entities.status.GeneralStatus;
-import com.saranaresturantsystem.execption.ResourceNotFoundExecption;
+import com.saranaresturantsystem.entities.status.StatusType;
+import com.saranaresturantsystem.execption.ResourceNotFoundException;
 import com.saranaresturantsystem.mappers.SellerMapper;
 import com.saranaresturantsystem.repositories.SellerRepository;
 import com.saranaresturantsystem.services.SellerService;
 import com.saranaresturantsystem.specification.peoples.seller.SellerFilter;
 import com.saranaresturantsystem.specification.peoples.seller.SellerSpec;
-import com.saranaresturantsystem.utils.GloblePagination;
+import com.saranaresturantsystem.utils.PageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,13 +42,12 @@ public class SellerServiceImp implements SellerService {
         SellerFilter filter = objectMapper.convertValue(params, SellerFilter.class);
 
         // ទាញយកលេខទំព័រ និងទំហំទំព័រពី params (Default គឺ page 0, size 10)
-        int pageNumber = params.containsKey(GloblePagination.PAGE_NUMBER)
-                ? Integer.parseInt(params.get(GloblePagination.PAGE_NUMBER))
-                : GloblePagination.DEFAULT_PAGE_NUMBER;
-
-        int pageSize = params.containsKey(GloblePagination.PAGE_LIMIT)
-                ? Integer.parseInt(params.get(GloblePagination.PAGE_LIMIT))
-                : GloblePagination.DEFAULT_PAGE_LIMIT;
+        int pageNumber = params.containsKey(PageUtil.PAGE_NUMBER)
+                ? Integer.parseInt(params.get(PageUtil.PAGE_NUMBER))
+                : PageUtil.DEFAULT_PAGE_SIZE;
+        int pageSize = params.containsKey(PageUtil.PAGE_LIMIT)
+                ? Integer.parseInt(params.get(PageUtil.PAGE_LIMIT))
+                : PageUtil.DEFAULT_PAGE;
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Specification<Seller> spec = SellerSpec.filterBy(filter);
@@ -88,11 +87,11 @@ public class SellerServiceImp implements SellerService {
     @Transactional
     public void delete(Long id) {
         Seller seller = getById(id);
-        seller.setStatus(GeneralStatus.INACTIVE);
+        seller.setStatus(StatusType.INACTIVE);
         sellerRepository.save(seller);
     }
-
+    @Override
     public Seller getById(Long id) {
-        return  sellerRepository.findById(id).orElseThrow(()->new ResourceNotFoundExecption("Seller",id));
+        return  sellerRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Seller",id));
     }
 }

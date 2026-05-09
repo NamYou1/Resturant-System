@@ -1,6 +1,7 @@
 package com.saranaresturantsystem.entities;
 
 
+import com.saranaresturantsystem.entities.status.StatusType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,11 +25,11 @@ public class Product {
     @Column(nullable = false, unique = true, length = 50)
     private String code;
     private String name;
-    private BigDecimal price;
+    private BigDecimal salePrice;
 
-    private String image = "no_image.png";
+    private String image ;
 
-    private BigDecimal cost;
+    private BigDecimal costPrice;
 
     private String type = "standard";
 
@@ -36,8 +37,10 @@ public class Product {
 
     private BigDecimal alertQuantity = BigDecimal.ZERO;
 
-    private Integer showFlag = 0;
-    // Relationships to your existing Entities
+    @Enumerated(EnumType.STRING)
+    @Column( length = 10 )
+    private StatusType status ;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;

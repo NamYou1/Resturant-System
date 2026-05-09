@@ -17,11 +17,11 @@ public class UnitSpec {
             if (filter.getBaseUnit() != null) {
                 predicates.add(cb.equal(root.get("baseUnit"), filter.getBaseUnit()));
             }
-            if (filter.getDeleteFlag() != null) {
-                predicates.add(cb.equal(root.get("deleteFlag"), filter.getDeleteFlag()));
-            } else {
-                predicates.add(cb.equal(root.get("deleteFlag"), 0));
-            }
+//            if (filter.getDeleteFlag() != null) {
+//                predicates.add(cb.equal(root.get("deleteFlag"), filter.getDeleteFlag()));
+//            } else {
+//                predicates.add(cb.equal(root.get("deleteFlag"), 0));
+//            }
 
             return cb.and(predicates.toArray(new Predicate[0]));
         };

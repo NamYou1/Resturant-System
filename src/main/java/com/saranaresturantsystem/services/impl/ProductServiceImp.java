@@ -1,36 +1,32 @@
 package com.saranaresturantsystem.services.impl;
 
+import com.saranaresturantsystem.common.FileHandler;
 import com.saranaresturantsystem.common.UniqueChecker;
 import com.saranaresturantsystem.dto.request.ProductRequest;
 import com.saranaresturantsystem.dto.response.ProductResponse;
 import com.saranaresturantsystem.entities.Product;
 import com.saranaresturantsystem.entities.ProductStoreQty;
-import com.saranaresturantsystem.execption.ResourceNotFoundExecption;
+import com.saranaresturantsystem.entities.status.StatusType;
+import com.saranaresturantsystem.execption.ResourceNotFoundException;
 
 import com.saranaresturantsystem.services.ProductService;
 
 import com.saranaresturantsystem.specification.products.ProductFilter;
 import com.saranaresturantsystem.specification.products.ProductSpec;
-import com.saranaresturantsystem.utils.GloblePagination;
+import com.saranaresturantsystem.utils.PageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import com.saranaresturantsystem.mappers.ProductMapper;
 import com.saranaresturantsystem.repositories.ProductRepository;
 import com.saranaresturantsystem.repositories.ProductStoreQtyRepository;
 import tools.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -41,18 +37,19 @@ public class ProductServiceImp implements ProductService {
     private final ProductMapper productMapper;
     private final ObjectMapper objectMapper ;
     private final UniqueChecker uniqueChecker;
+    private  final FileHandler fileHandler ;
     private final String UPLOAD_DIR = "uploads/products/";
     @Override
     public Page<ProductResponse> getAllProducts(Map<String, String> params) {
         ProductFilter filter = objectMapper.convertValue(params, ProductFilter.class);
 
-        int pageLimit = params.containsKey(GloblePagination.DEFAULT_PAGE_LIMIT)
-                ? Integer.parseInt(params.get(GloblePagination.DEFAULT_PAGE_LIMIT))
-                : GloblePagination.DEFAULT_PAGE_LIMIT;
-        int pageNumber = params.containsKey(GloblePagination.DEFAULT_PAGE_NUMBER)
-                ? Integer.parseInt(params.get(GloblePagination.DEFAULT_PAGE_NUMBER))
-                : 0;
-        Pageable pageable = PageRequest.of(pageNumber, pageLimit);
+        int pageNumber = params.containsKey(PageUtil.PAGE_NUMBER)
+                ? Integer.parseInt(params.get(PageUtil.PAGE_NUMBER))
+                : PageUtil.DEFAULT_PAGE_SIZE;
+        int pageSize = params.containsKey(PageUtil.PAGE_LIMIT)
+                ? Integer.parseInt(params.get(PageUtil.PAGE_LIMIT))
+                : PageUtil.DEFAULT_PAGE;
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Specification<Product> spec = ProductSpec.filterBy(filter);
         return productRepository.findAll(spec, pageable)
                 .map(productMapper::toProductResponse);
@@ -64,26 +61,25 @@ public class ProductServiceImp implements ProductService {
     @Override
     public Product getProductById(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundExecption("Product", id));
+                .orElseThrow(() -> new ResourceNotFoundException("Product", id));
     }
     @Override
-    public ProductResponse createProduct(ProductRequest request, MultipartFile file) {
+    public ProductResponse createProduct(ProductRequest request) {
         Product product = productMapper.toProduct(request);
         uniqueChecker.verify(productRepository, product, "code", product.getCode());
-        if (file != null && !file.isEmpty()) {
-            product.setImage(saveImage(file));
+        if (request.getImage() != null && !request.getImage().isEmpty()) {
+            product.setImage(fileHandler.uploadImage(request.getImage(), "products"));
         }
-
         Product savedProduct = productRepository.save(product);
         return productMapper.toProductResponse(savedProduct);
     }
     @Override
-    public ProductResponse updateProduct(Long id, ProductRequest request, MultipartFile file) {
+    public ProductResponse updateProduct(Long id, ProductRequest request) {
         Product product = getProductById(id);
         productMapper.updateProductFromRequest(request, product);
         uniqueChecker.verify(productRepository, product, "code", product.getCode());
-        if (file != null && !file.isEmpty()) {
-            product.setImage(saveImage(file));
+        if (request.getImage() != null && !request.getImage().isEmpty()) {
+            product.setImage(fileHandler.uploadImage(request.getImage(), "products"));
         }
 
         Product updatedProduct = productRepository.save(product);
@@ -93,12 +89,13 @@ public class ProductServiceImp implements ProductService {
     @Override
     public void deleteProduct(Long id) {
         Product product = getProductById(id);
-        product.setShowFlag(1);
+        product.setStatus(StatusType.ACTIVE);
         productRepository.save(product);
     }
 
     @Override
-    public void updateStock(Long productId, Integer storeId, BigDecimal quantity) {
+    public void updateStock(Long productId, Long
+            storeId, BigDecimal quantity) {
         Product product = getProductById(productId);
         ProductStoreQty stock = productStoreQtyRepository
                 .findByProductIdAndStoreId(productId, storeId)
@@ -107,23 +104,23 @@ public class ProductServiceImp implements ProductService {
                     newStock.setProduct(product);
                     newStock.setStoreId(storeId);
                     newStock.setQuantity(BigDecimal.ZERO);
-                    newStock.setPrice(product.getPrice());
+                    newStock.setPrice(product.getSalePrice());
                     return newStock;
                 });
         stock.setQuantity(stock.getQuantity().add(quantity));
         productStoreQtyRepository.save(stock);
     }
-    private String saveImage(MultipartFile file) {
-        try {
-            Path root = Paths.get(UPLOAD_DIR);
-            if (!Files.exists(root)) {
-                Files.createDirectories(root);
-            }
-            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-            Files.copy(file.getInputStream(), root.resolve(fileName));
-            return fileName;
-        } catch (IOException e) {
-            throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
-        }
-    }
+//    private String saveImage(MultipartFile file) {
+//        try {
+//            Path root = Paths.get(UPLOAD_DIR);
+//            if (!Files.exists(root)) {
+//                Files.createDirectories(root);
+//            }
+//            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+//            Files.copy(file.getInputStream(), root.resolve(fileName));
+//            return fileName;
+//        } catch (IOException e) {
+//            throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+//        }
+//    }
 }

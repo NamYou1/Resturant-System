@@ -21,3 +21,6 @@ public class BankResponse {
     private LocalDateTime fromTime;
     private LocalDateTime toTime;
 }
+
+
+

@@ -1,7 +1,7 @@
 package com.saranaresturantsystem.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.saranaresturantsystem.entities.status.GeneralStatus;
+import com.saranaresturantsystem.entities.status.StatusType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,8 +22,8 @@ public class Tables {
     @Column(length = 150 , nullable = false ,unique = true , name = "tbl_order_number")
     private String orderNumber;
     @Enumerated(EnumType.STRING)
-    @Column(name = "tbl_status", length = 10)
-    private GeneralStatus status = GeneralStatus.ACTIVE;
+    @Column( length = 10 )
+    private StatusType status ;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id") // The FK in the database
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

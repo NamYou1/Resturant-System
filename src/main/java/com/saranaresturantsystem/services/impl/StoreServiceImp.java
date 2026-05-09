@@ -4,16 +4,15 @@ import com.saranaresturantsystem.common.UniqueChecker;
 import com.saranaresturantsystem.dto.request.StoreRequest;
 import com.saranaresturantsystem.dto.response.StoreResponse;
 import com.saranaresturantsystem.entities.Store;
-import com.saranaresturantsystem.entities.status.GeneralStatus;
-import com.saranaresturantsystem.execption.ResourceNotFoundExecption;
+import com.saranaresturantsystem.entities.status.StatusType;
+import com.saranaresturantsystem.execption.ResourceNotFoundException;
 import com.saranaresturantsystem.mappers.StoreMapper;
 import com.saranaresturantsystem.repositories.StoreRepository;
 import com.saranaresturantsystem.services.StoreService;
 import com.saranaresturantsystem.specification.settings.stores.StoreFilter;
 import com.saranaresturantsystem.specification.settings.stores.StoreSpec;
-import com.saranaresturantsystem.utils.GloblePagination;
+import com.saranaresturantsystem.utils.PageUtil;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.ObjectMapper;
 
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -36,12 +34,12 @@ public class StoreServiceImp implements StoreService {
     @Override
     public Page<StoreResponse> getAllStore(Map<String, String> params) {
         StoreFilter filter = objectMapper.convertValue(params, StoreFilter.class);
-        int pageNumber = params.containsKey(GloblePagination.PAGE_NUMBER)
-                ? Integer.parseInt(params.get(GloblePagination.PAGE_NUMBER))
-                : GloblePagination.DEFAULT_PAGE_NUMBER;
-        int pageSize = params.containsKey(GloblePagination.PAGE_LIMIT)
-                ? Integer.parseInt(params.get(GloblePagination.PAGE_LIMIT))
-                : GloblePagination.DEFAULT_PAGE_LIMIT;
+        int pageNumber = params.containsKey(PageUtil.PAGE_NUMBER)
+                ? Integer.parseInt(params.get(PageUtil.PAGE_NUMBER))
+                : PageUtil.DEFAULT_PAGE_SIZE;
+        int pageSize = params.containsKey(PageUtil.PAGE_LIMIT)
+                ? Integer.parseInt(params.get(PageUtil.PAGE_LIMIT))
+                : PageUtil.DEFAULT_PAGE;
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Specification<Store> spec = StoreSpec.filterBy(filter);
         return storeRepository.findAll(spec, pageable).map(storeMapper::toResponse);
@@ -80,13 +78,13 @@ public class StoreServiceImp implements StoreService {
     @Transactional
     public void delete(Long id) {
         Store store = findById(id);
-        store.setStatus(GeneralStatus.INACTIVE);
+        store.setStatus(StatusType.INACTIVE);
         storeRepository.save(store);
     }
 
     @Override
     public Store findById(Long id) {
-        return  storeRepository.findById(id).orElseThrow(()->new ResourceNotFoundExecption("Store" , id));
+        return  storeRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Store" , id));
     }
 
 

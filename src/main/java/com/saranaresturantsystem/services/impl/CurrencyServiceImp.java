@@ -4,14 +4,13 @@ import com.saranaresturantsystem.common.UniqueChecker;
 import com.saranaresturantsystem.dto.request.CurrencyRequest;
 import com.saranaresturantsystem.dto.response.CurrencyResponse;
 import com.saranaresturantsystem.entities.Currency;
-import com.saranaresturantsystem.entities.status.GeneralStatus;
-import com.saranaresturantsystem.execption.ResourceNotFoundExecption;
+import com.saranaresturantsystem.execption.ResourceNotFoundException;
 import com.saranaresturantsystem.mappers.CurrencyMapper;
 import com.saranaresturantsystem.repositories.CurrencyRepository;
 import com.saranaresturantsystem.services.CurrencyService;
 import com.saranaresturantsystem.specification.settings.currency.CurrencyFilter;
 import com.saranaresturantsystem.specification.settings.currency.CurrencySpec;
-import com.saranaresturantsystem.utils.GloblePagination;
+import com.saranaresturantsystem.utils.PageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,12 +30,12 @@ public class CurrencyServiceImp implements CurrencyService {
     @Override
     public Page<CurrencyResponse> getAll(Map<String, String> params) {
         CurrencyFilter filter = objectMapper.convertValue(params, CurrencyFilter.class);
-        int pageNumber = params.containsKey(GloblePagination.PAGE_NUMBER)
-                ? Integer.parseInt(params.get(GloblePagination.PAGE_NUMBER))
-                : GloblePagination.DEFAULT_PAGE_NUMBER;
-        int pageSize = params.containsKey(GloblePagination.PAGE_LIMIT)
-                ? Integer.parseInt(params.get(GloblePagination.PAGE_LIMIT))
-                : GloblePagination.DEFAULT_PAGE_LIMIT;
+        int pageNumber = params.containsKey(PageUtil.PAGE_NUMBER)
+                ? Integer.parseInt(params.get(PageUtil.PAGE_NUMBER))
+                : PageUtil.DEFAULT_PAGE_SIZE;
+        int pageSize = params.containsKey(PageUtil.PAGE_LIMIT)
+                ? Integer.parseInt(params.get(PageUtil.PAGE_LIMIT))
+                : PageUtil.DEFAULT_PAGE;
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Specification<Currency> spec = CurrencySpec.filterBy(filter);
         return  currencyRepository.findAll(spec, pageable).map(currencyMapper::toResponse);
@@ -75,6 +74,6 @@ public class CurrencyServiceImp implements CurrencyService {
 
     @Override
     public Currency getById(Long id) {
-        return currencyRepository.findById(id).orElseThrow(()-> new ResourceNotFoundExecption("Currency" ,id));
+        return currencyRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Currency" ,id));
     }
 }

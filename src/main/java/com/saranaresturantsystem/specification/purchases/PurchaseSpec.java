@@ -28,7 +28,7 @@ public class PurchaseSpec {
             }
 
             // យកតែទិន្នន័យដែលមិនទាន់លុប (delete_flag = 0)
-            predicates.add(cb.equal(root.get("deleteFlag"), 0));
+//            predicates.add(cb.equal(root.get("deleteFlag"), 0));
 
             query.orderBy(cb.desc(root.get("id")));
             return cb.and(predicates.toArray(new Predicate[0]));
