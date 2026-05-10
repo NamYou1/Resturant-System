@@ -33,25 +33,12 @@ public class SellerServiceImp implements SellerService {
     private final SellerRepository sellerRepository;
     private final SellerMapper sellerMapper;
 
-    /**
-     * ទាញយកបញ្ជី Seller ជាមួយ Pagination និង Filter
-     */
+
     @Override
     public Page<SellerResponse> getList(Map<String, String> params) {
-        // បំប្លែង params ទៅជា Filter Object (ឧទាហរណ៍៖ ?name=ABC&phone=012...)
         SellerFilter filter = objectMapper.convertValue(params, SellerFilter.class);
-
-        // ទាញយកលេខទំព័រ និងទំហំទំព័រពី params (Default គឺ page 0, size 10)
-        int pageNumber = params.containsKey(PageUtil.PAGE_NUMBER)
-                ? Integer.parseInt(params.get(PageUtil.PAGE_NUMBER))
-                : PageUtil.DEFAULT_PAGE_SIZE;
-        int pageSize = params.containsKey(PageUtil.PAGE_LIMIT)
-                ? Integer.parseInt(params.get(PageUtil.PAGE_LIMIT))
-                : PageUtil.DEFAULT_PAGE;
-
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Pageable pageable = PageUtil.fromParams(params);
         Specification<Seller> spec = SellerSpec.filterBy(filter);
-
         return sellerRepository.findAll(spec, pageable).map(sellerMapper::toSellerResponse);
     }
 
@@ -67,7 +54,6 @@ public class SellerServiceImp implements SellerService {
     public SellerResponse update(Long id, SellerRequest request) {
         Seller seller= getById(id);
         sellerMapper.updateSellerFromRequest(request, seller);
-
         return sellerMapper.toSellerResponse(sellerRepository.save(seller));
     }
 

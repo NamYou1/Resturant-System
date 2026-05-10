@@ -35,13 +35,8 @@ public class TableServiceImp implements TableService {
     @Override
     public Page<TableResponse> getAllTables(Map<String, String> params) {
         TableFilter filter =  objectMapper.convertValue(params, TableFilter.class);
-        int pageNumber = params.containsKey(PageUtil.PAGE_NUMBER)
-                ? Integer.parseInt(params.get(PageUtil.PAGE_NUMBER))
-                : PageUtil.DEFAULT_PAGE_SIZE;
-        int pageSize = params.containsKey(PageUtil.PAGE_LIMIT)
-                ? Integer.parseInt(params.get(PageUtil.PAGE_LIMIT))
-                : PageUtil.DEFAULT_PAGE;
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Pageable pageable = PageUtil.fromParams(params);
+
         Specification<Tables> spec = TableSpec.filterBy(filter);
         return  tableRepository.findAll(spec, pageable).map(tableMapper::toResponse);
     }

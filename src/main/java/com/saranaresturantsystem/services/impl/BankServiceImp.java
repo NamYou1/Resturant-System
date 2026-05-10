@@ -35,20 +35,19 @@ public class BankServiceImp implements BankService {
     @Override
     public Page<BankResponse> getListBank(Map<String, String> params) {
         BankFilter bankFilter = objectMapper.convertValue(params, BankFilter.class);
-        int pageLimit = params.containsKey(PageUtil.PAGE_NUMBER)
-                ? Integer.parseInt(params.get(PageUtil.PAGE_NUMBER))
-                : PageUtil.DEFAULT_PAGE_SIZE;
-        int pageSize = params.containsKey(PageUtil.PAGE_LIMIT)
-                ? Integer.parseInt(params.get(PageUtil.PAGE_LIMIT))
-                : PageUtil.DEFAULT_PAGE;
-        Pageable pageable= PageRequest.of(pageLimit,pageSize);
+        Pageable pageable = PageUtil.fromParams(params);
         Specification<Bank> spec = BankSpec.filterBy(bankFilter);
-        return bankRepository.findAll(pageable).map(bankMapper::toBankResponse);
+        return bankRepository.findAll(spec, pageable)
+                .map(bankMapper::toBankResponse);
     }
-    //Getbankbyid
+
     @Override
     public Bank getBankById(long id) {
-        return bankRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Bank",id));
+        Bank exitId = bankRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Bank",id));
+        if (exitId.getStatus() == StatusType.INACTIVE || exitId.getStatus() == null) {
+            throw new ResourceNotFoundException("Bank", id);
+        }
+        return exitId;
     }
 
     @Override
@@ -71,7 +70,6 @@ public class BankServiceImp implements BankService {
 
     @Override
     public BankResponse getBankResponseById(Long id) {
-//        Bank bank=getBankById(id);
         return bankMapper.toBankResponse(getBankById(id));
     }
 

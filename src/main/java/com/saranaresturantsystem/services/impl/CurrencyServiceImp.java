@@ -4,6 +4,7 @@ import com.saranaresturantsystem.common.UniqueChecker;
 import com.saranaresturantsystem.dto.request.CurrencyRequest;
 import com.saranaresturantsystem.dto.response.CurrencyResponse;
 import com.saranaresturantsystem.entities.Currency;
+import com.saranaresturantsystem.entities.status.StatusType;
 import com.saranaresturantsystem.execption.ResourceNotFoundException;
 import com.saranaresturantsystem.mappers.CurrencyMapper;
 import com.saranaresturantsystem.repositories.CurrencyRepository;
@@ -30,13 +31,8 @@ public class CurrencyServiceImp implements CurrencyService {
     @Override
     public Page<CurrencyResponse> getAll(Map<String, String> params) {
         CurrencyFilter filter = objectMapper.convertValue(params, CurrencyFilter.class);
-        int pageNumber = params.containsKey(PageUtil.PAGE_NUMBER)
-                ? Integer.parseInt(params.get(PageUtil.PAGE_NUMBER))
-                : PageUtil.DEFAULT_PAGE_SIZE;
-        int pageSize = params.containsKey(PageUtil.PAGE_LIMIT)
-                ? Integer.parseInt(params.get(PageUtil.PAGE_LIMIT))
-                : PageUtil.DEFAULT_PAGE;
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        // we change o use with pagination like this it's short and easy to read
+        Pageable pageable = PageUtil.fromParams(params);
         Specification<Currency> spec = CurrencySpec.filterBy(filter);
         return  currencyRepository.findAll(spec, pageable).map(currencyMapper::toResponse);
     }
@@ -74,6 +70,10 @@ public class CurrencyServiceImp implements CurrencyService {
 
     @Override
     public Currency getById(Long id) {
-        return currencyRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Currency" ,id));
+        Currency currency = currencyRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Currency" ,id));
+        if (currency.getStatus() == StatusType.INACTIVE){
+            throw  new ResourceNotFoundException("Currency" , id);
+        }
+        return  currency;
     }
 }

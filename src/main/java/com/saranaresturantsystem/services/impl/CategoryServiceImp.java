@@ -37,13 +37,7 @@ public class CategoryServiceImp implements CategoryService {
     @Override
     public Page<CategoryResponse> getListCategory(Map<String, String> params) {
             CategoryFilter filter = objectMapper.convertValue(params, CategoryFilter.class);
-            int pageNumber = params.containsKey(PageUtil.PAGE_NUMBER)
-                    ? Integer.parseInt(params.get(PageUtil.PAGE_NUMBER))
-                    : PageUtil.DEFAULT_PAGE_SIZE;
-            int pageSize = params.containsKey(PageUtil.PAGE_LIMIT)
-                    ? Integer.parseInt(params.get(PageUtil.PAGE_LIMIT))
-                    : PageUtil.DEFAULT_PAGE;
-            Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Pageable pageable = PageUtil.fromParams(params);
             Specification<Category> spec = CategorySpec.filterBy(filter);
             return  categoryRepository.findAll(spec, pageable).map(categoryMapper::toCategoryResponse);
     }
@@ -51,7 +45,11 @@ public class CategoryServiceImp implements CategoryService {
 
     // get by from table category we need to add private coz we don't wanna response enity to user
     public Category findCategoryById(Long id) {
-        return categoryRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Category" ,id));
+        Category findCategory =  categoryRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Category" ,id));
+        if (findCategory.getStatus() == StatusType.INACTIVE) {
+            throw new ResourceNotFoundException("Category", id);
+        };
+        return  findCategory    ;
     }
 
     // return categoryResponse to users
