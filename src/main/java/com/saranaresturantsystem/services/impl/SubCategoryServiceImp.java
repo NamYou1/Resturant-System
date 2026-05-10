@@ -33,13 +33,7 @@ public class SubCategoryServiceImp implements SubCategoryService {
     @Override
     public Page<SubCategoryResponse> getAllSubCategory(Map<String, String> params) {
         SubCategoryFilter filter = objectMapper.convertValue(params, SubCategoryFilter.class);
-        int pageNumber = params.containsKey(PageUtil.PAGE_NUMBER)
-                ? Integer.parseInt(params.get(PageUtil.PAGE_NUMBER))
-                : PageUtil.DEFAULT_PAGE_SIZE;
-        int pageSize = params.containsKey(PageUtil.PAGE_LIMIT)
-                ? Integer.parseInt(params.get(PageUtil.PAGE_LIMIT))
-                : PageUtil.DEFAULT_PAGE;
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Pageable pageable = PageUtil.fromParams(params);
         Specification<SubCategory> spec = SubCategorySpec.filterBy(filter);
         return subCategoryRepository.findAll(spec  , pageable).map(subCategoryMapper::toSubCategoryResponse);
     }

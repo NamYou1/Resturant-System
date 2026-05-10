@@ -27,24 +27,24 @@ import java.util.Map;
 public class CategoryController {
     private final CategoryService categoryService;
 
-    @InitBinder
-    public  void initBinder(WebDataBinder binder){
-        binder.registerCustomEditor(MultipartFile.class, new PropertyEditorSupport(){;
-            @Override
-            public void setAsText(String text) throws IllegalArgumentException {
-                // No need to implement this method for MultipartFile
-            }
-
-            @Override
-            public void setValue(Object value) {
-                if (value instanceof MultipartFile) {
-                    super.setValue(value);
-                } else {
-                    super.setValue(null);
-                }
-            }
-        });
-    }
+//    @InitBinder
+//    public  void initBinder(WebDataBinder binder){
+//        binder.registerCustomEditor(MultipartFile.class, new PropertyEditorSupport(){;
+//            @Override
+//            public void setAsText(String text) throws IllegalArgumentException {
+//                // No need to implement this method for MultipartFile
+//            }
+//
+//            @Override
+//            public void setValue(Object value) {
+//                if (value instanceof MultipartFile) {
+//                    super.setValue(value);
+//                } else {
+//                    super.setValue(null);
+//                }
+//            }
+//        });
+//    }
 
 
 

@@ -97,13 +97,8 @@ public class PurchasesServiceImp implements PurchasesService {
     @Override
     public Page<PurchaseResponse> getList(Map<String, String> params) {
         PurchaseFilter filter = objectMapper.convertValue(params, PurchaseFilter.class);
-        int pageNumber = params.containsKey(PageUtil.PAGE_NUMBER)
-                ? Integer.parseInt(params.get(PageUtil.PAGE_NUMBER))
-                : PageUtil.DEFAULT_PAGE_SIZE;
-        int pageSize = params.containsKey(PageUtil.PAGE_LIMIT)
-                ? Integer.parseInt(params.get(PageUtil.PAGE_LIMIT))
-                : PageUtil.DEFAULT_PAGE;
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Pageable pageable = PageUtil.fromParams(params);
+
         Specification<Purchase> spec = PurchaseSpec.filter(filter);
         return  purchaseRepository.findAll(spec, pageable).map(purchaseMapper::toResponse);
 

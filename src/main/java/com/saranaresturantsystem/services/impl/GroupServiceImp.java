@@ -37,13 +37,8 @@ public class GroupServiceImp implements GroupService {
     @Override
     public Page<GroupResponse> getAllGroups(Map<String, String> params) {
         GroupFilter filter = objectMapper.convertValue(params, GroupFilter.class);
-        int pageNumber = params.containsKey(PageUtil.PAGE_NUMBER)
-                ? Integer.parseInt(params.get(PageUtil.PAGE_NUMBER))
-                : PageUtil.DEFAULT_PAGE_SIZE;
-        int pageSize = params.containsKey(PageUtil.PAGE_LIMIT)
-                ? Integer.parseInt(params.get(PageUtil.PAGE_LIMIT))
-                : PageUtil.DEFAULT_PAGE;
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Pageable pageable = PageUtil.fromParams(params);
+
         Specification<Group> spec = GroupSpec.filterBy(filter);
         return  groupRepository.findAll(spec, pageable).map(groupMapper::toResponse);
     }

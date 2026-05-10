@@ -34,13 +34,7 @@ public class StoreServiceImp implements StoreService {
     @Override
     public Page<StoreResponse> getAllStore(Map<String, String> params) {
         StoreFilter filter = objectMapper.convertValue(params, StoreFilter.class);
-        int pageNumber = params.containsKey(PageUtil.PAGE_NUMBER)
-                ? Integer.parseInt(params.get(PageUtil.PAGE_NUMBER))
-                : PageUtil.DEFAULT_PAGE_SIZE;
-        int pageSize = params.containsKey(PageUtil.PAGE_LIMIT)
-                ? Integer.parseInt(params.get(PageUtil.PAGE_LIMIT))
-                : PageUtil.DEFAULT_PAGE;
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Pageable pageable = PageUtil.fromParams(params);
         Specification<Store> spec = StoreSpec.filterBy(filter);
         return storeRepository.findAll(spec, pageable).map(storeMapper::toResponse);
     }

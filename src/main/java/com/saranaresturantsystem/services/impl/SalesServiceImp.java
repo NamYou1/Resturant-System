@@ -85,7 +85,7 @@ public class SalesServiceImp implements SalesService {
         item.setUnitPrice(itemReq.getUnitPrice());
         item.setNetUnitPrice(itemReq.getUnitPrice());
         item.setRealUnitPrice(itemReq.getUnitPrice());
-        item.setCost(product.getCost() != null ? product.getCost() : BigDecimal.ZERO);
+        item.setCost(product.getCostPrice() != null ? product.getCostPrice() : BigDecimal.ZERO);
         BigDecimal disc = itemReq.getItemDiscount() != null ? itemReq.getItemDiscount() : BigDecimal.ZERO;
         item.setItemDiscount(disc);
         BigDecimal subtotal = itemReq.getQuantity().multiply(itemReq.getUnitPrice()).subtract(disc);
