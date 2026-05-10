@@ -1,6 +1,5 @@
-package com.saranaresturantsystem.dto.Response;
+package com.saranaresturantsystem.dto.response;
 
-import com.saranaresturantsystem.entities.status.GeneralStatus;
 import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -14,7 +13,7 @@ public class AdjustmentResponse {
     private Long id;
     private LocalDateTime date;
     private String referenceNo;
-    private GeneralStatus status;
+    private String status;
     private BigDecimal total;
     private Long storeId;
     private String note;
