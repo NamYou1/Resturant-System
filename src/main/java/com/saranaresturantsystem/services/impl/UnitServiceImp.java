@@ -33,13 +33,8 @@ public class UnitServiceImp implements UnitServices {
     @Override
     public Page<UnitResponse> getAllUnits(Map<String, String> params) {
         UnitFilter filter = objectMapper.convertValue(params, UnitFilter.class);
-        int pageNumber = params.containsKey(PageUtil.PAGE_NUMBER)
-                ? Integer.parseInt(params.get(PageUtil.PAGE_NUMBER))
-                : PageUtil.DEFAULT_PAGE_SIZE;
-        int pageSize = params.containsKey(PageUtil.PAGE_LIMIT)
-                ? Integer.parseInt(params.get(PageUtil.PAGE_LIMIT))
-                : PageUtil.DEFAULT_PAGE;
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Pageable pageable = PageUtil.fromParams(params);
+
         Specification<Unit> spec = UnitSpec.filterBy(filter);
         return unitRepository.findAll(spec, pageable)
                 .map(unitMapper::toUnitResponse);

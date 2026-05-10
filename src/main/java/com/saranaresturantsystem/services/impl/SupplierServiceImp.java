@@ -32,13 +32,8 @@ public class SupplierServiceImp implements com.saranaresturantsystem.services.Su
     @Override
     public Page<SupplierResponse> getListSupplier(Map<String, String> params) {
         SupplerFilter filter = objectMapper.convertValue(params, SupplerFilter.class);
-        int pageNumber = params.containsKey(PageUtil.PAGE_NUMBER)
-                ? Integer.parseInt(params.get(PageUtil.PAGE_NUMBER))
-                : PageUtil.DEFAULT_PAGE_SIZE;
-        int pageSize = params.containsKey(PageUtil.PAGE_LIMIT)
-                ? Integer.parseInt(params.get(PageUtil.PAGE_LIMIT))
-                : PageUtil.DEFAULT_PAGE;
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Pageable pageable = PageUtil.fromParams(params);
+
         Specification<Supplier> spec = SupplerSpec.filterBy(filter);
         return  supplierRepository.findAll(spec, pageable).map(supplerMapper::toSupplierResponse);
     }
@@ -46,6 +41,10 @@ public class SupplierServiceImp implements com.saranaresturantsystem.services.Su
     @Override
     public SupplierResponse createSupplier(SupplierRequest request) {
         Supplier supplier = supplerMapper.toSuppler(request);
+        return getSupplierResponse(supplier);
+    }
+
+    private SupplierResponse getSupplierResponse(Supplier supplier) {
         uniqueChecker.verify(supplierRepository , supplier , "name" , supplier.getName());
         uniqueChecker.verify(supplierRepository , supplier , "phone" , supplier.getPhone());
         uniqueChecker.verify(supplierRepository , supplier , "email" , supplier.getEmail());
@@ -57,11 +56,7 @@ public class SupplierServiceImp implements com.saranaresturantsystem.services.Su
     public SupplierResponse updateSupplier(Long id, SupplierRequest request) {
         Supplier supplier = findSupplierById(id);
         supplerMapper.updateEntityFromRequest(request, supplier);
-        uniqueChecker.verify(supplierRepository , supplier , "name" , supplier.getName());
-        uniqueChecker.verify(supplierRepository , supplier , "phone" , supplier.getPhone());
-        uniqueChecker.verify(supplierRepository , supplier , "email" , supplier.getEmail());
-        Supplier updateSupplier = supplierRepository.save(supplier);
-        return  supplerMapper.toSupplierResponse(updateSupplier);
+        return getSupplierResponse(supplier);
     }
 
     @Override

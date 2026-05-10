@@ -38,18 +38,13 @@ public class ProductServiceImp implements ProductService {
     private final ObjectMapper objectMapper ;
     private final UniqueChecker uniqueChecker;
     private  final FileHandler fileHandler ;
-    private final String UPLOAD_DIR = "uploads/products/";
+//    private final String UPLOAD_DIR = "uploads/products/";/**/
     @Override
     public Page<ProductResponse> getAllProducts(Map<String, String> params) {
         ProductFilter filter = objectMapper.convertValue(params, ProductFilter.class);
 
-        int pageNumber = params.containsKey(PageUtil.PAGE_NUMBER)
-                ? Integer.parseInt(params.get(PageUtil.PAGE_NUMBER))
-                : PageUtil.DEFAULT_PAGE_SIZE;
-        int pageSize = params.containsKey(PageUtil.PAGE_LIMIT)
-                ? Integer.parseInt(params.get(PageUtil.PAGE_LIMIT))
-                : PageUtil.DEFAULT_PAGE;
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Pageable pageable = PageUtil.fromParams(params);
+
         Specification<Product> spec = ProductSpec.filterBy(filter);
         return productRepository.findAll(spec, pageable)
                 .map(productMapper::toProductResponse);
@@ -66,17 +61,17 @@ public class ProductServiceImp implements ProductService {
     @Override
     public ProductResponse createProduct(ProductRequest request) {
         Product product = productMapper.toProduct(request);
-        uniqueChecker.verify(productRepository, product, "code", product.getCode());
-        if (request.getImage() != null && !request.getImage().isEmpty()) {
-            product.setImage(fileHandler.uploadImage(request.getImage(), "products"));
-        }
-        Product savedProduct = productRepository.save(product);
-        return productMapper.toProductResponse(savedProduct);
+        return getProductResponse(request, product);
     }
     @Override
     public ProductResponse updateProduct(Long id, ProductRequest request) {
         Product product = getProductById(id);
         productMapper.updateProductFromRequest(request, product);
+        return getProductResponse(request, product);
+    }
+
+    //  this function is reusable for create and update it's useful because it handles the unique check and image upload in one place
+    private ProductResponse getProductResponse(ProductRequest request, Product product) {
         uniqueChecker.verify(productRepository, product, "code", product.getCode());
         if (request.getImage() != null && !request.getImage().isEmpty()) {
             product.setImage(fileHandler.uploadImage(request.getImage(), "products"));
