@@ -4,7 +4,6 @@ import com.saranaresturantsystem.dto.request.ProductRequest;
 import com.saranaresturantsystem.dto.response.ProductResponse;
 import com.saranaresturantsystem.entities.Product;
 import org.springframework.data.domain.Page;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.Map;

@@ -71,7 +71,7 @@ public class CategoryServiceImp implements CategoryService {
              // check duplicated
         uniqueChecker.verify(categoryRepository, category, "code", category.getCode());
         uniqueChecker.verify(categoryRepository, category, "name", category.getName());
-            Category savedCategory = categoryRepository.save(category);
+        Category savedCategory = categoryRepository.save(category);
 
             return categoryMapper.toCategoryResponse(savedCategory);
     }

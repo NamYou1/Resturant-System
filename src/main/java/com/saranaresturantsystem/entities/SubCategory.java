@@ -6,6 +6,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
 @Data
 @Entity
 @AllArgsConstructor
@@ -23,7 +26,11 @@ public class SubCategory {
     private StatusType status ;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Category category ;
+
+    // product
+        @OneToMany(mappedBy = "section")
+    private List<Product> tblProduct ;
 
 }

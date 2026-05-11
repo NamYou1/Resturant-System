@@ -47,93 +47,47 @@ public class PurchasesServiceImp implements PurchasesService {
     public PurchaseResponse createPurchase(PurchaseRequest request) {
         Purchase purchase = purchaseMapper.toEntity(request);
         purchase.setCreatedBy(request.getSellerId().intValue());
-//        purchase.setPurchasesStatus(PurchaseStatus.RECEIVED);
-//        purchase.setPaymentStatus(PaymentStatus.PAID);
         purchase.setOrderDiscount(request.getOrderDiscount() != null ? BigDecimal.valueOf(request.getOrderDiscount()) : BigDecimal.ZERO);
         Store store = storeService.findById(request.getStoreId());
-        // 3. Process Items
         List<PurchaseItem> items = new ArrayList<>();
         for (PurchaseItemRequest itemReq : request.getItems()) {
             Product product = productService.getProductById(itemReq.getProductId());
-
             PurchaseItem item = purchaseMapper.toItemEntity(itemReq);
-//            PurchaseItem item = new PurchaseItem();
             item.setPurchase(purchase);
             item.setProduct(product);
             item.setUnit(product.getUnit());
             item.setStoreId(request.getStoreId());
-
-//            BigDecimal qty = BigDecimal.valueOf(itemReq.getQuantity());
-//            BigDecimal cost = BigDecimal.valueOf(itemReq.getCostPrice());
             BigDecimal itemDisc = itemReq.getTotalDiscount() != null ? BigDecimal.valueOf(itemReq.getTotalDiscount()) : BigDecimal.ZERO;
-
-//            item.setQuantity(qty);
-//            item.setCostPrice(cost);
             item.setTotalDiscount(itemDisc);
             // Subtotal = (Qty * Cost)
             item.setSubtotal(item.getQuantity().multiply(item.getCostPrice()).subtract(itemDisc));
 
             items.add(item);
-
             // Inventory & Transaction
             updateInventory(product, request.getStoreId(), item.getQuantity(), item.getCostPrice());
         }
-
         purchase.setItems(items);
         purchase.calculateTotals();
-
         // 4. Save and record transactions
         Purchase saved = purchaseRepository.save(purchase);
-
         // Record transactions after we have a valid Purchase ID
         for (PurchaseItem item : saved.getItems()) {
             saveTransaction(store, item.getProduct(), item.getQuantity(), item.getSubtotal(), saved, request.getSellerId());
         }
-
         return purchaseMapper.toResponse(saved);
     }
-
 
     @Override
     public Page<PurchaseResponse> getList(Map<String, String> params) {
         PurchaseFilter filter = objectMapper.convertValue(params, PurchaseFilter.class);
         Pageable pageable = PageUtil.fromParams(params);
-
         Specification<Purchase> spec = PurchaseSpec.filter(filter);
         return  purchaseRepository.findAll(spec, pageable).map(purchaseMapper::toResponse);
-
-//        // 1. Setup Filter Object
-//        PurchaseFilter filter = new PurchaseFilter();
-//        filter.setReference(params.get("reference"));
-//        filter.setStatus(params.get("status"));
-//
-//        if (params.get("supplierId") != null && !params.get("supplierId").isEmpty()) {
-//            filter.setSupplierId(Long.parseLong(params.get("supplierId")));
-//        }
-//        if (params.get("storeId") != null && !params.get("storeId").isEmpty()) {
-//            filter.setStoreId(Long.parseLong(params.get("storeId")));
-//        }
-//
-//        // 2. Setup Pagination
-//        int page = params.containsKey("page") ? Integer.parseInt(params.get("page")) : 0;
-//        int size = params.containsKey("size") ? Integer.parseInt(params.get("size")) : 10;
-//
-//        // 3. Execute with Specification (Handles the WHERE delete_flag = 0 logic)
-//        Page<Purchase> purchasePage = purchaseRepository.findAll(
-//                PurchaseSpec.filter(filter),
-//                PageRequest.of(page, size)
-//        );
-//
-//        return purchasePage.map(purchaseMapper::toResponse);
     }
 
     @Override
     public PurchaseResponse findById(Long id) {
         return purchaseMapper.toResponse(getById(id));
-//        return purchaseRepository.findById(id)
-//                .filter(p -> p.getDeleteFlag() == 0) // Only return if not soft-deleted
-//                .map(purchaseMapper::toResponse)
-//                .orElseThrow(() -> new RuntimeException("រកមិនឃើញទិន្នន័យទិញចូល (Purchase Not Found)"));
     }
 
     @Override

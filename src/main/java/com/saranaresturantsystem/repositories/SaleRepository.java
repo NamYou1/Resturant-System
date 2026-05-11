@@ -23,5 +23,5 @@ public interface SaleRepository extends JpaRepository<Sale, Long>, JpaSpecificat
             "AND (:storeId IS NULL OR s.storeId = :storeId)")
     List<Sale> getSalesReport(@Param("startDate") LocalDateTime startDate,
                               @Param("endDate") LocalDateTime endDate,
-                              @Param("storeId") Integer storeId);
+                              @Param("storeId") Long storeId);
 }

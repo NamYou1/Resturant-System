@@ -43,10 +43,11 @@ public class StoreServiceImp implements StoreService {
     @Transactional
     public StoreResponse create(StoreRequest request) {
         Store store = storeMapper.toEntity(request);
-        uniqueChecker.verify(storeRepository , store , "name" , store.getName());
-        uniqueChecker.verify(storeRepository , store , "code" , store.getCode());
-        uniqueChecker.verify(storeRepository , store , "phone" , store.getPhone());
-        uniqueChecker.verify(storeRepository , store , "email" , store.getEmail());
+        validateUniqueness(store);
+//        uniqueChecker.verify(storeRepository , store , "name" , store.getName());
+//        uniqueChecker.verify(storeRepository , store , "code" , store.getCode());
+//        uniqueChecker.verify(storeRepository , store , "phone" , store.getPhone());
+//        uniqueChecker.verify(storeRepository , store , "email" , store.getEmail());
         return storeMapper.toResponse(storeRepository.save(store));
     }
 
@@ -54,12 +55,19 @@ public class StoreServiceImp implements StoreService {
     @Transactional
     public StoreResponse update(Long id, StoreRequest request) {
         Store store = findById(id);
+        validateUniqueness(store);
+//        uniqueChecker.verify(storeRepository , store , "name" , store.getName());
+//        uniqueChecker.verify(storeRepository , store , "code" , store.getCode());
+//        uniqueChecker.verify(storeRepository , store , "phone" , store.getPhone());
+//        uniqueChecker.verify(storeRepository , store , "email" , store.getEmail());
+        storeMapper.updateEntityFromRequest(request, store);
+        return storeMapper.toResponse(storeRepository.save(store));
+    }
+    private  void validateUniqueness(Store store) {
         uniqueChecker.verify(storeRepository , store , "name" , store.getName());
         uniqueChecker.verify(storeRepository , store , "code" , store.getCode());
         uniqueChecker.verify(storeRepository , store , "phone" , store.getPhone());
         uniqueChecker.verify(storeRepository , store , "email" , store.getEmail());
-        storeMapper.updateEntityFromRequest(request, store);
-        return storeMapper.toResponse(storeRepository.save(store));
     }
 
     @Override

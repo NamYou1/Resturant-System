@@ -44,6 +44,7 @@ public class SupplierServiceImp implements com.saranaresturantsystem.services.Su
         return getSupplierResponse(supplier);
     }
 
+    // reusable code
     private SupplierResponse getSupplierResponse(Supplier supplier) {
         uniqueChecker.verify(supplierRepository , supplier , "name" , supplier.getName());
         uniqueChecker.verify(supplierRepository , supplier , "phone" , supplier.getPhone());

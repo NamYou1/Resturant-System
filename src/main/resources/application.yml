@@ -1,37 +1,41 @@
 spring:
-    config:
-        import: optional:file:.env[.properties]
-    application:
-        name: sarana-resturant-system
-    datasource:
-      url: ${DB_NAME}
-      username: ${DB_USERNAME}
-      password: ${DB_PASSWORD}
-      driver-class-name: org.postgresql.Driver
-    Jackson:
-      date-format: yyyy-MM-dd HH:mm:ss
-      time-zone: Asia/Phnom_Penh
-    jpa:
-        hibernate:
-          ddl-auto: update
-        properties:
-          hibernate:
-            dialect: org.hibernate.dialect.PostgreSQLDialect
-          show-sql: true
-    servlet:
-      multipart:
-        max-file-size: 10MB
-        max-request-size: 10MB
-#  spring.servlet.multipart.max-file-size=10MB
-#  spring.servlet.multipart.max-request-size=10MB
-
+  config:
+    import: optional:file:.env[.properties]
+  application:
+    name: sarana-resturant-system
+  datasource:
+    url: ${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  Jackson:                          # lowercase 'j'
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Phnom_Penh
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show-sql: true              # moved inside hibernate block
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+      file-size-threshold: 2KB
 
 server:
   port: 8080
+  tomcat:
+    max-http-form-post-size: 104857600
+    max-swallow-size: 104857600
+
 springdoc:
   api-docs:
     enabled: true
-Cloudinary:
+
+Cloudinary:                         # lowercase 'c'
   cloud_name: ${CLOUDINARY_CLOUD_NAME}
   api_key: ${CLOUDINARY_API_KEY}
   api_secret: ${CLOUDINARY_API_SECRET}

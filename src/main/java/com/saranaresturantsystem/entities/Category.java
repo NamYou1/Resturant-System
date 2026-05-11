@@ -35,4 +35,6 @@ public class Category {
     private StatusType status ;
     @OneToMany(mappedBy = "category")
     private List<SubCategory> subcategories ;
+    @OneToMany(mappedBy = "category")
+    private List<Product> tblProduct;
 }

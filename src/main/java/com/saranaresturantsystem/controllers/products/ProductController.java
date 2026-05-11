@@ -28,24 +28,23 @@ import java.util.Map;
 public class ProductController {
 
     private final ProductService productService;
-    @InitBinder
-    public  void initBinder(WebDataBinder binder){
-        binder.registerCustomEditor(MultipartFile.class, new PropertyEditorSupport(){;
-            @Override
-            public void setAsText(String text) throws IllegalArgumentException {
-                // No need to implement this method for MultipartFile
-            }
-
-            @Override
-            public void setValue(Object value) {
-                if (value instanceof MultipartFile) {
-                    super.setValue(value);
-                } else {
-                    super.setValue(null);
-                }
-            }
-        });
-    }
+//    @InitBinder
+//    public  void initBinder(WebDataBinder binder){
+//        binder.registerCustomEditor(MultipartFile.class, new PropertyEditorSupport(){;
+//            @Override
+//            public void setAsText(String text) throws IllegalArgumentException {
+//                // No need to implement this method for MultipartFile
+//            }
+//            @Override
+//            public void setValue(Object value) {
+//                if (value instanceof MultipartFile) {
+//                    super.setValue(value);
+//                } else {
+//                    super.setValue(null);
+//                }
+//            }
+//        });
+//    }
     @GetMapping
     @Operation(summary = "Get all products with pagination and filters")
     public ResponseEntity<ApiResponse<PageDTO>> getList(@RequestParam Map<String, String> params) {
@@ -82,9 +81,7 @@ public class ProductController {
     public ResponseEntity<ApiResponse<ProductResponse>> create(
             @Valid @ModelAttribute ProductRequest request // Use @ModelAttribute instead of @RequestPart
           ) {
-
         ProductResponse productResponse = productService.createProduct(request);
-
         ApiResponse<ProductResponse> response = ApiResponse.<ProductResponse>builder()
                 .succeess(true)
                 .status(HttpStatus.CREATED)

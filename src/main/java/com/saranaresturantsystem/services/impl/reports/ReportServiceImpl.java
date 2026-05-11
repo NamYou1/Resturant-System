@@ -4,7 +4,7 @@ import com.saranaresturantsystem.dto.response.reports.SalesReportResponse;
 import com.saranaresturantsystem.entities.Sale;
 import com.saranaresturantsystem.mappers.SaleMapper;
 import com.saranaresturantsystem.repositories.SaleRepository;
-import com.saranaresturantsystem.services.reports.ReportService;
+import com.saranaresturantsystem.services.reports.SaleReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +14,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ReportServiceImpl implements ReportService {
+public class ReportServiceImpl implements SaleReportService {
 
     private final SaleRepository saleRepository;
     private final SaleMapper saleMapper;
 
     @Override
-    public SalesReportResponse getSalesReport(LocalDateTime start, LocalDateTime end, Integer storeId) {
-        // ប្រើ Method ដែលយើងបានបង្កើតក្នុង Repository មុននេះ
+    public SalesReportResponse getSalesReport(LocalDateTime start, LocalDateTime end, Long storeId) {
         List<Sale> sales = saleRepository.getSalesReport(start, end, storeId);
 
         BigDecimal totalAmount = sales.stream()

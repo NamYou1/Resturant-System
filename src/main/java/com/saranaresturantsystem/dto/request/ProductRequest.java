@@ -1,6 +1,7 @@
 package com.saranaresturantsystem.dto.request;
 
 import com.saranaresturantsystem.entities.status.StatusType;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,14 +18,17 @@ public class ProductRequest {
 
     @NotBlank(message = "Product code is required")
     @Size(max = 50, message = "Code must be at most 50 characters")
-    private String code;
+    @NotNull(message = "Code is required")
     @NotBlank(message = "Product name is required")
+    private String code;
     @Size(max = 255, message = "Name must be at most 255 characters")
+    @NotNull(message = "Name is required")
     private String name;
     @Positive(message = "Cost price must be greater than 0")
     private BigDecimal costPrice;
     @Positive(message = "Sale price must be greater than 0" )
     private BigDecimal salePrice;
+    @Schema(type = "string", format = "binary", nullable = true)
     private MultipartFile image;
     @Size(max = 20, message = "Type must be at most 20 characters")
     private String type;

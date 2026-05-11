@@ -1,5 +1,4 @@
 package com.saranaresturantsystem.services.impl;
-
 import com.saranaresturantsystem.common.FileHandler;
 import com.saranaresturantsystem.common.UniqueChecker;
 import com.saranaresturantsystem.dto.request.ProductRequest;
@@ -8,9 +7,7 @@ import com.saranaresturantsystem.entities.Product;
 import com.saranaresturantsystem.entities.ProductStoreQty;
 import com.saranaresturantsystem.entities.status.StatusType;
 import com.saranaresturantsystem.execption.ResourceNotFoundException;
-
 import com.saranaresturantsystem.services.ProductService;
-
 import com.saranaresturantsystem.specification.products.ProductFilter;
 import com.saranaresturantsystem.specification.products.ProductSpec;
 import com.saranaresturantsystem.utils.PageUtil;
@@ -73,10 +70,20 @@ public class ProductServiceImp implements ProductService {
     //  this function is reusable for create and update it's useful because it handles the unique check and image upload in one place
     private ProductResponse getProductResponse(ProductRequest request, Product product) {
         uniqueChecker.verify(productRepository, product, "code", product.getCode());
-        if (request.getImage() != null && !request.getImage().isEmpty()) {
-            product.setImage(fileHandler.uploadImage(request.getImage(), "products"));
-        }
+//        if (request.getImage() != null && !request.getImage().isEmpty()) {
+//            product.setImage(fileHandler.uploadImage(request.getImage(), "products"));
+//        }
+        // upload image
+        if (request.getImage() != null &&
+                !request.getImage().isEmpty()) {
 
+            String imageUrl = fileHandler.uploadImage(
+                    request.getImage(),
+                    "products"
+            );
+
+            product.setImage(imageUrl);
+        }
         Product updatedProduct = productRepository.save(product);
         return productMapper.toProductResponse(updatedProduct);
     }
