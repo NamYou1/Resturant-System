@@ -34,13 +34,7 @@ public class ExpensesTypeImp implements ExpensesTypeService {
     @Override
     public Page<ExpensesTypeResponse> getListExpensesType(Map<String, String> params) {
         ExpensesTypeFilter expensesTypeFilter = objectMapper.convertValue(params,ExpensesTypeFilter.class);
-        int pageLimit=params.containsKey(PageUtil.PAGE_NUMBER)
-                ? Integer.parseInt(params.get(PageUtil.PAGE_NUMBER))
-                :PageUtil.DEFAULT_PAGE_SIZE;
-        int pageSize = params.containsKey(PageUtil.PAGE_LIMIT)
-                ? Integer.parseInt(params.get(PageUtil.PAGE_LIMIT))
-                : PageUtil.DEFAULT_PAGE;
-        Pageable pageable= PageRequest.of(pageLimit,pageSize);
+        Pageable pageable = PageUtil.fromParams(params);
         Specification<ExpensesType> spec= ExpensesTypeSpec.filterBy(expensesTypeFilter);
         return expensesTypeRepository.findAll(pageable).map(expensesTypeMapper::toResponse);
     }
