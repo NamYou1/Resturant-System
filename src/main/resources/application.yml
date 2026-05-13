@@ -26,7 +26,7 @@ spring:
       file-size-threshold: 2KB
 
 server:
-  port: 8080
+  port: 8081
   tomcat:
     max-http-form-post-size: 104857600
     max-swallow-size: 104857600
