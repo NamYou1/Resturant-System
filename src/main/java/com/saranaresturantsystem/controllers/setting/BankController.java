@@ -4,7 +4,6 @@ import com.saranaresturantsystem.dto.PageDTO;
 import com.saranaresturantsystem.dto.request.BankRequest;
 import com.saranaresturantsystem.dto.response.ApiResponse;
 import com.saranaresturantsystem.dto.response.BankResponse;
-import com.saranaresturantsystem.entities.Bank;
 import com.saranaresturantsystem.services.BankService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

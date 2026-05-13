@@ -2,10 +2,8 @@ package com.saranaresturantsystem.controllers.setting;
 
 import com.saranaresturantsystem.dto.PageDTO;
 import com.saranaresturantsystem.dto.request.CurrencyRequest;
-import com.saranaresturantsystem.dto.request.TableRequest;
 import com.saranaresturantsystem.dto.response.ApiResponse;
 import com.saranaresturantsystem.dto.response.CurrencyResponse;
-import com.saranaresturantsystem.dto.response.TableResponse;
 import com.saranaresturantsystem.services.CurrencyService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

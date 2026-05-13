@@ -1,4 +1,4 @@
-package com.saranaresturantsystem.dto.Request;
+package com.saranaresturantsystem.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

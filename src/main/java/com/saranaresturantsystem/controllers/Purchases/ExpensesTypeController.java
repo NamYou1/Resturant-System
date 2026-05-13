@@ -2,9 +2,9 @@ package com.saranaresturantsystem.controllers.Purchases;
 
 import com.saranaresturantsystem.dto.PageDTO;
 
-import com.saranaresturantsystem.dto.Request.ExpensesTypeRequest;
-import com.saranaresturantsystem.dto.Response.ExpensesTypeResponse;
+import com.saranaresturantsystem.dto.request.ExpensesTypeRequest;
 import com.saranaresturantsystem.dto.response.ApiResponse;
+import com.saranaresturantsystem.dto.response.ExpensesTypeResponse;
 import com.saranaresturantsystem.services.ExpensesTypeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -71,7 +71,7 @@ public class ExpensesTypeController {
     @PutMapping(path = "/{id}")
     public ResponseEntity<ApiResponse<ExpensesTypeResponse>>updateExpensesType(
             @PathVariable Long id,
-            @Valid @RequestBody com.saranaresturantsystem.dto.Request.ExpensesTypeRequest request){
+            @Valid @RequestBody com.saranaresturantsystem.dto.request.ExpensesTypeRequest request){
         ExpensesTypeResponse response=expensesTypeService.updateExpensesType(id,request);
         ApiResponse<ExpensesTypeResponse>apiResponse=ApiResponse.<ExpensesTypeResponse>builder()
                 .succeess(true)

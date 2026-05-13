@@ -1,4 +1,4 @@
-package com.saranaresturantsystem.dto.Response;
+package com.saranaresturantsystem.dto.response;
 
 import com.saranaresturantsystem.entities.status.StatusType;
 import lombok.AllArgsConstructor;

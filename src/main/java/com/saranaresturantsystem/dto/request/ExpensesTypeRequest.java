@@ -1,4 +1,4 @@
-package com.saranaresturantsystem.dto.Request;
+package com.saranaresturantsystem.dto.request;
 import com.saranaresturantsystem.entities.status.StatusType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

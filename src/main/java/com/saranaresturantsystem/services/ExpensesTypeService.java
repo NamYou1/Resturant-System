@@ -1,6 +1,6 @@
 package com.saranaresturantsystem.services;
-import com.saranaresturantsystem.dto.Request.ExpensesTypeRequest;
-import com.saranaresturantsystem.dto.Response.ExpensesTypeResponse;
+import com.saranaresturantsystem.dto.request.ExpensesTypeRequest;
+import com.saranaresturantsystem.dto.response.ExpensesTypeResponse;
 
 import com.saranaresturantsystem.entities.ExpensesType;
 import org.springframework.data.domain.Page;
