@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.ObjectMapper;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -120,13 +121,17 @@ public class PurchasesServiceImp implements PurchasesService {
     private void saveTransaction(Store store, Product product, BigDecimal qty, BigDecimal total, Purchase purchase, Long sellerId) {
         Transaction tran = new Transaction();
         tran.setStore(store);
+        tran.setStoreId(store.getId().intValue());
         tran.setProduct(product);
+        tran.setProductId(product.getId());
         tran.setUnit(product.getUnit());
         tran.setQuantity(qty);
         tran.setType("IN");
         tran.setStatus("purchase");
         tran.setTotalCost(total);
         tran.setPurchaseId(purchase.getId().intValue());
+        tran.setDate(LocalDateTime.now());
+        tran.setTranDate(LocalDateTime.now());
         tran.setCreateBy(sellerId.intValue());
         transactionRepository.save(tran);
     }

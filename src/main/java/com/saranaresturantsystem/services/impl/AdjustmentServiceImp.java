@@ -68,6 +68,7 @@ public class AdjustmentServiceImp implements AdjustmentService {
         adjustment.setNote(request.getNote());
         adjustment.setFile(request.getFile());
         adjustment.setStore(store);
+
         adjustment.setDate(LocalDateTime.now());
 //        adjustment.setDeleteFlag(1);
         adjustment.setDeleteBy(1);
@@ -162,6 +163,7 @@ public class AdjustmentServiceImp implements AdjustmentService {
         tran.setProductId(item.getProduct().getId());
         tran.setAdjustId(adjustment.getId().intValue());
         tran.setQuantity(item.getQuantity());
+        tran.setUnit(item.getUnit());
         tran.setType(item.getQuantity().compareTo(BigDecimal.ZERO) >= 0 ? "IN" : "OUT");
         tran.setStatus("adjustment");
         tran.setTotalCost(item.getSubtotal());

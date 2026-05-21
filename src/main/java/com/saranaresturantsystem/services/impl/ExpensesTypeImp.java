@@ -1,8 +1,8 @@
 package com.saranaresturantsystem.services.impl;
 
 import com.saranaresturantsystem.common.UniqueChecker;
-import com.saranaresturantsystem.dto.Request.ExpensesTypeRequest;
-import com.saranaresturantsystem.dto.Response.ExpensesTypeResponse;
+import com.saranaresturantsystem.dto.request.ExpensesTypeRequest;
+import com.saranaresturantsystem.dto.response.ExpensesTypeResponse;
 import com.saranaresturantsystem.entities.ExpensesType;
 import com.saranaresturantsystem.entities.status.StatusType;
 import com.saranaresturantsystem.execption.ResourceNotFoundException;
@@ -16,7 +16,6 @@ import com.saranaresturantsystem.utils.PageUtil;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
