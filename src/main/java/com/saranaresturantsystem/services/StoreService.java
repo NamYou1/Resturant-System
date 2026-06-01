@@ -1,12 +1,11 @@
 package com.saranaresturantsystem.services;
 
-import com.saranaresturantsystem.dto.request.StoreRequest;
-import com.saranaresturantsystem.dto.response.StoreResponse;
-import com.saranaresturantsystem.entities.Store;
+import com.saranaresturantsystem.dto.request.inventory.StoreRequest;
+import com.saranaresturantsystem.dto.response.inventory.StoreResponse;
+import com.saranaresturantsystem.entities.inventory.Store;
 import jakarta.validation.constraints.Positive;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
 import java.util.Map;
 
 public interface StoreService {

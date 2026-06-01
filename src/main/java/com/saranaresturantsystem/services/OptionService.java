@@ -1,11 +1,10 @@
 package com.saranaresturantsystem.services;
 
-import com.saranaresturantsystem.dto.request.OptionRequest;
-import com.saranaresturantsystem.dto.response.OptionResponse;
-import com.saranaresturantsystem.entities.Options;
+import com.saranaresturantsystem.dto.request.sales.OptionRequest;
+import com.saranaresturantsystem.dto.response.sales.OptionResponse;
+import com.saranaresturantsystem.entities.product.Options;
 import org.springframework.data.domain.Page;
 
-import javax.swing.text.html.Option;
 import java.util.Map;
 
 public interface OptionService {

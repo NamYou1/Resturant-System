@@ -1,8 +1,8 @@
 package com.saranaresturantsystem.services;
 
-import com.saranaresturantsystem.dto.request.UnitRequest;
-import com.saranaresturantsystem.dto.response.UnitResponse;
-import com.saranaresturantsystem.entities.Unit;
+import com.saranaresturantsystem.dto.request.product.UnitRequest;
+import com.saranaresturantsystem.dto.response.product.UnitResponse;
+import com.saranaresturantsystem.entities.product.Unit;
 import org.springframework.data.domain.Page;
 
 import java.util.Map;

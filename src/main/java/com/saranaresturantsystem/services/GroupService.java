@@ -1,13 +1,12 @@
 package com.saranaresturantsystem.services;
 
-import com.saranaresturantsystem.dto.request.GroupRequest;
-import com.saranaresturantsystem.dto.response.GroupResponse;
-import com.saranaresturantsystem.entities.Group;
+import com.saranaresturantsystem.dto.request.sales.GroupRequest;
+import com.saranaresturantsystem.dto.response.sales.GroupResponse;
+import com.saranaresturantsystem.entities.sales.Group;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
 import java.util.Map;
 
 public interface GroupService {

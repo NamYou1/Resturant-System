@@ -1,8 +1,8 @@
 package com.saranaresturantsystem.services;
-import com.saranaresturantsystem.dto.request.ExpensesTypeRequest;
-import com.saranaresturantsystem.dto.response.ExpensesTypeResponse;
+import com.saranaresturantsystem.dto.request.finance.ExpensesTypeRequest;
+import com.saranaresturantsystem.dto.response.finance.ExpensesTypeResponse;
 
-import com.saranaresturantsystem.entities.ExpensesType;
+import com.saranaresturantsystem.entities.finance.ExpensesType;
 import org.springframework.data.domain.Page;
 
 import java.util.Map;

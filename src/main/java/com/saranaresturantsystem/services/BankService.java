@@ -1,8 +1,8 @@
 package com.saranaresturantsystem.services;
 
-import com.saranaresturantsystem.dto.request.BankRequest;
-import com.saranaresturantsystem.dto.response.BankResponse;
-import com.saranaresturantsystem.entities.Bank;
+import com.saranaresturantsystem.dto.request.finance.BankRequest;
+import com.saranaresturantsystem.dto.response.finance.BankResponse;
+import com.saranaresturantsystem.entities.finance.Bank;
 import org.springframework.data.domain.Page;
 
 import java.util.Map;

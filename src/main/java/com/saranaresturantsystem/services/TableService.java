@@ -1,14 +1,13 @@
 package com.saranaresturantsystem.services;
 
 
-import com.saranaresturantsystem.dto.request.TableRequest;
-import com.saranaresturantsystem.dto.response.TableResponse;
-import com.saranaresturantsystem.entities.Tables;
+import com.saranaresturantsystem.dto.request.sales.TableRequest;
+import com.saranaresturantsystem.dto.response.sales.TableResponse;
+import com.saranaresturantsystem.entities.sales.Tables;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
 import java.util.Map;
 
 public interface TableService {

@@ -1,20 +1,19 @@
-package com.saranaresturantsystem.controllers.Purchases;
+package com.saranaresturantsystem.controllers.purchases;
 
+import com.saranaresturantsystem.common.Message;
+import com.saranaresturantsystem.common.ResponseFactory;
 import com.saranaresturantsystem.dto.PageDTO;
-import com.saranaresturantsystem.dto.request.PurchaseRequest;
+import com.saranaresturantsystem.dto.request.purchases.PurchaseRequest;
 import com.saranaresturantsystem.dto.response.ApiResponse;
-import com.saranaresturantsystem.dto.response.PurchaseResponse;
+import com.saranaresturantsystem.dto.response.purchases.PurchaseResponse;
 import com.saranaresturantsystem.services.PurchasesService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
 import java.util.Map;
 
 @RestController
@@ -26,60 +25,62 @@ public class PurchaseController {
     private final PurchasesService purchasesService;
 
     @PostMapping
-    @Operation(summary = "Create purchase, update stock, and record transaction with Seller ID")
+    @Operation(summary = "Create a new purchase order (status: ORDERED, no stock movement)")
     public ResponseEntity<ApiResponse<PurchaseResponse>> create(@Valid @RequestBody PurchaseRequest request) {
-        PurchaseResponse response = purchasesService.createPurchase(request);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-                ApiResponse.<PurchaseResponse>builder()
-                        .succeess(true)
-                        .status(HttpStatus.CREATED)
-                        .message("Purchase processed successfully by Seller ID: " + request.getSellerId())
-                        .payload(response)
-                        .timestamp(Instant.now())
-                        .build()
-        );
+        return ResponseFactory.created(purchasesService.create(request), "Purchase");
     }
 
     @GetMapping
-    @Operation(summary = "Get list of purchases with pagination")
-    public ResponseEntity<ApiResponse<PageDTO>> getList(@RequestParam Map<String, String> params) {
-        Page<PurchaseResponse> purchasePage = purchasesService.getList(params);
-        return ResponseEntity.ok(
-                ApiResponse.<PageDTO>builder()
-                        .succeess(true)
-                        .status(HttpStatus.OK)
-                        .message("Purchases retrieved successfully")
-                        .payload(new PageDTO(purchasePage))
-                        .timestamp(Instant.now())
-                        .build()
-        );
+    @Operation(summary = "Get list of purchases with pagination and filtering")
+    public ResponseEntity<ApiResponse<PageDTO>> getAll(@RequestParam Map<String, String> params) {
+        return ResponseFactory.ok(purchasesService.getAll(params), "Purchase");
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get purchase details by ID")
     public ResponseEntity<ApiResponse<PurchaseResponse>> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(
-                ApiResponse.<PurchaseResponse>builder()
-                        .succeess(true)
-                        .status(HttpStatus.OK)
-                        .payload(purchasesService.findById(id))
-                        .timestamp(Instant.now())
-                        .build()
-        );
+        return ResponseFactory.ok(purchasesService.getById(id), Message.getById("Purchase", id));
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Update an ORDERED purchase (note, date)")
+    public ResponseEntity<ApiResponse<PurchaseResponse>> update(
+            @PathVariable Long id,
+            @Valid @RequestBody PurchaseRequest request,
+            @RequestHeader(value = "X-Updated-By", defaultValue = "system") String updatedBy) {
+        return ResponseFactory.ok(purchasesService.update(id, request, updatedBy), Message.updated("Purchase", id));
+    }
+
+    @PatchMapping("/{id}/approve")
+    @Operation(summary = "Approve an ORDERED purchase (ORDERED → APPROVED)")
+    public ResponseEntity<ApiResponse<PurchaseResponse>> approve(
+            @PathVariable Long id,
+            @RequestHeader(value = "X-Updated-By", defaultValue = "system") String updatedBy) {
+        return ResponseFactory.ok(purchasesService.approve(id, updatedBy), "Purchase " + id + " approved successfully");
+    }
+
+    @PatchMapping("/{id}/complete")
+    @Operation(summary = "Complete an APPROVED purchase (APPROVED → COMPLETED, stock updated)")
+    public ResponseEntity<ApiResponse<PurchaseResponse>> complete(
+            @PathVariable Long id,
+            @RequestHeader(value = "X-Updated-By", defaultValue = "system") String updatedBy) {
+        return ResponseFactory.ok(purchasesService.complete(id, updatedBy), "Purchase " + id + " completed successfully");
+    }
+
+    @PatchMapping("/{id}/cancel")
+    @Operation(summary = "Cancel/return a purchase (reverses stock if completed)")
+    public ResponseEntity<ApiResponse<PurchaseResponse>> cancel(
+            @PathVariable Long id,
+            @RequestHeader(value = "X-Updated-By", defaultValue = "system") String updatedBy) {
+        return ResponseFactory.ok(purchasesService.cancel(id, updatedBy), "Purchase " + id + " cancelled successfully");
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Soft delete a purchase record")
-    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
-        purchasesService.delete(id);
-        return ResponseEntity.ok(
-                ApiResponse.<Void>builder()
-                        .succeess(true)
-                        .status(HttpStatus.OK)
-                        .message("Purchase record soft-deleted successfully")
-                        .timestamp(Instant.now())
-                        .build()
-        );
+    @Operation(summary = "Soft-delete a purchase (cannot delete completed purchases)")
+    public ResponseEntity<ApiResponse<Void>> delete(
+            @PathVariable Long id,
+            @RequestHeader(value = "X-Updated-By", defaultValue = "system") String deletedBy) {
+        purchasesService.delete(id, deletedBy);
+        return ResponseFactory.deleted("Purchase", id);
     }
 }

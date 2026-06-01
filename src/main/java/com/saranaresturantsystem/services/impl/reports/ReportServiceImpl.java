@@ -1,9 +1,9 @@
 package com.saranaresturantsystem.services.impl.reports;
 
 import com.saranaresturantsystem.dto.response.reports.SalesReportResponse;
-import com.saranaresturantsystem.entities.Sale;
-import com.saranaresturantsystem.mappers.SaleMapper;
-import com.saranaresturantsystem.repositories.SaleRepository;
+import com.saranaresturantsystem.entities.sales.Sale;
+import com.saranaresturantsystem.mappers.sales.SaleMapper;
+import com.saranaresturantsystem.repositories.sales.SaleRepository;
 import com.saranaresturantsystem.services.reports.SaleReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,8 +1,8 @@
 package com.saranaresturantsystem.services;
 
-import com.saranaresturantsystem.dto.request.SubCategoryRequest;
-import com.saranaresturantsystem.dto.response.SubCategoryResponse;
-import com.saranaresturantsystem.entities.SubCategory;
+import com.saranaresturantsystem.dto.request.product.SubCategoryRequest;
+import com.saranaresturantsystem.dto.response.product.SubCategoryResponse;
+import com.saranaresturantsystem.entities.product.SubCategory;
 import org.springframework.data.domain.Page;
 
 import java.util.Map;

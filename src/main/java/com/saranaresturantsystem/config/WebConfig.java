@@ -15,7 +15,7 @@ public class WebConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/v1/**") // Applies to all routes under api/v1
                         .allowedOrigins("http://localhost:5173") // Your React Dev Server
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS" , "PATCH")
                         .allowedHeaders("*")
                         .allowCredentials(true);
             }

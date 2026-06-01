@@ -1,5 +1,6 @@
 package com.saranaresturantsystem.execption;
 
+import com.saranaresturantsystem.common.DateTimeUtil;
 import com.saranaresturantsystem.dto.response.ApiResponse;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -59,20 +60,20 @@ public class GlobuleExceptionHandler {
         return new ResponseEntity<>(body, status);
     }
 
-    @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public ResponseEntity<ApiResponse<?>> handleMaxUploadSizeExceeded(
-            MaxUploadSizeExceededException ex) {
-
-        ApiResponse<?> response = ApiResponse.builder()
-                .succeess(false)
-                .status(HttpStatus.PAYLOAD_TOO_LARGE)
-                .message("File size exceeds the maximum allowed limit of 100MB")
-                .timestamp(Instant.now())
-                .build();
-
-        return ResponseEntity
-                .status(HttpStatus.PAYLOAD_TOO_LARGE)
-                .body(response);
-    }
+//    @ExceptionHandler(MaxUploadSizeExceededException.class)
+//    public ResponseEntity<ApiResponse<?>> handleMaxUploadSizeExceeded(
+//            MaxUploadSizeExceededException ex) {
+//
+//        ApiResponse<?> response = ApiResponse.builder()
+//                .succeess(false)
+//                .status(HttpStatus.PAYLOAD_TOO_LARGE)
+//                .message("File size exceeds the maximum allowed limit of 100MB")
+//                .Instant(Instant.now())
+//                .build();
+//
+//        return ResponseEntity
+//                .status(HttpStatus.PAYLOAD_TOO_LARGE)
+//                .body(response);
+//    }
 
 }

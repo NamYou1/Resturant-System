@@ -6,7 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
+
 import java.time.Instant;
+
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
@@ -14,9 +16,9 @@ import java.time.Instant;
 @NoArgsConstructor
 @Builder
 public class ApiResponse <T>{
-    private  Boolean succeess ;
+    private  Boolean success ;
     private HttpStatus status ;
     private  String message ;
     private  T payload ;
-    private Instant timestamp ;
+    private Instant Instant ;
 }

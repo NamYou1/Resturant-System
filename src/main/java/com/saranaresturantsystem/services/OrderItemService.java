@@ -1,7 +1,7 @@
 package com.saranaresturantsystem.services;
-import com.saranaresturantsystem.dto.request.OrderItemRequest;
-import com.saranaresturantsystem.dto.response.OrderItemResponse;
-import com.saranaresturantsystem.entities.OrderItem;
+import com.saranaresturantsystem.dto.request.sales.OrderItemRequest;
+import com.saranaresturantsystem.dto.response.sales.OrderItemResponse;
+import com.saranaresturantsystem.entities.sales.OrderItem;
 import org.springframework.data.domain.Page;
 import java.util.Map;
 

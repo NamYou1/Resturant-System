@@ -1,6 +1,6 @@
 package com.saranaresturantsystem.dto.response.reports;
 
-import com.saranaresturantsystem.dto.response.SaleResponse;
+import com.saranaresturantsystem.dto.response.sales.SaleResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
