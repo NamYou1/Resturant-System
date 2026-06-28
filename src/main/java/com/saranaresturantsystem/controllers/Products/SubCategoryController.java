@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -27,6 +28,7 @@ public class SubCategoryController {
      * Get all subcategories with pagination
      */
     @GetMapping
+    @PreAuthorize("hasAuthority('subCategory:read')")
     public ResponseEntity<ApiResponse<PageDTO>> getList(@RequestParam Map<String, String> params) {
         return ResponseFactory.ok(subCategoryService.getAllSubCategory(params), "SubCategory");
     }
@@ -35,6 +37,7 @@ public class SubCategoryController {
      * Get subcategory by ID
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('subCategory:read')")
     public ResponseEntity<ApiResponse<SubCategoryResponse>> getById(@PathVariable Long id) {
         return ResponseFactory.ok(subCategoryService.findById(id), Message.getById("SubCategory", id));
     }
@@ -43,6 +46,7 @@ public class SubCategoryController {
      * Create subcategory (has-a relationship with category)
      */
     @PostMapping
+    @PreAuthorize("hasAuthority('subCategory:create')")
     public ResponseEntity<ApiResponse<SubCategoryResponse>> create(@Valid @RequestBody SubCategoryRequest request) {
         return ResponseFactory.created(subCategoryService.createSubCategory(request), "SubCategory");
     }
@@ -51,6 +55,7 @@ public class SubCategoryController {
      * Update subcategory
      */
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('subCategory:update')")
     public ResponseEntity<ApiResponse<SubCategoryResponse>> update(
             @PathVariable Long id,
             @Valid @RequestBody SubCategoryRequest request) {
@@ -61,6 +66,7 @@ public class SubCategoryController {
      * Delete subcategory (soft-delete: sets status from active to inactive)
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('subCategory:delete')")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         subCategoryService.deleteSubCategory(id);
         return ResponseFactory.deleted("SubCategory", id);

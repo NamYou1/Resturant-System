@@ -23,35 +23,35 @@ public class PermissionController {
     private final PermissionService permissionService;
 
     @GetMapping
-    @PreAuthorize("hasRole('supAdmin') or hasAuthority('permission:read')")
+    @PreAuthorize("hasAuthority('permission:read')")
     public ResponseEntity<ApiResponse<List<PermissionResponse>>> getAll() {
         List<PermissionResponse> payload = permissionService.getAll();
         return ResponseFactory.ok(payload, Message.getAll("Permission"));
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('supAdmin') or hasAuthority('permission:read')")
+    @PreAuthorize("hasAuthority('permission:read')")
     public ResponseEntity<ApiResponse<PermissionResponse>> getById(@PathVariable Long id) {
         PermissionResponse payload = permissionService.getById(id);
         return ResponseFactory.ok(payload, Message.getById("Permission", id));
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('supAdmin') or hasAuthority('permission:create')")
+    @PreAuthorize("hasAuthority('permission:create')")
     public ResponseEntity<ApiResponse<PermissionResponse>> create(@Valid @RequestBody PermissionRequest request) {
         PermissionResponse payload = permissionService.create(request);
         return ResponseFactory.created(payload, "Permission");
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('supAdmin') or hasAuthority('permission:update')")
+    @PreAuthorize("hasAuthority('permission:update')")
     public ResponseEntity<ApiResponse<PermissionResponse>> update(@PathVariable Long id, @Valid @RequestBody PermissionRequest request) {
         PermissionResponse payload = permissionService.update(id, request);
         return ResponseFactory.ok(payload, Message.updated("Permission", id));
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('supAdmin') or hasAuthority('permission:delete')")
+    @PreAuthorize("hasAuthority('permission:delete')")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         permissionService.delete(id);
         return ResponseFactory.deleted("Permission", id);

@@ -23,35 +23,35 @@ public class RoleController {
     private final RoleService roleService;
 
     @GetMapping
-    @PreAuthorize("hasRole('supAdmin') or hasAuthority('role:read')")
+    @PreAuthorize("hasAuthority('role:read')")
     public ResponseEntity<ApiResponse<List<RoleResponse>>> getAll() {
         List<RoleResponse> payload = roleService.getAll();
         return ResponseFactory.ok(payload, Message.getAll("Role"));
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('supAdmin') or hasAuthority('role:read')")
+    @PreAuthorize("hasAuthority('role:read')")
     public ResponseEntity<ApiResponse<RoleResponse>> getById(@PathVariable Long id) {
         RoleResponse payload = roleService.getById(id);
         return ResponseFactory.ok(payload, Message.getById("Role", id));
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('supAdmin') or hasAuthority('role:create')")
+    @PreAuthorize("hasAuthority('role:create')")
     public ResponseEntity<ApiResponse<RoleResponse>> create(@Valid @RequestBody RoleRequest request) {
         RoleResponse payload = roleService.create(request);
         return ResponseFactory.created(payload, "Role");
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('supAdmin') or hasAuthority('role:update')")
+    @PreAuthorize("hasAuthority('role:update')")
     public ResponseEntity<ApiResponse<RoleResponse>> update(@PathVariable Long id, @Valid @RequestBody RoleRequest request) {
         RoleResponse payload = roleService.update(id, request);
         return ResponseFactory.ok(payload, Message.updated("Role", id));
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('supAdmin') or hasAuthority('role:delete')")
+    @PreAuthorize("hasAuthority('role:delete')")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         roleService.delete(id);
         return ResponseFactory.deleted("Role", id);

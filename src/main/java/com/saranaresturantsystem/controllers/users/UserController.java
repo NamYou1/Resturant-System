@@ -26,35 +26,35 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    @PreAuthorize("hasRole('supAdmin') or hasAuthority('user:read')")
+    @PreAuthorize("hasAuthority('user:read')")
     public ResponseEntity<ApiResponse<PageDTO>> getAll(@RequestParam Map<String, String> params) {
         Page<UserResponse> page = userService.getAll(params);
         return ResponseFactory.ok(page, "User");
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('supAdmin') or hasAuthority('user:read')")
+    @PreAuthorize("hasAuthority('user:read')")
     public ResponseEntity<ApiResponse<UserResponse>> getById(@PathVariable Long id) {
         UserResponse user = userService.getById(id);
         return ResponseFactory.ok(user, Message.getById("User", id));
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('supAdmin') or hasAuthority('user:create')")
+    @PreAuthorize("hasAuthority('user:create')")
     public ResponseEntity<ApiResponse<UserResponse>> create(@Valid @RequestBody UserRequest request) {
         UserResponse user = userService.create(request);
         return ResponseFactory.created(user, "User");
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('supAdmin') or hasAuthority('user:update')")
+    @PreAuthorize("hasAuthority('user:update')")
     public ResponseEntity<ApiResponse<UserResponse>> update(@PathVariable Long id, @Valid @RequestBody UserRequest request) {
         UserResponse user = userService.update(id, request);
         return ResponseFactory.ok(user, Message.updated("User", id));
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('supAdmin') or hasAuthority('user:delete')")
+    @PreAuthorize("hasAuthority('user:delete')")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         userService.delete(id);
         return ResponseFactory.deleted("User", id);

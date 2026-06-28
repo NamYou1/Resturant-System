@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -26,24 +27,28 @@ public class OptionController {
 
     @GetMapping
     @Operation(summary = "Get all options with pagination and filters")
+    @PreAuthorize("hasAuthority('option:read')")
     public ResponseEntity<ApiResponse<PageDTO>> getList(@RequestParam Map<String, String> params) {
         return ResponseFactory.ok(optionService.getAllOption(params), "Option");
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Find an option by its ID")
+    @PreAuthorize("hasAuthority('option:read')")
     public ResponseEntity<ApiResponse<OptionResponse>> getById(@PathVariable Long id) {
         return ResponseFactory.ok(optionService.getOptionResponseById(id), Message.getById("Option", id));
     }
 
     @PostMapping
     @Operation(summary = "Create a new option")
+    @PreAuthorize("hasAuthority('option:create')")
     public ResponseEntity<ApiResponse<OptionResponse>> create(@Valid @RequestBody OptionRequest request) {
         return ResponseFactory.created(optionService.createOption(request), "Option");
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Update option details")
+    @PreAuthorize("hasAuthority('option:update')")
     public ResponseEntity<ApiResponse<OptionResponse>> update(
             @PathVariable Long id,
             @Valid @ModelAttribute OptionRequest request) {
@@ -52,6 +57,7 @@ public class OptionController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete an option")
+    @PreAuthorize("hasAuthority('option:delete')")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         optionService.deleteOption(id);
         return ResponseFactory.deleted("Option", id);

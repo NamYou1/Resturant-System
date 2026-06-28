@@ -63,8 +63,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String username = claims.getSubject();
 
             // Extract User ID safely
-            Number uid = claims.get("uid", Number.class);
-            Long userId = uid != null ? uid.longValue() : null;
+            // Number uid = claims.get("uid", Number.class);
+            // Long userId = uid != null ? uid.longValue() : null;
 
             // Extract Roles and Permissions list
             java.util.List<?> roles = claims.get("roles", java.util.List.class);

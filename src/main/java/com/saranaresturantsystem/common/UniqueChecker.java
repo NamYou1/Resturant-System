@@ -41,7 +41,7 @@ public class UniqueChecker {
 
             if (duplicated) {
                 throw new DuplicateResourceException(
-                        fieldName + " '" + newValue + "' is already in use."
+                        fieldName + " '" + newValue + "' is already exits"
                 );
             }
         } finally {

@@ -29,7 +29,7 @@ public class SaleController {
     private final SalesService salesService;
 
     @PostMapping
-    @PreAuthorize("hasRole('supAdmin') or hasAuthority('sale:create')")
+    @PreAuthorize("hasAuthority('sale:create')")
     @Operation(summary = "Create sale, deduct stock, and record transaction")
     public ResponseEntity<ApiResponse<SaleResponse>> create(@Valid @RequestBody SaleRequest request, Principal principal) {
         String createdBy = principal != null ? principal.getName() : "system";
@@ -37,7 +37,7 @@ public class SaleController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('supAdmin') or hasAuthority('sale:read')")
+    @PreAuthorize("hasAuthority('sale:read')")
     @Operation(summary = "Get list of sales with pagination and filters")
     public ResponseEntity<ApiResponse<PageDTO>> getAll(Pageable pageable) {
         Page<SaleResponse> page = salesService.getAll(pageable);
@@ -45,14 +45,14 @@ public class SaleController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('supAdmin') or hasAuthority('sale:read')")
+    @PreAuthorize("hasAuthority('sale:read')")
     @Operation(summary = "Get sale details by ID")
     public ResponseEntity<ApiResponse<SaleResponse>> getById(@PathVariable Long id) {
         return ResponseFactory.ok(salesService.getById(id), Message.getById("Sale", id));
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('supAdmin') or hasAuthority('sale:update')")
+    @PreAuthorize("hasAuthority('sale:update')")
     @Operation(summary = "Update sale details (Only PENDING sales)")
     public ResponseEntity<ApiResponse<SaleResponse>> update(@PathVariable Long id, @Valid @RequestBody SaleRequest request, Principal principal) {
         String updatedBy = principal != null ? principal.getName() : "system";
@@ -60,7 +60,7 @@ public class SaleController {
     }
 
     @PatchMapping("/{id}/status")
-    @PreAuthorize("hasRole('supAdmin') or hasAuthority('sale:update')")
+    @PreAuthorize("hasAuthority('sale:update')")
     @Operation(summary = "Update sale status")
     public ResponseEntity<ApiResponse<SaleResponse>> updateStatus(@PathVariable Long id, @RequestParam SaleStatus status, Principal principal) {
         String updatedBy = principal != null ? principal.getName() : "system";
@@ -68,7 +68,7 @@ public class SaleController {
     }
 
     @PatchMapping("/{id}/complete")
-    @PreAuthorize("hasRole('supAdmin') or hasAuthority('sale:update')")
+    @PreAuthorize("hasAuthority('sale:update')")
     @Operation(summary = "Complete sale transaction and deduct inventory stock")
     public ResponseEntity<ApiResponse<SaleResponse>> complete(@PathVariable Long id, Principal principal) {
         String updatedBy = principal != null ? principal.getName() : "system";
@@ -76,7 +76,7 @@ public class SaleController {
     }
 
     @PatchMapping("/{id}/cancel")
-    @PreAuthorize("hasRole('supAdmin') or hasAuthority('sale:update')")
+    @PreAuthorize("hasAuthority('sale:update')")
     @Operation(summary = "Cancel sale transaction and restore inventory stock")
     public ResponseEntity<ApiResponse<SaleResponse>> cancel(@PathVariable Long id, Principal principal) {
         String updatedBy = principal != null ? principal.getName() : "system";
@@ -84,7 +84,7 @@ public class SaleController {
     }
 
     @PatchMapping("/{id}/return")
-    @PreAuthorize("hasRole('supAdmin') or hasAuthority('sale:update')")
+    @PreAuthorize("hasAuthority('sale:update')")
     @Operation(summary = "Return sale transaction and restore inventory stock")
     public ResponseEntity<ApiResponse<SaleResponse>> returnSale(@PathVariable Long id, Principal principal) {
         String updatedBy = principal != null ? principal.getName() : "system";
@@ -92,7 +92,7 @@ public class SaleController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('supAdmin') or hasAuthority('sale:delete')")
+    @PreAuthorize("hasAuthority('sale:delete')")
     @Operation(summary = "Soft delete a sale record")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id, Principal principal) {
         String deletedBy = principal != null ? principal.getName() : "system";

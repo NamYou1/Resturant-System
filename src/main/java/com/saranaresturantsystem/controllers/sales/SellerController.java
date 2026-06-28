@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -27,6 +28,7 @@ public class SellerController {
      * Get all sellers with pagination
      */
     @GetMapping
+    @PreAuthorize("hasAuthority('seller:read')")
     public ResponseEntity<ApiResponse<PageDTO>> getAll(@RequestParam Map<String, String> params) {
         return ResponseFactory.ok(sellerService.getList(params), "Seller");
     }
@@ -35,6 +37,7 @@ public class SellerController {
      * Get seller by ID
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('seller:read')")
     public ResponseEntity<ApiResponse<SellerResponse>> getById(@PathVariable Long id) {
         return ResponseFactory.ok(sellerService.findById(id), Message.getById("Seller", id));
     }
@@ -43,6 +46,7 @@ public class SellerController {
      * Create new seller
      */
     @PostMapping
+    @PreAuthorize("hasAuthority('seller:create')")
     public ResponseEntity<ApiResponse<SellerResponse>> create(@Valid @ModelAttribute SellerRequest request) {
         return ResponseFactory.created(sellerService.create(request), "Seller");
     }
@@ -51,6 +55,7 @@ public class SellerController {
      * Update existing seller
      */
     @PutMapping(path = "/{id}")
+    @PreAuthorize("hasAuthority('seller:update')")
     public ResponseEntity<ApiResponse<SellerResponse>> update(
             @PathVariable Long id,
             @Valid @ModelAttribute SellerRequest request) {
@@ -61,6 +66,7 @@ public class SellerController {
      * Delete seller
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('seller:delete')")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         sellerService.delete(id);
         return ResponseFactory.deleted("Seller", id);
