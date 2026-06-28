@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -36,7 +35,6 @@ public class DatabaseSeeder implements CommandLineRunner {
     @Transactional
     public void run(String... args) throws Exception {
         log.info("Starting database seeding...");
-
         // 1. Check if the Super Admin user already exists
         if (userRepository.findByEmail("namyou854@gmail.com").isPresent()) {
             log.info("Super Admin user already exists. Skipping database seeding.");
@@ -138,87 +136,31 @@ public class DatabaseSeeder implements CommandLineRunner {
         allPermissions.add(getOrCreatePermission("store:delete", "Delete Stores", "Ability to delete stores", storeMgmt));
 
         // 4. Create or get "supAdmin" Role
-        Role superAdminRole = roleRepository.findByCode("supAdmin").orElseGet(() -> {
+        Role SUPER_ADMIN = roleRepository.findByCode("supAdmin").orElseGet(() -> {
             Role role = new Role();
-            role.setCode("supAdmin");
+            role.setCode("SUPER_ADMIN");
             role.setName("Super Administrator");
             role.setDescription("Super Administrator role with absolute database permissions");
             return roleRepository.save(role);
         });
 
         // 5. Assign all permissions to "supAdmin" role
-        superAdminRole.setPermissions(allPermissions);
-        roleRepository.save(superAdminRole);
+        SUPER_ADMIN.setPermissions(allPermissions);
+        roleRepository.save(SUPER_ADMIN);
         log.info("Assigned {} permissions to the 'supAdmin' role successfully.", allPermissions.size());
 
         // 6. Create or get "admin" Role
-        Role adminRole = roleRepository.findByCode("admin").orElseGet(() -> {
-            Role role = new Role();
-            role.setCode("admin");
-            role.setName("Admin");
-            role.setDescription("Admin staff role with administrative and operational permissions");
-            return roleRepository.save(role);
-        });
-        Set<Permission> adminStaffPermissions = allPermissions.stream()
-                .filter(p -> !p.getCode().startsWith("user:") && !p.getCode().startsWith("role:") && !p.getCode().startsWith("permission:"))
-                .collect(Collectors.toSet());
-        allPermissions.stream()
-                .filter(p -> p.getCode().equals("user:read") || p.getCode().equals("role:read") || p.getCode().equals("permission:read"))
-                .forEach(adminStaffPermissions::add);
-        adminRole.setPermissions(adminStaffPermissions);
-        roleRepository.save(adminRole);
-        log.info("Assigned {} permissions to the 'admin' role.", adminStaffPermissions.size());
-
-        // 7. Create or get "stock" Role
-        Role stockRole = roleRepository.findByCode("stock").orElseGet(() -> {
-            Role role = new Role();
-            role.setCode("stock");
-            role.setName("Stock Staff");
-            role.setDescription("Stock staff role with inventory and stock management permissions");
-            return roleRepository.save(role);
-        });
-        Set<Permission> stockPermissions = allPermissions.stream()
-                .filter(p -> p.getCode().startsWith("stock:") || p.getCode().startsWith("product:") || p.getCode().startsWith("category:") || p.getCode().startsWith("adjustment:") || p.getCode().startsWith("transfer:"))
-                .collect(Collectors.toSet());
-        stockRole.setPermissions(stockPermissions);
-        roleRepository.save(stockRole);
-        log.info("Assigned {} permissions to the 'stock' role.", stockPermissions.size());
-
-        // 8. Create or get "cashier" Role
-        Role cashierRole = roleRepository.findByCode("cashier").orElseGet(() -> {
-            Role role = new Role();
-            role.setCode("cashier");
-            role.setName("Cashier Staff");
-            role.setDescription("Cashier staff role with sales and cashier permissions");
-            return roleRepository.save(role);
-        });
-        Set<Permission> cashierPermissions = allPermissions.stream()
-                .filter(p -> p.getCode().startsWith("sale:") || p.getCode().startsWith("product:read") || p.getCode().startsWith("category:read") || p.getCode().startsWith("people:"))
-                .collect(Collectors.toSet());
-        cashierRole.setPermissions(cashierPermissions);
-        roleRepository.save(cashierRole);
-        log.info("Assigned {} permissions to the 'cashier' role.", cashierPermissions.size());
-
-        // 9. Create or get "staff" Role (General Staff)
-        Role staffRole = roleRepository.findByCode("staff").orElseGet(() -> {
-            Role role = new Role();
-            role.setCode("staff");
-            role.setName("General Staff");
-            role.setDescription("General staff role combining stock management and cashiering features");
-            return roleRepository.save(role);
-        });
-        Set<Permission> staffPermissions = new HashSet<>();
-        staffPermissions.addAll(stockPermissions);
-        staffPermissions.addAll(cashierPermissions);
-        staffRole.setPermissions(staffPermissions);
-        roleRepository.save(staffRole);
-        log.info("Assigned {} permissions to the 'staff' role (combining stock and cashier).", staffPermissions.size());
-
-        // 10. Create Super Admin user
+        // Role ADMIN = roleRepository.findByCode("ADMIN").orElseGet(() -> {
+        //     Role role = new Role();
+        //     role.setCode("ADMIN");
+        //     role.setName("Admin");
+        //     role.setDescription("Admin staff role with administrative and operational permissions");
+        //     return roleRepository.save(role);
+        // });
         User superAdmin = new User();
         superAdmin.setFirstName("Super");
         superAdmin.setLastName("Admin");
-        superAdmin.setUsername("supadmin");
+        superAdmin.setUsername("SUPER_ADMIN");
         superAdmin.setEmail("namyou854@gmail.com");
         superAdmin.setPhone("012345678");
         superAdmin.setPasswordHash(passwordEncoder.encode("admin@123"));
@@ -228,13 +170,12 @@ public class DatabaseSeeder implements CommandLineRunner {
         superAdmin.setFailedLoginAttempts(0);
         superAdmin.setCreatedAt(LocalDateTime.now());
         superAdmin.setUpdatedAt(LocalDateTime.now());
-
         Set<Role> roles = new HashSet<>();
-        roles.add(superAdminRole);
+        roles.add(SUPER_ADMIN);
         superAdmin.setRoles(roles);
 
         userRepository.save(superAdmin);
-        log.info("Super Admin user 'namyou854@gmail.com' created and seeded successfully with role 'supAdmin'!");
+        log.info("Super Admin user 'namyou854@gmail.com' created and seeded successfully with role 'superAdmin'!");
     }
 
     private PermissionGroup getOrCreateGroup(String code, String name, String description) {

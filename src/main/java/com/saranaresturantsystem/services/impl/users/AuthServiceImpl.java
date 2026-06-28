@@ -86,7 +86,7 @@ public class AuthServiceImpl implements AuthService {
         user.setIsVerified(false);
         user.setFailedLoginAttempts(0);
         // Assign default ROLE_STAFF
-        roleRepository.findByCode("Staff").ifPresent(role -> user.getRoles().add(role));
+        roleRepository.findByCode("ROLE_STAFF").ifPresent(role -> user.getRoles().add(role));
         User savedUser = userRepository.save(user);
         // Auto-generate verification token for email verification
         generateAndSaveToken(savedUser, "EMAIL_VERIFICATION", 24);

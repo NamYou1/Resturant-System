@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -24,21 +25,25 @@ public class AdjustmentController {
     private final AdjustmentService adjustmentService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('adjustment:read')")
     public ResponseEntity<ApiResponse<PageDTO>> getAll(@RequestParam Map<String, String> params) {
         return ResponseFactory.ok(adjustmentService.getList(params), "Adjustment");
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('adjustment:read')")
     public ResponseEntity<ApiResponse<AdjustmentResponse>> getById(@Valid @PathVariable Long id) {
         return ResponseFactory.ok(adjustmentService.findById(id), Message.getById("Adjustment", id));
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('adjustment:create')")
     public ResponseEntity<ApiResponse<AdjustmentResponse>> create(@Valid @RequestBody AdjustmentRequest request) {
         return ResponseFactory.created(adjustmentService.createAdjustment(request), "Adjustment");
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('adjustment:delete')")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         adjustmentService.deleteAdjustment(id);
         return ResponseFactory.deleted("Adjustment", id);

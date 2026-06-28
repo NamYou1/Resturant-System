@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -24,21 +25,25 @@ public class BankController {
     private final BankService bankService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('bank:read')")
     public ResponseEntity<ApiResponse<PageDTO>> getAll(@RequestParam Map<String, String> params) {
         return ResponseFactory.ok(bankService.getListBank(params), "Bank");
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('bank:read')")
     public ResponseEntity<ApiResponse<BankResponse>> getById(@PathVariable Long id) {
         return ResponseFactory.ok(bankService.getBankResponseById(id), Message.getById("Bank", id));
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('bank:create')")
     public ResponseEntity<ApiResponse<BankResponse>> create(@Valid @RequestBody BankRequest request) {
         return ResponseFactory.created(bankService.createBank(request), "Bank");
     }
 
     @PutMapping(path = "/{id}")
+    @PreAuthorize("hasAuthority('bank:update')")
     public ResponseEntity<ApiResponse<BankResponse>> update(
             @PathVariable Long id,
             @Valid @RequestBody BankRequest request) {
@@ -46,6 +51,7 @@ public class BankController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('setting:delete')")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         bankService.deleteBank(id);
         return ResponseFactory.deleted("Bank", id);

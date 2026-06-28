@@ -14,11 +14,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.WebDataBinder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.beans.PropertyEditorSupport;
 import java.util.Map;
 
 @RestController
@@ -29,24 +27,12 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(MultipartFile.class, new PropertyEditorSupport() {
-            @Override
-            public void setValue(Object value) {
-                if (value instanceof MultipartFile) {
-                    super.setValue(value);
-                } else {
-                    super.setValue(null);
-                }
-            }
-        });
-    }
     /**
      * Get all products with pagination and filters
      */
     @GetMapping
     @Operation(summary = "Get all products with pagination and filters")
+    @PreAuthorize("hasAuthority('product:read')")
     public ResponseEntity<ApiResponse<PageDTO>> getList(
             @Parameter(description = "Filter params: page, size, sort, name, code, type, status, categoryId")
             @RequestParam Map<String, String> params) {
@@ -58,6 +44,7 @@ public class ProductController {
      */
     @GetMapping("/{id}")
     @Operation(summary = "Find a product by its ID")
+    @PreAuthorize("hasAuthority('product:read')")
     public ResponseEntity<ApiResponse<ProductResponse>> getById(@PathVariable Long id) {
         return ResponseFactory.ok(productService.findById(id), Message.getById("Product", id));
     }
@@ -67,6 +54,7 @@ public class ProductController {
      */
     @PostMapping()
     @Operation(summary = "Create a new product with an optional image")
+    @PreAuthorize("hasAuthority('product:create')")
     public ResponseEntity<ApiResponse<ProductResponse>> create(
             @Valid @RequestBody ProductRequest request) {
         return ResponseFactory.created(productService.createProduct(request ), "Product");
@@ -77,6 +65,7 @@ public class ProductController {
      */
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Update product details; send a new image file to replace the existing one")
+    @PreAuthorize("hasAuthority('product:update')")
     public ResponseEntity<ApiResponse<ProductResponse>> update(
             @PathVariable Long id,
             @Valid @ModelAttribute ProductRequest request) {
@@ -88,6 +77,7 @@ public class ProductController {
      */
     @DeleteMapping("/{id}")
     @Operation(summary = "Soft-delete a product by setting its status to INACTIVE")
+    @PreAuthorize("hasAuthority('product:delete')")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         productService.deleteProduct(id);
         return ResponseFactory.deleted("Product", id);

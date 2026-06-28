@@ -13,6 +13,7 @@ import com.saranaresturantsystem.mappers.users.UserMapper;
 import com.saranaresturantsystem.repositories.users.RoleRepository;
 import com.saranaresturantsystem.repositories.inventory.StoreRepository;
 import com.saranaresturantsystem.repositories.users.UserRepository;
+import com.saranaresturantsystem.services.StoreService;
 import com.saranaresturantsystem.services.users.UserService;
 import com.saranaresturantsystem.utils.PageUtil;
 import lombok.RequiredArgsConstructor;
@@ -37,18 +38,19 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final StoreRepository storeRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private  final UserMapper userMapper ;
     private  final UniqueChecker uniqueChecker  ;
+    private final StoreService storeService;
+
     @Override
     public Page<UserResponse> getAll(Map<String, String> params) {
         User currentUser = getCurrentUser();
-       Pageable pageable = PageUtil.fromParams(params);
+        Pageable pageable = PageUtil.fromParams(params);
         Page<User> usersPage;
         if (currentUser.getStore() != null) {
-            boolean isSuperAdmin = hasRole(currentUser, "superAdmin");
+            boolean isSuperAdmin = hasRole(currentUser, "SUPER_ADMIN");
             if (!isSuperAdmin) {
                 usersPage = userRepository.findByStoreIdAndDeletedAtIsNull(currentUser.getStore().getId(), pageable);
             } else {
@@ -71,7 +73,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if (currentUser.getStore() != null) {
-            boolean isSuperAdmin = hasRole(currentUser, "SuperAdmin");
+            boolean isSuperAdmin = hasRole(currentUser, "SUPER_ADMIN");
             if (!isSuperAdmin) {
                 if (user.getStore() == null || !user.getStore().getId().equals(currentUser.getStore().getId())) {
                     throw new AccessDeniedException("You do not have permission to access this user.");
@@ -89,7 +91,7 @@ public class UserServiceImpl implements UserService {
 
         // Enforce store boundary for non-super-admins
         if (currentUser.getStore() != null) {
-            boolean isSuperAdmin = hasRole(currentUser, "superAdmin");
+            boolean isSuperAdmin = hasRole(currentUser, "SUPER_ADMIN");
             if (!isSuperAdmin) {
                 if (targetStoreId == null || !targetStoreId.equals(currentUser.getStore().getId())) {
                     throw new AccessDeniedException("You can only create users for your own store.");
@@ -105,12 +107,11 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateResourceException("Email already exists");
         }
         User user = userMapper.toEntity(request);
-        user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash() !=null ? user.getPasswordHash() : "12345"));
+        user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
         user.setIsLocked(false);
         user.setIsVerified(true);
         if (targetStoreId != null) {
-            Store store = storeRepository.findById(targetStoreId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Store", targetStoreId));
+            Store store = storeService.findById(targetStoreId);
             user.setStore(store);
         }
 
@@ -120,7 +121,7 @@ public class UserServiceImpl implements UserService {
             for (String code : request.getRoleCodes()) {
                 Role role = roleRepository.findByCode(code).orElseThrow(() -> new ResourceNotFoundException("Role not found with code: " + code));
                 // Restrict store admin role assignments
-                if (currentUser.getStore() != null && !hasRole(currentUser, "SuperAdmin")) {
+                if (currentUser.getStore() != null && !hasRole(currentUser, "SUPER_ADMIN")) {
                     if (!"ROLE_STAFF".equals(code) && !"ROLE_SALE".equals(code) && !"ROLE_MANAGER".equals(code)) {
                         throw new AccessDeniedException("Store Administrator can only assign ROLE_STAFF, ROLE_SALE, and ROLE_MANAGER roles.");}
                 }
@@ -141,7 +142,7 @@ public class UserServiceImpl implements UserService {
 
         // Store boundary checks
         if (currentUser.getStore() != null) {
-            boolean isSuperAdmin = hasRole(currentUser, "ROLE_SUPER_ADMIN");
+            boolean isSuperAdmin = hasRole(currentUser, "SUPER_ADMIN");
             if (!isSuperAdmin) {
                 if (user.getStore() == null || !user.getStore().getId().equals(currentUser.getStore().getId())) {
                     throw new AccessDeniedException("You do not have permission to manage this user.");
@@ -152,23 +153,6 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        uniqueChecker.verify(userRepository , user , "email" , request.getEmail());
-        uniqueChecker.verify(userRepository , user , "userName" , request.getUsername());
-
-        // Validate username/email duplication (if changed)
-//        if (!user.getUsername().equals(request.getUsername())) {
-//            userRepository.findByUsername(request.getUsername()).ifPresent(u -> {
-//                throw  new   DuplicateResourceException("Username already exists");
-//            });
-//            user.setUsername(request.getUsername());
-//        }
-//        if (!user.getEmail().equals(request.getEmail())) {
-//            userRepository.findByEmail(request.getEmail()).ifPresent(u -> {
-//                throw new DuplicateResourceException("Email already exists");
-//            });
-//            user.setEmail(request.getEmail());
-//        }
-
         if (request.getPassword() != null && !request.getPassword().isBlank()) {
             user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         }
@@ -176,7 +160,7 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setPhone(request.getPhone());
-        user.setIsActive(request.getIsActive() != null ? request.getIsActive() : user.getIsActive());
+        user.setIsActive(request.getIsActive() );
 
 //        if (request.getStoreId() != null) {
 //            Store store = storeRepository.findById(request.getStoreId())
@@ -237,7 +221,7 @@ public class UserServiceImpl implements UserService {
         return  user;
     }
 
-    private User getCurrentUser() {
+    public User getCurrentUser() {
         String usernameOrEmail = Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication()).getName();
         return userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
                 .orElseThrow(() -> new UsernameNotFoundException("Authenticated user not found"));
@@ -247,22 +231,4 @@ public class UserServiceImpl implements UserService {
         return user.getRoles().stream().anyMatch(r -> roleCode.equals(r.getCode()));
     }
 
-//    private UserResponse toResponse(User user) {
-//        return UserResponse.builder()
-//                .id(user.getId())
-//                .username(user.getUsername())
-//                .email(user.getEmail())
-//                .firstName(user.getFirstName())
-//                .lastName(user.getLastName())
-//                .phone(user.getPhone())
-//                .isActive(user.getIsActive())
-//                .isVerified(user.getIsVerified())
-//                .isLocked(user.getIsLocked())
-//                .storeId(user.getStore() != null ? user.getStore().getId() : null)
-//                .storeName(user.getStore() != null ? user.getStore().getName() : "ALL STORES")
-//                .roles(user.getRoles().stream().map(Role::getCode).toList())
-//                .createdAt(user.getCreatedAt())
-//                .updatedAt(user.getUpdatedAt())
-//                .build();
-//    }
 }
