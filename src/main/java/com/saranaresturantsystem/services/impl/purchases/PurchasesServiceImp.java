@@ -63,7 +63,7 @@ public class PurchasesServiceImp implements PurchasesService {
             item.setPurchase(purchase);
             item.setProduct(product);
             item.setUnit(product.getUnit());
-            item.setStoreId(request.getStoreId());
+//            item.setStoreId(request.getStoreId());
             BigDecimal itemDisc = itemReq.getTotalDiscount() != null ? BigDecimal.valueOf(itemReq.getTotalDiscount()) : BigDecimal.ZERO;
             item.setTotalDiscount(itemDisc);
             item.setSubtotal(item.getQuantity().multiply(item.getCostPrice()).subtract(itemDisc));
