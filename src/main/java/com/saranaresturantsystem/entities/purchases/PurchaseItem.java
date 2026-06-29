@@ -35,6 +35,6 @@ public class PurchaseItem {
     private Unit unit;
     @Column(name = "real_unit_cost")
     private BigDecimal realUnitCost;
-    @Column(name = "store_id")
-    private Long storeId;
+//    @Column(name = "store_id")
+//    private Long storeId;
 }
