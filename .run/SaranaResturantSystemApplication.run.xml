@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="SaranaResturantSystemApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-    <module name="sarana-resturant-system.main" />
+    <module name="Resturant-System" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.saranaresturantsystem.SaranaResturantSystemApplication" />
     <method v="2">
       <option name="Make" enabled="true" />

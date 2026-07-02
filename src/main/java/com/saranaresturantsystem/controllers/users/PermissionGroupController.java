@@ -23,35 +23,35 @@ public class PermissionGroupController {
     private final PermissionGroupService permissionGroupService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('groupPermission:read')")
+    @PreAuthorize("hasAuthority('permissionGroup:read')")
     public ResponseEntity<ApiResponse<List<PermissionGroupResponse>>> getAll() {
         List<PermissionGroupResponse> payload = permissionGroupService.getAll();
         return ResponseFactory.ok(payload, Message.getAll("PermissionGroup"));
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('groupPermission:read')")
+    @PreAuthorize("hasAuthority('permissionGroup:read')")
     public ResponseEntity<ApiResponse<PermissionGroupResponse>> getById(@PathVariable Long id) {
         PermissionGroupResponse payload = permissionGroupService.getById(id);
         return ResponseFactory.ok(payload, Message.getById("PermissionGroup", id));
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('groupPermission:create')")
+    @PreAuthorize("hasAuthority('permissionGroup:create')")
     public ResponseEntity<ApiResponse<PermissionGroupResponse>> create(@Valid @RequestBody PermissionGroupRequest request) {
         PermissionGroupResponse payload = permissionGroupService.create(request);
         return ResponseFactory.created(payload, "PermissionGroup");
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('groupPermission:update')")
+    @PreAuthorize("hasAuthority('permissionGroup:update')")
     public ResponseEntity<ApiResponse<PermissionGroupResponse>> update(@PathVariable Long id, @Valid @RequestBody PermissionGroupRequest request) {
         PermissionGroupResponse payload = permissionGroupService.update(id, request);
         return ResponseFactory.ok(payload, Message.updated("PermissionGroup", id));
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('groupPermission:delete')")
+    @PreAuthorize("hasAuthority('permissionGroup:delete')")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         permissionGroupService.delete(id);
         return ResponseFactory.deleted("PermissionGroup", id);

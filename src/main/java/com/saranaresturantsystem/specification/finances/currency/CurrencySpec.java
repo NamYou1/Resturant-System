@@ -11,8 +11,8 @@ public class CurrencySpec {
     public static Specification<Currency> filterBy(CurrencyFilter filter) {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
-//            // Always filter by ACTIVE status (soft delete)
-//            predicates.add(cb.equal(root.get("status"), GeneralStatus.ACTIVE));
+            // Always filter by ACTIVE status (soft delete)
+            // predicates.add(cb.equal(root.get("status"), Status.ACTIVE));
 
             if (filter.getName() != null && !filter.getName().isEmpty()) {
                 predicates.add(cb.like(root.get("name"), "%" + filter.getName() + "%"));

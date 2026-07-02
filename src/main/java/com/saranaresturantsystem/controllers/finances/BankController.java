@@ -51,7 +51,7 @@ public class BankController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('setting:delete')")
+    @PreAuthorize("hasAuthority('bank:delete')")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         bankService.deleteBank(id);
         return ResponseFactory.deleted("Bank", id);

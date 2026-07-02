@@ -13,12 +13,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,7 +31,8 @@ public class SaleController {
     @PostMapping
     @PreAuthorize("hasAuthority('sale:create')")
     @Operation(summary = "Create sale, deduct stock, and record transaction")
-    public ResponseEntity<ApiResponse<SaleResponse>> create(@Valid @RequestBody SaleRequest request, Principal principal) {
+    public ResponseEntity<ApiResponse<SaleResponse>> create(@Valid @RequestBody SaleRequest request,
+            Principal principal) {
         String createdBy = principal != null ? principal.getName() : "system";
         return ResponseFactory.created(salesService.create(request, createdBy), "Sale");
     }
@@ -39,8 +40,8 @@ public class SaleController {
     @GetMapping
     @PreAuthorize("hasAuthority('sale:read')")
     @Operation(summary = "Get list of sales with pagination and filters")
-    public ResponseEntity<ApiResponse<PageDTO>> getAll(Pageable pageable) {
-        Page<SaleResponse> page = salesService.getAll(pageable);
+    public ResponseEntity<ApiResponse<PageDTO>> getAll(@RequestParam Map<String, String> params) {
+        Page<SaleResponse> page = salesService.getAll(params);
         return ResponseFactory.ok(page, "Sale");
     }
 
@@ -54,7 +55,8 @@ public class SaleController {
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('sale:update')")
     @Operation(summary = "Update sale details (Only PENDING sales)")
-    public ResponseEntity<ApiResponse<SaleResponse>> update(@PathVariable Long id, @Valid @RequestBody SaleRequest request, Principal principal) {
+    public ResponseEntity<ApiResponse<SaleResponse>> update(@PathVariable Long id,
+            @Valid @RequestBody SaleRequest request, Principal principal) {
         String updatedBy = principal != null ? principal.getName() : "system";
         return ResponseFactory.ok(salesService.update(id, request, updatedBy), Message.updated("Sale", id));
     }
@@ -62,7 +64,8 @@ public class SaleController {
     @PatchMapping("/{id}/status")
     @PreAuthorize("hasAuthority('sale:update')")
     @Operation(summary = "Update sale status")
-    public ResponseEntity<ApiResponse<SaleResponse>> updateStatus(@PathVariable Long id, @RequestParam SaleStatus status, Principal principal) {
+    public ResponseEntity<ApiResponse<SaleResponse>> updateStatus(@PathVariable Long id,
+            @RequestParam SaleStatus status, Principal principal) {
         String updatedBy = principal != null ? principal.getName() : "system";
         return ResponseFactory.ok(salesService.updateStatus(id, status, updatedBy), "Sale status updated successfully");
     }

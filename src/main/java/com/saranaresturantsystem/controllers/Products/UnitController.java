@@ -25,31 +25,31 @@ public class UnitController {
     private final UnitServices unitServices;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('product:read')")
+    @PreAuthorize("hasAuthority('unit:read')")
     public ResponseEntity<ApiResponse<PageDTO>> getList(@RequestParam Map<String, String> params) {
         return ResponseFactory.ok(unitServices.getAllUnits(params), "Unit");
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('product:read')")
+    @PreAuthorize("hasAuthority('unit:read')")
     public ResponseEntity<ApiResponse<UnitResponse>> getById(@PathVariable Long id) {
         return ResponseFactory.ok(unitServices.findById(id), Message.getById("Unit", id));
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('product:create')")
+    @PreAuthorize("hasAuthority('unit:create')")
     public ResponseEntity<ApiResponse<UnitResponse>> create(@Valid @RequestBody UnitRequest request) {
         return ResponseFactory.created(unitServices.createUnit(request), "Unit");
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('product:update')")
+    @PreAuthorize("hasAuthority('unit:update')")
     public ResponseEntity<ApiResponse<UnitResponse>> update(@PathVariable Long id, @Valid @RequestBody UnitRequest request) {
         return ResponseFactory.ok(unitServices.updateUnit(id, request), Message.updated("Unit", id));
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('product:delete')")
+    @PreAuthorize("hasAuthority('unit:delete')")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         unitServices.deleteUnit(id);
         return ResponseFactory.deleted("Unit", id);

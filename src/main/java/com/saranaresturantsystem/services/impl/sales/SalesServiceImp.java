@@ -14,14 +14,18 @@ import com.saranaresturantsystem.services.SalesService;
 import com.saranaresturantsystem.enums.SaleStatus;
 import com.saranaresturantsystem.enums.TransactionType;
 import com.saranaresturantsystem.services.TransactionService;
+import com.saranaresturantsystem.specification.sales.sale.SaleFilter;
+import com.saranaresturantsystem.specification.sales.sale.SaleSpec;
+import com.saranaresturantsystem.utils.PageUtil;
 import com.saranaresturantsystem.services.StockService;
 import com.saranaresturantsystem.execption.ResourceNotFoundException;
-import com.saranaresturantsystem.execption.DuplicateResourceException;
 
 import lombok.extern.slf4j.Slf4j;
+import tools.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +33,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +45,16 @@ public class SalesServiceImp implements SalesService {
     private final TransactionService transactionService;
     private final ProductService productService;
     private final SaleMapper saleMapper;
+    private final ObjectMapper objectMapper ; 
 
+      @Override
+    public Page<SaleResponse> getAll(Map<String,String> params) {
+        SaleFilter filter = objectMapper.convertValue(params, SaleFilter.class);
+        Pageable pageable = PageUtil.fromParams(params);
+        Specification<Sale> spec = SaleSpec.filter(filter);
+        Page<Sale> sales = saleRepository.findAll(spec, pageable);
+        return sales.map(saleMapper::toResponse);
+    }
     @Override
     @Transactional
     public SaleResponse create(SaleRequest request, String createdBy) {
@@ -95,11 +109,7 @@ public class SalesServiceImp implements SalesService {
                 .orElseThrow(() -> new ResourceNotFoundException("Sale", id));
     }
 
-    @Override
-    public Page<SaleResponse> getAll(Pageable pageable) {
-        return saleRepository.findByDeleteFlag(0, pageable)
-                .map(saleMapper::toResponse);
-    }
+  
 
     @Override
     @Transactional
@@ -219,7 +229,7 @@ public class SalesServiceImp implements SalesService {
                 transactionService.logStockMovement(
                         TransactionType.ADJUSTMENT_IN,
                         sale.getId(),
-                        "VOID-" + sale.getHoldRef(),
+                        "HOLD " + sale.getHoldRef(),
                         product.getId(),
                         sale.getStoreId().longValue(),
                         null,
