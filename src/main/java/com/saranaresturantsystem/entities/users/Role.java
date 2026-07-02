@@ -11,7 +11,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "roles", indexes = {
+@Table(name = "tbl_role", indexes = {
         @Index(name = "idx_role_code", columnList = "code")
 })
 public class Role {

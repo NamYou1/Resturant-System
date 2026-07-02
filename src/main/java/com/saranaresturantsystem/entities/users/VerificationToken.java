@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "verification_tokens", indexes = {
+@Table(name = "tbl_verification_tokens", indexes = {
         @Index(name = "idx_verif_token", columnList = "token"),
         @Index(name = "idx_verif_user_type", columnList = "user_id, type")
 })

@@ -10,7 +10,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "permission_groups", indexes = {
+@Table(name = "tbl_permission_groups", indexes = {
         @Index(name = "idx_perm_group_code", columnList = "code")
 })
 public class PermissionGroup {
