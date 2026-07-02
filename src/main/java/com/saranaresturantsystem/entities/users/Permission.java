@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "permissions", indexes = {
+@Table(name = "tbl_permissions", indexes = {
         @Index(name = "idx_permission_code", columnList = "code"),
         @Index(name = "idx_permission_group", columnList = "group_id")
 })

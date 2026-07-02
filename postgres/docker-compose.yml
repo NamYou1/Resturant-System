@@ -1,15 +1,15 @@
 services:
   postgres:
     image: postgres:17-alpine
-    container_name: Db_inventory
+    container_name: postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin@123
-      POSTGRES_DB: Db_inventory
+      POSTGRES_DB: inventory
     ports:
       - "5433:5432"
     volumes:
-      - Db_inventory:/var/lib/postgresql/data
+      - postgres:/var/lib/postgresql/data
 volumes:
-  Db_inventory:
+  postgres:

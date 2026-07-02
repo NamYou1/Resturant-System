@@ -6,13 +6,15 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.saranaresturantsystem.entities.BaseEntity;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "tbl_sales")
-public class Sale {
+public class Sale extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -47,12 +49,6 @@ public class Sale {
     @Column(name = "total_quantity", precision = 15, scale = 4)
     private BigDecimal totalQuantity;
     private BigDecimal paid;
-    @Column(name = "created_by")
-    private Integer createdBy;
-    @Column(name = "updated_by")
-    private Integer updatedBy;
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
     @Column(length = 1000)
     private String note;
     @Column(length = 20)
@@ -65,8 +61,7 @@ public class Sale {
     private Integer no;
     @Column(name = "delete_flag")
     private Integer deleteFlag = 0;
-    @Column(name = "delete_by")
-    private Integer deleteBy;
+
     private Short pos = 0;
     @Column(name = "sale_status", length = 50)
     private String saleStatus;

@@ -306,7 +306,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         user.setLastName("User");
         user.setUsername("USER");
         user.setEmail("user@gmail.com");
-        user.setPhone("012345678");
+        user.setPhone("012345679");
         user.setPasswordHash(passwordEncoder.encode("admin@123"));
         user.setIsActive(StatusType.ACTIVE);
         user.setIsVerified(true);
@@ -327,7 +327,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         admin.setLastName("Admin");
         admin.setUsername("ADMIN");
         admin.setEmail("admin@gmail.com");
-        admin.setPhone("012345678");
+        admin.setPhone("012345680");
         admin.setPasswordHash(passwordEncoder.encode("admin@123"));
         admin.setIsActive(StatusType.ACTIVE);
         admin.setIsVerified(true);

@@ -65,11 +65,6 @@ public class SalesServiceImp implements SalesService {
         sale.setNo(nextNo);
         sale.setDate(LocalDateTime.now());
         sale.setDeleteFlag(0);
-        try {
-            sale.setCreatedBy(createdBy != null ? Integer.parseInt(createdBy) : (request.getSellerId() != null ? request.getSellerId().intValue() : null));
-        } catch (NumberFormatException e) {
-            sale.setCreatedBy(request.getSellerId() != null ? request.getSellerId().intValue() : null);
-        }
         sale.setStoreId(request.getStoreId() != null ? request.getStoreId() : 1);
         sale.setSaleStatus(SaleStatus.PENDING.name().toLowerCase());
         
@@ -120,12 +115,6 @@ public class SalesServiceImp implements SalesService {
         }
 
         saleMapper.updateFromRequest(request, sale);
-        try {
-            sale.setUpdatedBy(updatedBy != null ? Integer.parseInt(updatedBy) : null);
-        } catch (NumberFormatException e) {
-            sale.setUpdatedBy(null);
-        }
-        sale.setUpdatedAt(LocalDateTime.now());
 
         // Delete existing items
         if (sale.getItems() != null) {
@@ -158,12 +147,6 @@ public class SalesServiceImp implements SalesService {
             throw new IllegalArgumentException("Only PENDING sales can be approved");
         }
         sale.setSaleStatus(SaleStatus.COMPLETED.name().toLowerCase());
-        try {
-            sale.setUpdatedBy(updatedBy != null ? Integer.parseInt(updatedBy) : null);
-        } catch (NumberFormatException e) {
-            sale.setUpdatedBy(null);
-        }
-        sale.setUpdatedAt(LocalDateTime.now());
         return saleMapper.toResponse(saleRepository.save(sale));
     }
 
@@ -196,13 +179,7 @@ public class SalesServiceImp implements SalesService {
         }
 
         sale.setSaleStatus(SaleStatus.COMPLETED.name().toLowerCase());
-        try {
-            sale.setUpdatedBy(updatedBy != null ? Integer.parseInt(updatedBy) : null);
-        } catch (NumberFormatException e) {
-            sale.setUpdatedBy(null);
-        }
-        sale.setUpdatedAt(LocalDateTime.now());
-        
+
         Sale grandTotalSale = saleRepository.save(sale);
         return saleMapper.toResponse(grandTotalSale);
     }
@@ -243,12 +220,6 @@ public class SalesServiceImp implements SalesService {
         }
 
         sale.setSaleStatus(SaleStatus.CANCELLED.name().toLowerCase());
-        try {
-            sale.setUpdatedBy(updatedBy != null ? Integer.parseInt(updatedBy) : null);
-        } catch (NumberFormatException e) {
-            sale.setUpdatedBy(null);
-        }
-        sale.setUpdatedAt(LocalDateTime.now());
         return saleMapper.toResponse(saleRepository.save(sale));
     }
 
@@ -288,12 +259,6 @@ public class SalesServiceImp implements SalesService {
         }
 
         sale.setSaleStatus(SaleStatus.RETURNED.name().toLowerCase());
-        try {
-            sale.setUpdatedBy(updatedBy != null ? Integer.parseInt(updatedBy) : null);
-        } catch (NumberFormatException e) {
-            sale.setUpdatedBy(null);
-        }
-        sale.setUpdatedAt(LocalDateTime.now());
         return saleMapper.toResponse(saleRepository.save(sale));
     }
 
@@ -306,11 +271,6 @@ public class SalesServiceImp implements SalesService {
         }
         
         sale.setDeleteFlag(1);
-        try {
-            sale.setDeleteBy(deletedBy != null ? Integer.parseInt(deletedBy) : null);
-        } catch (NumberFormatException e) {
-            sale.setDeleteBy(null);
-        }
         saleRepository.save(sale);
     }
 
@@ -335,12 +295,6 @@ public class SalesServiceImp implements SalesService {
         }
         Sale sale = findById(id);
         sale.setSaleStatus(SaleStatus.PENDING.name().toLowerCase());
-        try {
-            sale.setUpdatedBy(updatedBy != null ? Integer.parseInt(updatedBy) : null);
-        } catch (NumberFormatException e) {
-            sale.setUpdatedBy(null);
-        }
-        sale.setUpdatedAt(LocalDateTime.now());
         return saleMapper.toResponse(saleRepository.save(sale));
     }
 

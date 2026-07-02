@@ -8,13 +8,15 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.saranaresturantsystem.entities.BaseEntity;
+
 @Getter
 @Setter
 @Entity
 @Table(name = "tbl_role", indexes = {
         @Index(name = "idx_role_code", columnList = "code")
 })
-public class Role {
+public class Role extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,30 +30,12 @@ public class Role {
     @Column(length = 255)
     private String description;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "role_permissions",
+            name = "tbl_role_permissions",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id"),
             uniqueConstraints = @UniqueConstraint(name = "uk_role_permission", columnNames = {"role_id", "permission_id"})
     )
     private Set<Permission> permissions = new HashSet<>();
-
-    @PrePersist
-    void prePersist() {
-        LocalDateTime now = LocalDateTime.now();
-        if (createdAt == null) createdAt = now;
-        if (updatedAt == null) updatedAt = now;
-    }
-
-    @PreUpdate
-    void preUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
 }

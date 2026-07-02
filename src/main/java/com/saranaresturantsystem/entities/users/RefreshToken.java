@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+import com.saranaresturantsystem.entities.BaseEntity;
+
 @Getter
 @Setter
 @Entity
@@ -15,7 +17,7 @@ import java.time.LocalDateTime;
         @Index(name = "idx_refresh_revoked", columnList = "is_revoked"),
         @Index(name = "idx_refresh_user_device", columnList = "user_id, device_id")
 })
-public class RefreshToken {
+public class RefreshToken extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -47,12 +49,4 @@ public class RefreshToken {
 
     @Column(name = "revoked_at")
     private LocalDateTime revokedAt;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @PrePersist
-    void prePersist() {
-        if (createdAt == null) createdAt = LocalDateTime.now();
-    }
 }
