@@ -45,7 +45,7 @@ public class SubCategoryServiceImp implements SubCategoryService {
     @Override
     public SubCategoryResponse createSubCategory(SubCategoryRequest request) {
         SubCategory subCategory = subCategoryMapper.toSubCategory(request);
-        uniqueChecker.verify(subCategoryRepository , subCategory , "section" , subCategory.getSection() );
+        uniqueChecker.verify(subCategoryRepository , subCategory , "name" , subCategory.getName() );
         SubCategory saveSubCategory = subCategoryRepository.save(subCategory);
         return  subCategoryMapper.toSubCategoryResponse(saveSubCategory);
     }
@@ -62,7 +62,7 @@ public class SubCategoryServiceImp implements SubCategoryService {
     public SubCategoryResponse updateSubCategory(Long id, SubCategoryRequest request) {
         SubCategory subCategory = getSubCategoryById(id);
         subCategoryMapper.updateSubCategoryFromRequest(request , subCategory);
-        uniqueChecker.verify(subCategoryRepository , subCategory , "section" ,subCategory.getSection());
+//        uniqueChecker.verify(subCategoryRepository , subCategory , "section" ,subCategory.getName());
         SubCategory updateSubCategory = subCategoryRepository.save(subCategory);
         return  subCategoryMapper.toSubCategoryResponse(updateSubCategory);
     }

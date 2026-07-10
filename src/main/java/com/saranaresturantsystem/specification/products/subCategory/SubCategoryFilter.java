@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SubCategoryFilter {
 //    private  long id ;
-    private  String section ;
+    private  String name ;
     private Category categoryId ;
     private String status ;
 }

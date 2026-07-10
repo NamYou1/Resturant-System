@@ -19,7 +19,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "SubCategory", description = "Endpoints for managing subcategories")
-@RequestMapping("/api/v1/subcategory")
+@RequestMapping("/api/v1/sub-category")
 public class SubCategoryController {
 
     private final SubCategoryService subCategoryService;

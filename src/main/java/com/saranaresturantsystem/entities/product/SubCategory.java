@@ -18,18 +18,19 @@ public class SubCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sub_category_id")
     private  long id ;
-    @Column(name = "sub_section" , length = 50 , unique = true , nullable = false)
-    private  String section ;
+    @Column(  length = 50 , unique = true , nullable = false)
+    private  String name ;
+
     @Enumerated(EnumType.STRING)
     @Column( length = 10 )
     private StatusType status ;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
-//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Category category ;
 
     // product
-        @OneToMany(mappedBy = "section")
+        @OneToMany(mappedBy = "subCategory")
     private List<Product> tblProduct ;
 
 }

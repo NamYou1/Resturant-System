@@ -18,8 +18,8 @@ public class SubCategorySpec {
             if (filter.getCategoryId() != null) {
                 predicates.add(cb.equal(root.get("categoryId"), filter.getCategoryId()));
             }
-            if (filter.getSection() != null && !filter.getSection().isEmpty()) {
-                predicates.add(cb.like(root.get("section"), "%" + filter.getSection() + "%"));
+            if (filter.getName() != null && !filter.getName().isEmpty()) {
+                predicates.add(cb.like(root.get("section"), "%" + filter.getName() + "%"));
             }
             if (filter.getStatus() != null && !filter.getStatus().isEmpty()) {
                 predicates.add(cb.like(root.get("status"), "%" + filter.getStatus() + "%"));

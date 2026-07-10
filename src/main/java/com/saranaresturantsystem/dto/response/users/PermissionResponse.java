@@ -15,4 +15,5 @@ public class PermissionResponse {
     private Long groupId;
     private String groupCode;
     private String groupName;
+    private boolean checked;
 }

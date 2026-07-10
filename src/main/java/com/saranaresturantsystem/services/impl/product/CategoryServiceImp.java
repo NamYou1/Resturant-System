@@ -83,8 +83,8 @@ public class CategoryServiceImp implements CategoryService {
         uniqueChecker.verify(categoryRepository, category, "code", category.getCode());
         uniqueChecker.verify(categoryRepository, category, "name", category.getName());
 
-        if (request.getImagePath() != null && !request.getImagePath().isEmpty()) {
-            String imageUrl = cloudinaryService.uploadImage(request.getImagePath(), "category");
+        if (request.getImageUrl() != null && !request.getImageUrl().isEmpty()) {
+            String imageUrl = cloudinaryService.uploadImage(request.getImageUrl(), "category");
             category.setImageUrl(imageUrl);
             log.info("Image uploaded for new category [code={}]: {}", category.getCode(), imageUrl);
         } else {
@@ -110,7 +110,7 @@ public class CategoryServiceImp implements CategoryService {
             uniqueChecker.verify(categoryRepository, category, "name", request.getName());
         }
         categoryMapper.updateEntityFromRequest(request, category);
-        if (request.getImagePath() != null && !request.getImagePath().isEmpty()) {
+        if (request.getImageUrl() != null && !request.getImageUrl().isEmpty()) {
             if (category.getImageUrl() != null && !category.getImageUrl().isBlank()) {
                 try {
                     cloudinaryService.deleteImage(category.getImageUrl());
@@ -119,7 +119,7 @@ public class CategoryServiceImp implements CategoryService {
                     log.warn("Could not delete old image for category id={}: {}", id, ex.getMessage());
                 }
             }
-            String newImageUrl = cloudinaryService.uploadImage(request.getImagePath(), "category");
+            String newImageUrl = cloudinaryService.uploadImage(request.getImageUrl(), "category");
             category.setImageUrl(newImageUrl);
             log.info("New image uploaded for category id={}: {}", id, newImageUrl);
         }

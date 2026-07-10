@@ -24,14 +24,15 @@ public class Category extends BaseEntity {
     private String code;
     @Column( name = "c_name",length = 100, nullable = false, unique = true)
     private String name;
-    @Column(name = "c_display",length = 50)
-    private String display;
+
     @Column( name =  "c_image", length = 500)
     private String imageUrl;
-    @Column(name = "c_from_time")
-    private LocalDate fromTime;
-    @Column(name = "c_to_time")
-    private LocalDate toTime;
+    //    @Column(name = "c_from_time")
+    //    private LocalDate fromTime;
+    //    @Column(name = "c_to_time")
+    //    private LocalDate toTime;
+    //@Column(name = "c_display",length = 50)
+    //private String display;
     @Enumerated(EnumType.STRING)
     @Column( length = 10 )
     private StatusType status ;

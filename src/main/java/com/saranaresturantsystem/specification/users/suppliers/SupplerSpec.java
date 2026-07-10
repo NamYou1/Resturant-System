@@ -1,6 +1,8 @@
 package com.saranaresturantsystem.specification.users.suppliers;
 
 import com.saranaresturantsystem.entities.purchases.Supplier;
+import com.saranaresturantsystem.enums.StatusType;
+
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -12,7 +14,7 @@ public class SupplerSpec {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             // Always filter by ACTIVE status (soft delete)
-//            predicates.add(cb.equal(root.get("status"), StatusType.ACTIVE));
+            predicates.add(cb.equal(root.get("status"), StatusType.ACTIVE));
 
             if (filter.getName() != null && !filter.getName().isEmpty()) {
                 predicates.add(cb.like(cb.upper(root.get("name")), "%" + filter.getName().toUpperCase() + "%"));

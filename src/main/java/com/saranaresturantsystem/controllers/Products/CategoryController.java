@@ -19,7 +19,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/categories")
+@RequestMapping("/api/v1/category")
 @Tag(name = "Category", description = "Endpoints for managing categories")
 public class CategoryController {
 

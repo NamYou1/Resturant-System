@@ -35,7 +35,7 @@ public class ProductRequest {
     @NotNull(message = "Category ID is required")
     private Long categoryId;
     @NotNull(message = "sectionId is required")
-    private Long sectionId;
+    private Long subCategoryId;
     @NotNull(message = "Base unit is required")
     private Long unitId;
     private Integer defaultSaleUnit;

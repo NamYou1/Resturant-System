@@ -1,6 +1,7 @@
 package com.saranaresturantsystem.services.impl.users;
 
 import com.saranaresturantsystem.dto.request.users.RoleRequest;
+import com.saranaresturantsystem.dto.response.users.PermissionResponse;
 import com.saranaresturantsystem.dto.response.users.RoleResponse;
 import com.saranaresturantsystem.entities.users.Permission;
 import com.saranaresturantsystem.entities.users.Role;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,7 +40,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Transactional(readOnly = true)
     public RoleResponse getById(Long id) {
-        Role role = roleRepository.findById(id)
+        Role role = roleRepository.findWithPermissionsById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Role", id));
         return toResponse(role);
     }
@@ -98,8 +100,47 @@ public class RoleServiceImpl implements RoleService {
     public void delete(Long id) {
         Role role = roleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Role", id));
+        
         roleRepository.delete(role);
         log.info("Deleted Role [id={}]", id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<PermissionResponse> getPermissionsByRoleId(Long roleId) {
+        if (!roleRepository.existsById(roleId)) {
+            throw new ResourceNotFoundException("Role", roleId);
+        }
+        Set<Permission> rolePermissions = roleRepository.findPermissionsByRoleId(roleId);
+        Set<Long> rolePermissionIds = rolePermissions.stream()
+                .map(Permission::getId)
+                .collect(Collectors.toSet());
+
+        List<Permission> allPermissions = permissionRepository.findAll();
+        return allPermissions.stream()
+                .map(p -> {
+                    PermissionResponse response = toPermissionResponse(p);
+                    response.setChecked(rolePermissionIds.contains(p.getId()));
+                    return response;
+                })
+                .toList();
+    }
+
+    @Override
+    @Transactional
+    public List<PermissionResponse> updatePermissionsByRoleId(Long roleId, Set<Long> permissionIds) {
+        Role role = roleRepository.findById(roleId)
+                .orElseThrow(() -> new ResourceNotFoundException("Role", roleId));
+
+        Set<Permission> permissions = new HashSet<>(permissionRepository.findAllById(permissionIds));
+        role.setPermissions(permissions);
+
+        Role saved = roleRepository.save(role);
+        log.info("Updated permissions for Role [id={}, code={}] with {} permissions", saved.getId(), saved.getCode(), saved.getPermissions().size());
+
+        return saved.getPermissions().stream()
+                .map(this::toPermissionResponse)
+                .toList();
     }
 
     private RoleResponse toResponse(Role role) {
@@ -114,8 +155,28 @@ public class RoleServiceImpl implements RoleService {
                             .map(Permission::getId)
                             .collect(Collectors.toSet())
             );
+            response.setPermissions(
+                    role.getPermissions().stream()
+                            .map(this::toPermissionResponse)
+                            .toList()
+            );
         } else {
             response.setPermissionIds(new HashSet<>());
+            response.setPermissions(new ArrayList<>());
+        }
+        return response;
+    }
+
+    private PermissionResponse toPermissionResponse(Permission permission) {
+        PermissionResponse response = new PermissionResponse();
+        response.setId(permission.getId());
+        response.setCode(permission.getCode());
+        response.setName(permission.getName());
+        response.setDescription(permission.getDescription());
+        if (permission.getGroup() != null) {
+            response.setGroupId(permission.getGroup().getId());
+            response.setGroupCode(permission.getGroup().getCode());
+            response.setGroupName(permission.getGroup().getName());
         }
         return response;
     }

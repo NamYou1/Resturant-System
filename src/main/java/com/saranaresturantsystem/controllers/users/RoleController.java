@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.*;
 import com.saranaresturantsystem.common.Message;
 import com.saranaresturantsystem.common.ResponseFactory;
 import com.saranaresturantsystem.dto.request.users.RoleRequest;
+import com.saranaresturantsystem.dto.response.users.PermissionResponse;
 import com.saranaresturantsystem.dto.response.users.RoleResponse;
 import com.saranaresturantsystem.dto.response.ApiResponse;
 import com.saranaresturantsystem.services.users.RoleService;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,6 +36,22 @@ public class RoleController {
     public ResponseEntity<ApiResponse<RoleResponse>> getById(@PathVariable Long id) {
         RoleResponse payload = roleService.getById(id);
         return ResponseFactory.ok(payload, Message.getById("Role", id));
+    }
+
+    @GetMapping("/{id}/permissions")
+    @PreAuthorize("hasAuthority('role:read')")
+    public ResponseEntity<ApiResponse<List<PermissionResponse>>> getPermissionsByRoleId(@PathVariable Long id) {
+        List<PermissionResponse> payload = roleService.getPermissionsByRoleId(id);
+        return ResponseFactory.ok(payload, "Permissions for Role " + id + " retrieved successfully");
+    }
+
+    @PutMapping("/{id}/permissions")
+    @PreAuthorize("hasAuthority('role:update')")
+    public ResponseEntity<ApiResponse<List<PermissionResponse>>> updatePermissionsByRoleId(
+            @PathVariable Long id,
+            @RequestBody Set<Long> permissionIds) {
+        List<PermissionResponse> payload = roleService.updatePermissionsByRoleId(id, permissionIds);
+        return ResponseFactory.ok(payload, "Permissions for Role " + id + " updated successfully");
     }
 
     @PostMapping

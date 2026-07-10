@@ -24,8 +24,8 @@ public class ProductResponse {
     private BigDecimal alertQuantity;
     private Long categoryId;
     private String categoryName;
-    private Long sectionId;
-    private String sectionName;
+    private Long subCategoryId;
+    private String subCategoryName;
     private Long unitId;
     private String unitName;
     private Integer defaultSaleUnit;

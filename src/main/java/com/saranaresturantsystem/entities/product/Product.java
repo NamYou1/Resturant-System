@@ -50,7 +50,7 @@ public class Product extends BaseEntity {
     private Category category;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sub_category_id")
-    private SubCategory section;
+    private SubCategory subCategory;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "unit_id")
     private Unit unit;

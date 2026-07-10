@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class SubCategoryRequest {
     @NotNull(message = "Section is required ")
-    private  String section ;
+    private  String name ;
     @NotNull(message = "Category is required ")
     private Long categoryId ;
     private StatusType status = StatusType.ACTIVE;

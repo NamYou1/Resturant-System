@@ -20,12 +20,13 @@ public class CategoryRequest {
     @NotBlank(message = "Category name is required")
     @Size(min = 3, max = 100, message = "Name must be between 3 and 100 characters")
     private String name;
-    @Size(max = 50, message = "Display must not exceed 50 characters")
-    private String display;
+
     @Schema(type = "string", format = "binary", nullable = true)
-    private MultipartFile imagePath;
-    private LocalDate fromTime;
-    private LocalDate toTime;
+    private MultipartFile imageUrl;
+//    private LocalDate fromTime;
+//    private LocalDate toTime;
+//@Size(max = 50, message = "Display must not exceed 50 characters")
+//private String display;
     private StatusType status = StatusType.ACTIVE;
 
 

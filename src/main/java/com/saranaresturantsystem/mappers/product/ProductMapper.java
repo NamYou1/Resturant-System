@@ -16,8 +16,8 @@ public interface ProductMapper {
     // Map Entity to Response DTO
     @Mapping(target = "categoryId", source = "category.id")
     @Mapping(target = "categoryName", source = "category.name")
-    @Mapping(target = "sectionId", source = "section.id")
-    @Mapping(target = "sectionName", source = "section.section")
+    @Mapping(target = "subCategoryId", source = "subCategory.id")
+    @Mapping(target = "subCategoryName", source = "subCategory.name")
     @Mapping(target = "unitId", source = "unit.id")
     @Mapping(target = "unitName", source = "unit.name")
     ProductResponse toProductResponse(Product product);
@@ -25,7 +25,7 @@ public interface ProductMapper {
     // Map Request DTO to Entity (Uses Services to find objects by ID)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "category", source = "categoryId")
-    @Mapping(target = "section", source = "sectionId")
+    @Mapping(target = "subCategory", source = "subCategoryId")
     @Mapping(target = "unit", source = "unitId")
 //    @Mapping(target = "image", ignore = true)
     Product toProduct(ProductRequest request);
@@ -33,7 +33,7 @@ public interface ProductMapper {
     // Update existing Entity from Request
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "category", source = "categoryId")
-    @Mapping(target = "section", source = "sectionId")
+    @Mapping(target = "subCategory", source = "subCategoryId")
     @Mapping(target = "unit", source = "unitId")
 //    @Mapping(target = "image", ignore = true)
     void updateProductFromRequest(ProductRequest request, @MappingTarget Product product);

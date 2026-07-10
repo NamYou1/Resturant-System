@@ -73,6 +73,7 @@ public class User extends BaseEntity {
             uniqueConstraints = @UniqueConstraint(name = "uk_user_role", columnNames = {"user_id", "role_id"})
     )
     private Set<Role> roles = new HashSet<>();
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
     private Store store;
